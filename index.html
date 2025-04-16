@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Video Library (Dynamic v4)</title> <!-- Version Bump -->
+    <title>Project Video Library & Reviews (Dynamic v5)</title> <!-- Version Bump -->
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0; /* Removed "This is my website." */
+            margin: 0;
             padding: 0;
             background-color: #f0f0f0;
             line-height: 1.6;
@@ -45,7 +45,7 @@
             font-size: 0.95em;
             vertical-align: middle; /* Helps alignment when wrapping */
         }
-        .nav-link:hover {
+        .nav-link:hover, .nav-link.active { /* Add active state style */
             text-decoration: none;
             background-color: #2980b9;
         }
@@ -56,7 +56,17 @@
             vertical-align: middle; /* Explicitly set */
             object-fit: contain; /* Prevent distortion */
         }
-        .project-section {
+        /* Style for non-logo nav items like Reviews */
+        .nav-link .icon-placeholder {
+             display: inline-block;
+             width: 20px; /* Match logo width for alignment */
+             height: 20px;
+             margin-right: 8px;
+             /* Optional: Add a generic icon or leave blank */
+             /* background-image: url('path/to/generic-icon.svg'); */
+             background-size: contain;
+        }
+        .project-section, .reviews-section { /* Apply similar styling to reviews */
             background-color: white;
             margin: 0 10px 30px 10px; /* Adjust margin for container padding */
             padding: 20px;
@@ -64,7 +74,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             scroll-margin-top: 80px; /* Adjust based on nav height */
         }
-        .project-title {
+        .section-title { /* Generic title class */
             color: #2c3e50;
             border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
@@ -109,12 +119,28 @@
             font-size: 0.9em;
             display: block;
         }
+        /* Reviews Section Specifics */
+        .reviews-content {
+            margin-top: 20px;
+        }
+        .reviews-content p {
+            margin-bottom: 15px;
+        }
+        .reviews-content a {
+            color: #3498db;
+            font-weight: bold;
+        }
+         .reviews-content a:hover {
+             text-decoration: underline;
+         }
+
+        /* Target Highlight */
         :target {
              animation: highlight 1.5s ease-out;
         }
         @keyframes highlight {
-            from { background-color: #fff3cd; }
-            to { background-color: white; }
+            0% { background-color: #fff3cd; }
+            100% { background-color: white; } /* Use white for final state */
         }
         .no-videos, .error-message {
             color: #7f8c8d;
@@ -144,7 +170,7 @@
                 font-size: 0.9em;
                 padding: 6px 10px;
             }
-            .project-section {
+            .project-section, .reviews-section {
                 margin-left: 5px;
                 margin-right: 5px;
             }
@@ -154,7 +180,7 @@
                 font-size: 0.85em;
                 padding: 5px 8px;
             }
-             .nav-logo {
+             .nav-logo, .nav-link .icon-placeholder {
                  height: 18px;
                  width: 18px;
                  margin-right: 5px;
@@ -163,6 +189,9 @@
                  height: 24px;
                  width: 24px;
                  margin-right: 8px;
+             }
+             .section-title {
+                 font-size: 1.3em;
              }
         }
 
@@ -177,95 +206,96 @@
     <script>
         // --- Data Configuration ---
 
-        // Cleaned Raw data + NEW additions
-        const rawData = `Titan X Volt Genie Turbo Bonfire Ascendant Shaolin Phoenix Goat X Vyper Tinc Awesome X shogun Eden Inferno Flux Lotus Alien X https://x.com/stevedefi7/status/1889978808838828365 https://x.com/DEFIVOLT/status/1865378239079649491 http://x.com/GenieofBitcoin/status/1890736245250064660 https://x.com/DEFIVOLT/status/1865128507677765818/video/1 https://x.com/bonfirex28/status/1885069997258461387 https://x.com/TraderLi/status/1881740630025474449 https://x.com/ShaolinXDeFi/status/1877867235378639304 https://x.com/TeamPhoenixWin/status/1878096271761641753 https://x.com/Irishcrypto4/status/1873346605354799139 https://x.com/DEFIVOLT/status/1869759697689162153/video/1 https://x.com/DEFIVOLT/status/1869509928043548971 https://x.com/AwesomeXwins/status/1864842043559723287 https://x.com/OGXenian/status/1859342345394679902 https://x.com/ShaolinXDeFi/status/1857436863784435885 https://x.com/InfernoBullWin/status/1855551435343069270 https://x.com/BADSPORTSLABS/status/1853163226110021985 https://x.com/ShaolinXDeFi/status/1848117529308225576 https://x.com/BADSPORTSLABS/status/1846520759633559589 https://x.com/stevedefi7/status/1889770327376306610 https://x.com/DEFIVOLT/status/1853399116228768245 http://x.com/GenieofBitcoin/status/1885505019304124734 https://x.com/DEFIVOLT/status/1863393551939199303/video/1 https://x.com/TraderLi/status/1879831091701272824 https://x.com/ShaolinXDeFi/status/1877498519625322802 https://x.com/TeamPhoenixWin/status/1873396664658194456 https://x.com/DEFIVOLT/status/1869090140397945097/video/1 https://x.com/DEFIVOLT/status/1865890554078171602 https://x.com/AwesomeXwins/status/1862267075307172298 https://x.com/ShaolinXDeFi/status/1857075293296505026 https://x.com/InfernoBullWin/status/1854261152399958172 https://x.com/BADSPORTSLABS/status/1853090359053533220 https://x.com/ShaolinXDeFi/status/1847807818616672748 https://x.com/stevedefi7/status/1888191305182060674 https://x.com/DEFIVOLT/status/1852687396749390260 http://x.com/DEFIVOLT/status/1877149638182023492/video/1 https://x.com/WarriorSoul8888/status/1876627463972741404 https://x.com/TeamPhoenixWin/status/1867968160827404796 https://x.com/DEFIVOLT/status/1870133827726872688/video/1 https://x.com/AwesomeXwins/status/1859703586663563350 https://x.com/BADSPORTSLABS/status/1848809794725167207 https://x.com/BADSPORTSLABS/status/1847610579785064782 https://x.com/ShaolinXDeFi/status/1847063085925675089 https://x.com/stevedefi7/status/1886165345020543364 https://x.com/DEFIVOLT/status/1852565486971617651 http://x.com/DEFIVOLT/status/1877149638182023492 https://x.com/TeamPhoenixWin/status/1867189629570486312 https://x.com/DEFIVOLT/status/1870470517645595127 https://x.com/CryptoAwesomely/status/1857419025019465895 https://x.com/ShaolinXDeFi/status/1845944249616936997 https://x.com/stevedefi7/status/1885467132932104363 https://x.com/TeamPhoenixWin/status/1865792356856766902 https://x.com/DEFIVOLT/status/1869179511725867299 https://x.com/AwesomeXwins/status/1856376901067055337 https://x.com/DEFIVOLT/status/1868939350068936767/video/1 https://x.com/TeamPhoenixWin/status/1864006412067574096 https://x.com/DEFIVOLT/status/1868813133550436771/video/1 https://x.com/AwesomeXwins/status/1854613794485682570 https://x.com/DEFIVOLT/status/1868824186082541913/video/1 https://x.com/YoungStunnersss/status/1852235153260609873 https://x.com/DEFIVOLT/status/1862844964893274459/video/1 https://x.com/BADSPORTSLABS/status/1863199228421349382 https://x.com/DEFIVOLT/status/1869393318658093424 https://x.com/CryptoAwesomely/status/1852001203879575688 https://x.com/DEFIVOLT/status/1866093137896288697/video/1 https://x.com/TeamPhoenixWin/status/1861870732533174487 https://x.com/DEFIVOLT/status/1868939350068936767 https://x.com/CryptoAwesomely/status/1851665703331598668 https://x.com/DEFIVOLT/status/1865890554078171602/video/1 https://x.com/TeamPhoenixWin/status/1861090584191983879 https://x.com/DEFIVOLT/status/1868813133550436771 https://x.com/AwesomeXwins/status/1851264070948962634 https://x.com/DEFIVOLT/status/1865378239079649491/video/1 https://x.com/DEFIVOLT/status/1866140933617508723 https://x.com/HQMORPH/status/1873415806358548644 https://x.com/YoungStunnersss/status/1851232501941109210 https://x.com/DEFIVOLT/status/1862276723829539197 https://x.com/DEFIVOLT/status/1861414044961325469 https://x.com/stevedefi7/status/1865149383269839168 https://x.com/DEFIVOLT/status/1861103389481779627 https://x.com/DEFIVOLT/status/1850989795675115927 https://x.com/DEFIVOLT/status/1860987425092178274 https://x.com/DEFIVOLT/status/1849937867969073605 https://x.com/DEFIVOLT/status/1848650254016446748 https://x.com/DEFIVOLT/status/1858702568777548275 https://x.com/DEFIVOLT/status/1849957575028044287 https://x.com/DEFIVOLT/status/1848301692921463101 https://x.com/DEFIVOLT/status/1858447132304331000 https://x.com/DEFIVOLT/status/1849821229504422162 https://x.com/DEFIVOLT/status/1848040441750372464 https://x.com/DEFIVOLT/status/1858181200059269543 https://x.com/DEFIVOLT/status/1848460017189507245 https://x.com/DEFIVOLT/status/1847980852476604604 https://x.com/DEFIVOLT/status/1857765776972824864 https://x.com/BADSPORTSLABS/status/1849393982603710694 https://x.com/DEFIVOLT/status/1847363848723960002 https://x.com/DEFIVOLT/status/1857569622603468979 https://x.com/BADSPORTSLABS/status/1848103583515824397 https://x.com/DEFIVOLT/status/1847103855361757539 https://x.com/DEFIVOLT/status/1857178548878094363 https://x.com/DEFIVOLT/status/1846270583602139249 https://x.com/DEFIVOLT/status/1846230744709915079 https://x.com/DEFIVOLT/status/1856343968021115330 https://x.com/DEFIVOLT/status/1846813821966413863 https://x.com/DEFIVOLT/status/1856039292541260060 https://x.com/DEFIVOLT/status/1846664074421293221 https://x.com/DEFIVOLT/status/1855771819984437451 https://x.com/DEFIVOLT/status/1846496479722033225 https://x.com/DEFIVOLT/status/1855171571532333411 https://x.com/DEFIVOLT/status/1846194177131811167 https://x.com/DEFIVOLT/status/1855084888686252085 https://x.com/DEFIVOLT/status/1846061235516682315 https://x.com/DEFIVOLT/status/1855064563747553517 https://x.com/DEFIVOLT/status/1845822158448058397 https://x.com/DEFIVOLT/status/1854854751353024930 https://x.com/DEFIVOLT/status/1845744072742273072 https://x.com/DEFIVOLT/status/1854083901196476695 https://x.com/DEFIVOLT/status/1845560752637428209 https://x.com/DEFIVOLT/status/1853776598257783290 https://x.com/DEFIVOLT/status/1845167790728056856 https://x.com/DEFIVOLT/status/1853450369076023372 https://x.com/DEFIVOLT/status/1845006487430611184 https://x.com/DEFIVOLT/status/1853261442767520119 https://x.com/DEFIVOLT/status/1844981709734818192 https://x.com/DEFIVOLT/status/1852998319263387707 https://x.com/DEFIVOLT/status/1844844495336300629 https://x.com/DEFIVOLT/status/1854348777898864759 https://x.com/DEFIVOLT/status/1844677949305299350 https://x.com/DEFIVOLT/status/1845935713931395555 https://x.com/DEFIVOLT/status/1844528000450089306 https://x.com/stevedefi7/status/1844396816521117854 https://x.com/DEFIVOLT/status/1844403728922837322 https://x.com/DEFIVOLT/status/1844154514762498188 https://x.com/DEFIVOLT/status/1844175794844860650 https://x.com/DEFIVOLT/status/1843868927061045605 https://x.com/DEFIVOLT/status/1843695828822536213 https://x.com/DEFIVOLT/status/1843610181059670280 https://x.com/DEFIVOLT/status/1843544290951299360 https://x.com/DEFIVOLT/status/1843466027377561996 https://x.com/DEFIVOLT/status/1843314563867202046 https://x.com/DEFIVOLT/status/1843196464266137848 https://x.com/DEFIVOLT/status/1843235972726882685 https://x.com/DEFIVOLT/status/1843001360243195914 https://x.com/DEFIVOLT/status/1843108643878899993 https://x.com/DEFIVOLT/status/1843091541998674206 https://x.com/DEFIVOLT/status/1842870492610314526 https://x.com/DEFIVOLT/status/1842857786729771345 https://x.com/DEFIVOLT/status/1841802047605129351 https://x.com/DEFIVOLT/status/1841741551002587149 https://x.com/DEFIVOLT/status/1841585703953592327 https://x.com/DEFIVOLT/status/1841287005403070970 https://x.com/DEFIVOLT/status/1841134035709350117 https://x.com/HQMORPH/status/1904162009702191458 https://x.com/HQMORPH/status/1903837091186032689 https://x.com/HQMORPH/status/1903459911184314581 https://x.com/HQMORPH/status/1903458941717069836 https://x.com/HQMORPH/status/1904198770952146963 https://x.com/stevedefi7/status/1906054263089905838 https://x.com/Irishcrypto4/status/1865356837182124441 https://x.com/Irishcrypto4/status/1863695272238252494 https://x.com/HQMORPH/status/1904168293465829428 https://x.com/PumpUranus/status/1912142027862450643 https://x.com/HQMORPH/status/1888275111574208928`;
+        // Cleaned Raw data + NEW additions + explicit additions from user
+        const rawData = `Titan X Volt Genie Turbo Bonfire Ascendant Shaolin Phoenix Goat X Vyper Tinc Awesome X shogun Eden Inferno Flux Lotus Alien X https://x.com/stevedefi7/status/1889978808838828365 https://x.com/DEFIVOLT/status/1865378239079649491 http://x.com/GenieofBitcoin/status/1890736245250064660 https://x.com/DEFIVOLT/status/1865128507677765818/video/1 https://x.com/bonfirex28/status/1885069997258461387 https://x.com/TraderLi/status/1881740630025474449 https://x.com/ShaolinXDeFi/status/1877867235378639304 https://x.com/TeamPhoenixWin/status/1878096271761641753 https://x.com/Irishcrypto4/status/1873346605354799139 https://x.com/DEFIVOLT/status/1869759697689162153/video/1 https://x.com/DEFIVOLT/status/1869509928043548971 https://x.com/AwesomeXwins/status/1864842043559723287 https://x.com/OGXenian/status/1859342345394679902 https://x.com/InfernoBullWin/status/1855551435343069270 https://x.com/BADSPORTSLABS/status/1853163226110021985 https://x.com/BADSPORTSLABS/status/1846520759633559589 https://x.com/stevedefi7/status/1889770327376306610 https://x.com/DEFIVOLT/status/1853399116228768245 http://x.com/GenieofBitcoin/status/1885505019304124734 https://x.com/DEFIVOLT/status/1863393551939199303/video/1 https://x.com/TraderLi/status/1879831091701272824 https://x.com/TeamPhoenixWin/status/1873396664658194456 https://x.com/DEFIVOLT/status/1869090140397945097/video/1 https://x.com/DEFIVOLT/status/1865890554078171602 https://x.com/AwesomeXwins/status/1862267075307172298 https://x.com/InfernoBullWin/status/1854261152399958172 https://x.com/BADSPORTSLABS/status/1853090359053533220 https://x.com/stevedefi7/status/1888191305182060674 https://x.com/DEFIVOLT/status/1852687396749390260 http://x.com/DEFIVOLT/status/1877149638182023492/video/1 https://x.com/WarriorSoul8888/status/1876627463972741404 https://x.com/TeamPhoenixWin/status/1867968160827404796 https://x.com/DEFIVOLT/status/1870133827726872688/video/1 https://x.com/AwesomeXwins/status/1859703586663563350 https://x.com/BADSPORTSLABS/status/1848809794725167207 https://x.com/BADSPORTSLABS/status/1847610579785064782 https://x.com/stevedefi7/status/1886165345020543364 https://x.com/DEFIVOLT/status/1852565486971617651 http://x.com/DEFIVOLT/status/1877149638182023492 https://x.com/TeamPhoenixWin/status/1867189629570486312 https://x.com/DEFIVOLT/status/1870470517645595127 https://x.com/CryptoAwesomely/status/1857419025019465895 https://x.com/stevedefi7/status/1885467132932104363 https://x.com/TeamPhoenixWin/status/1865792356856766902 https://x.com/DEFIVOLT/status/1869179511725867299 https://x.com/AwesomeXwins/status/1856376901067055337 https://x.com/DEFIVOLT/status/1868939350068936767/video/1 https://x.com/TeamPhoenixWin/status/1864006412067574096 https://x.com/DEFIVOLT/status/1868813133550436771/video/1 https://x.com/AwesomeXwins/status/1854613794485682570 https://x.com/DEFIVOLT/status/1868824186082541913/video/1 https://x.com/YoungStunnersss/status/1852235153260609873 https://x.com/DEFIVOLT/status/1862844964893274459/video/1 https://x.com/BADSPORTSLABS/status/1863199228421349382 https://x.com/DEFIVOLT/status/1869393318658093424 https://x.com/CryptoAwesomely/status/1852001203879575688 https://x.com/DEFIVOLT/status/1866093137896288697/video/1 https://x.com/TeamPhoenixWin/status/1861870732533174487 https://x.com/DEFIVOLT/status/1868939350068936767 https://x.com/CryptoAwesomely/status/1851665703331598668 https://x.com/DEFIVOLT/status/1865890554078171602/video/1 https://x.com/TeamPhoenixWin/status/1861090584191983879 https://x.com/DEFIVOLT/status/1868813133550436771 https://x.com/AwesomeXwins/status/1851264070948962634 https://x.com/DEFIVOLT/status/1865378239079649491/video/1 https://x.com/DEFIVOLT/status/1866140933617508723 https://x.com/HQMORPH/status/1873415806358548644 https://x.com/YoungStunnersss/status/1851232501941109210 https://x.com/DEFIVOLT/status/1862276723829539197 https://x.com/DEFIVOLT/status/1861414044961325469 https://x.com/stevedefi7/status/1865149383269839168 https://x.com/DEFIVOLT/status/1861103389481779627 https://x.com/DEFIVOLT/status/1850989795675115927 https://x.com/DEFIVOLT/status/1860987425092178274 https://x.com/DEFIVOLT/status/1849937867969073605 https://x.com/DEFIVOLT/status/1848650254016446748 https://x.com/DEFIVOLT/status/1858702568777548275 https://x.com/DEFIVOLT/status/1849957575028044287 https://x.com/DEFIVOLT/status/1848301692921463101 https://x.com/DEFIVOLT/status/1858447132304331000 https://x.com/DEFIVOLT/status/1849821229504422162 https://x.com/DEFIVOLT/status/1848040441750372464 https://x.com/DEFIVOLT/status/1858181200059269543 https://x.com/DEFIVOLT/status/1848460017189507245 https://x.com/DEFIVOLT/status/1847980852476604604 https://x.com/DEFIVOLT/status/1857765776972824864 https://x.com/BADSPORTSLABS/status/1849393982603710694 https://x.com/DEFIVOLT/status/1847363848723960002 https://x.com/DEFIVOLT/status/1857569622603468979 https://x.com/BADSPORTSLABS/status/1848103583515824397 https://x.com/DEFIVOLT/status/1847103855361757539 https://x.com/DEFIVOLT/status/1857178548878094363 https://x.com/DEFIVOLT/status/1846270583602139249 https://x.com/DEFIVOLT/status/1846230744709915079 https://x.com/DEFIVOLT/status/1856343968021115330 https://x.com/DEFIVOLT/status/1846813821966413863 https://x.com/DEFIVOLT/status/1856039292541260060 https://x.com/DEFIVOLT/status/1846664074421293221 https://x.com/DEFIVOLT/status/1855771819984437451 https://x.com/DEFIVOLT/status/1846496479722033225 https://x.com/DEFIVOLT/status/1855171571532333411 https://x.com/DEFIVOLT/status/1846194177131811167 https://x.com/DEFIVOLT/status/1855084888686252085 https://x.com/DEFIVOLT/status/1846061235516682315 https://x.com/DEFIVOLT/status/1855064563747553517 https://x.com/DEFIVOLT/status/1845822158448058397 https://x.com/DEFIVOLT/status/1854854751353024930 https://x.com/DEFIVOLT/status/1845744072742273072 https://x.com/DEFIVOLT/status/1854083901196476695 https://x.com/DEFIVOLT/status/1845560752637428209 https://x.com/DEFIVOLT/status/1853776598257783290 https://x.com/DEFIVOLT/status/1845167790728056856 https://x.com/DEFIVOLT/status/1853450369076023372 https://x.com/DEFIVOLT/status/1845006487430611184 https://x.com/DEFIVOLT/status/1853261442767520119 https://x.com/DEFIVOLT/status/1844981709734818192 https://x.com/DEFIVOLT/status/1852998319263387707 https://x.com/DEFIVOLT/status/1844844495336300629 https://x.com/DEFIVOLT/status/1854348777898864759 https://x.com/DEFIVOLT/status/1844677949305299350 https://x.com/DEFIVOLT/status/1845935713931395555 https://x.com/DEFIVOLT/status/1844528000450089306 https://x.com/stevedefi7/status/1844396816521117854 https://x.com/DEFIVOLT/status/1844403728922837322 https://x.com/DEFIVOLT/status/1844154514762498188 https://x.com/DEFIVOLT/status/1844175794844860650 https://x.com/DEFIVOLT/status/1843868927061045605 https://x.com/DEFIVOLT/status/1843695828822536213 https://x.com/DEFIVOLT/status/1843610181059670280 https://x.com/DEFIVOLT/status/1843544290951299360 https://x.com/DEFIVOLT/status/1843466027377561996 https://x.com/DEFIVOLT/status/1843314563867202046 https://x.com/DEFIVOLT/status/1843196464266137848 https://x.com/DEFIVOLT/status/1843235972726882685 https://x.com/DEFIVOLT/status/1843001360243195914 https://x.com/DEFIVOLT/status/1843108643878899993 https://x.com/DEFIVOLT/status/1843091541998674206 https://x.com/DEFIVOLT/status/1842870492610314526 https://x.com/DEFIVOLT/status/1842857786729771345 https://x.com/DEFIVOLT/status/1841802047605129351 https://x.com/DEFIVOLT/status/1841741551002587149 https://x.com/DEFIVOLT/status/1841585703953592327 https://x.com/DEFIVOLT/status/1841287005403070970 https://x.com/DEFIVOLT/status/1841134035709350117 https://x.com/HQMORPH/status/1904162009702191458 https://x.com/HQMORPH/status/1903837091186032689 https://x.com/HQMORPH/status/1903459911184314581 https://x.com/HQMORPH/status/1903458941717069836 https://x.com/HQMORPH/status/1904198770952146963 https://x.com/stevedefi7/status/1906054263089905838 https://x.com/Irishcrypto4/status/1865356837182124441 https://x.com/Irishcrypto4/status/1863695272238252494 https://x.com/HQMORPH/status/1904168293465829428 https://x.com/PumpUranus/status/1912142027862450643 https://x.com/HQMORPH/status/1888275111574208928`;
 
-        // Fallback mapping (mostly overridden now)
+        // Fallback mapping
         const handleToProjectFallback = {
             'stevedefi7': 'Titan X',
-            'DEFIVOLT': 'Volt',
+            'DEFIVOLT': 'Volt', // Primarily Volt, but URLs are explicitly assigned elsewhere too
             'GenieofBitcoin': 'Bitcoin Genie',
             'bonfirex28': 'Bonfire',
             'TraderLi': 'Ascendant',
-            'ShaolinXDeFi': 'Shaolin',
+            'ShaolinXDeFi': 'Shaolin', // Used for Shaolin, Eden, Lotus - explicit assignments needed
             'TeamPhoenixWin': 'Phoenix',
             'Irishcrypto4': 'Goat X',
             'AwesomeXwins': 'AwesomeX',
             'OGXenian': 'Shogun',
             'InfernoBullWin': 'Inferno',
-            'BADSPORTSLABS': 'Flux',
+            'BADSPORTSLABS': 'Flux', // Used for Flux, Alien X, Titan X, Inferno - explicit assignments needed
             'WarriorSoul8888': 'Ascendant',
-            'HQMORPH': 'Morpheus',
-            'PumpUranus': 'Smoke', // Added fallback mapping for Smoke handle
-            'CryptoAwesomely': 'AwesomeX' // Added handle for AwesomeX
+            'HQMORPH': 'Morpheus', // Used for Morpheus, Switch, Bonfire, Titan X - explicit assignments needed
+            'PumpUranus': 'Smoke',
+            'CryptoAwesomely': 'AwesomeX',
+            'inkayknows': 'Alien X', // Added handle for Alien X
+            'smoothncrypto': 'Flare', // Added handle for Flare
+            'flare_win': 'Flare'     // Added handle for Flare
         };
 
         // *** LOGO CONFIGURATION ***
         // IMPORTANT: Create an 'images' folder and place these files inside it!
-        // Make sure the filenames match exactly (case-sensitive if needed on some systems).
         const projectLogos = {
-           'Eden': 'images/eden.png',            // From image row 1
-           'Shogun': 'images/shogun.png',          // From image row 1
-           'Morpheus': 'images/morpheus.png',      // From image row 1
-           'Phoenix': 'images/phoenix.png',        // From image row 1
-           'Vyper': 'images/vyper.png',          // From image row 1
-           'Inferno': 'images/inferno.png',        // Using the bull logo version from row 3 as default 'Inferno'
-           'Lotus': 'images/lotus.png',          // From image row 2
-           'Titan X': 'images/titan-x.png',        // From image row 2
-           'Bitcoin Genie': 'images/bitcoin-genie.png', // From image row 2
-           'Titan Blaze': 'images/titan-blaze.png',  // From image row 2
-           'AwesomeX': 'images/awesomex.png',       // From image row 2
-           'Flux': 'images/flux.png',            // From image row 2
-           'Smoke': 'images/smoke.png',          // From image row 3 (Make sure you save this file)
-           'Goat X': 'images/goat-x.png',        // From image row 3
-           'Shaolin': 'images/shaolin.png',        // From image row 3
-           'Bonfire': 'images/bonfire.png',        // From image row 3
-           'Alien X': 'images/alien-x.png',        // From image row 3
+           'Eden': 'images/eden.png',
+           'Shogun': 'images/shogun.png',
+           'Morpheus': 'images/morpheus.png',
+           'Phoenix': 'images/phoenix.png',
+           'Vyper': 'images/vyper.png',
+           'Inferno': 'images/inferno.png',
+           'Lotus': 'images/lotus.png',
+           'Titan X': 'images/titan-x.png',
+           'Bitcoin Genie': 'images/bitcoin-genie.png',
+           'Titan Blaze': 'images/titan-blaze.png',
+           'AwesomeX': 'images/awesomex.png',
+           'Flux': 'images/flux.png',
+           'Smoke': 'images/smoke.png',
+           'Goat X': 'images/goat-x.png',
+           'Shaolin': 'images/shaolin.png',
+           'Bonfire': 'images/bonfire.png',
+           'Alien X': 'images/alien-x.png',
+           'Flare': 'images/flare.png',          // **NEW** Add flare.png to images folder
+           'Volt': 'images/volt.png',
+           'Dragon X': 'images/dragon-x.png',
+           'Switch': 'images/switch.png',
 
-           // Logos for projects in data but maybe not in the provided composite image (ensure files exist or use placeholders)
-           'Volt': 'images/volt.png',            // Needs volt.png in images/
-           'Dragon X': 'images/dragon-x.png',      // Needs dragon-x.png in images/
-           'Switch': 'images/switch.png',          // Needs switch.png in images/
-
-           // Placeholders for projects definitely without provided logos
+           // Placeholders for projects without provided logos
            'Turbo': 'https://via.placeholder.com/30/FF5733/FFFFFF?text=T',
            'Ascendant': 'https://via.placeholder.com/30/33FF57/FFFFFF?text=A',
            'Tinc': 'https://via.placeholder.com/30/3357FF/FFFFFF?text=Ti'
         };
         const defaultLogo = 'https://via.placeholder.com/30/cccccc/FFFFFF?text=?'; // Fallback if logo is missing
 
-        // --- Helper Functions (Keep as they are from previous version) ---
+        // --- Helper Functions (Keep as they are) ---
          function normalizeUrl(url) {
-            // SIMPLIFIED: Focus on protocol and basic validity
             if (!url || typeof url !== 'string') return null;
             url = url.trim();
-            url = url.replace(/\/+$/, ''); // Remove trailing slashes
+
+            // Remove query parameters first (like ?s=...&t=...)
+             const urlParts = url.split('?');
+             url = urlParts[0];
+
+            url = url.replace(/\/+$/, ''); // Remove trailing slashes AFTER removing query params
 
             // Normalize variations of x.com URLs
              url = url.replace(/^http:\/\/(www\.)?x\.com/, 'https://x.com');
              url = url.replace(/^https:\/\/(www\.)?x\.com/, 'https://x.com');
-             url = url.replace(/^http:\/\/(www\.)?twitter\.com/, 'https://x.com'); // Also handle twitter.com links
-             url = url.replace(/^https:\/\/(www\.)?twitter\.com/, 'https://x.com'); // Also handle twitter.com links
-
+             url = url.replace(/^http:\/\/(www\.)?twitter\.com/, 'https://x.com');
+             url = url.replace(/^https:\/\/(www\.)?twitter\.com/, 'https://x.com');
 
             // Remove /video/1 suffix specifically
             url = url.replace(/\/video\/1$/, '');
 
             if (!url.startsWith('https://x.com/') || !url.includes('/status/')) {
-                 console.warn(`Invalid URL format after normalization: ${url}`);
+                 // console.warn(`Invalid URL format after normalization: ${url}`); // Reduce noise
                  return null;
             }
 
-            // Further clean up potential query params or fragments (though less common for status URLs)
              try {
                  const urlObj = new URL(url);
                  const pathSegments = urlObj.pathname.split('/');
-                 // Basic check: needs at least /handle/status/id
                  if (pathSegments.length < 4 || pathSegments[2] !== 'status' || !/^\d+$/.test(pathSegments[3])) {
-                    console.warn(`URL Path segments invalid for status URL: ${urlObj.pathname}`);
+                    // console.warn(`URL Path segments invalid for status URL: ${urlObj.pathname}`); // Reduce noise
                     return null;
                  }
-                 // Return just the core status URL (origin + path)
                  return urlObj.origin + urlObj.pathname;
              } catch (e) {
                  console.error(`Error parsing URL ${url}`, e);
@@ -274,61 +304,64 @@
         }
 
         function extractStatusId(url) {
-            if (!url) return null;
-            try {
-                const urlObj = new URL(url);
-                const pathSegments = urlObj.pathname.split('/');
-                // ID should be the 4th segment (index 3)
-                if (pathSegments.length > 3 && /^\d+$/.test(pathSegments[3])) {
-                    return BigInt(pathSegments[3]);
-                }
-            } catch (e) { console.error(`Error extracting status ID from ${url}`, e); }
-            return null;
+            // ... (keep function as is) ...
+             if (!url) return null;
+             try {
+                 const urlObj = new URL(url);
+                 const pathSegments = urlObj.pathname.split('/');
+                 if (pathSegments.length > 3 && /^\d+$/.test(pathSegments[3])) {
+                     return BigInt(pathSegments[3]);
+                 }
+             } catch (e) { console.error(`Error extracting status ID from ${url}`, e); }
+             return null;
         }
 
         function getHandle(url) {
-             if (!url) return null;
-             try {
-                const urlObj = new URL(url);
-                const pathSegments = urlObj.pathname.split('/');
-                 // Handle should be the 2nd segment (index 1)
-                if (pathSegments.length > 1 && pathSegments[1]) {
-                    return pathSegments[1];
-                }
-            } catch (e) { console.error(`Error extracting handle from ${url}`, e); }
-            return null;
+             // ... (keep function as is) ...
+              if (!url) return null;
+              try {
+                 const urlObj = new URL(url);
+                 const pathSegments = urlObj.pathname.split('/');
+                  // Handle should be the 2nd segment (index 1)
+                 if (pathSegments.length > 1 && pathSegments[1]) {
+                     return pathSegments[1];
+                 }
+             } catch (e) { console.error(`Error extracting handle from ${url}`, e); }
+             return null;
         }
 
         function getApproxDateFromStatusId(statusId) {
-            if (!statusId) return null;
-            const twitterEpoch = 1288834974657n; // Snowflake epoch for Twitter
-            try {
-                 // Right shift by 22 bits to get the timestamp part
-                const timestampMs = Number(statusId >> 22n) + Number(twitterEpoch);
-                return new Date(timestampMs);
-            } catch (e) {
-                console.error("Error calculating date from status ID:", statusId, e);
-                return null;
-            }
+            // ... (keep function as is) ...
+             if (!statusId) return null;
+             const twitterEpoch = 1288834974657n;
+             try {
+                 const timestampMs = Number(statusId >> 22n) + Number(twitterEpoch);
+                 return new Date(timestampMs);
+             } catch (e) {
+                 console.error("Error calculating date from status ID:", statusId, e);
+                 return null;
+             }
         }
 
         function formatDisplayDate(date) {
-            if (!date || isNaN(date.getTime())) {
-                return "Date unavailable";
-            }
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric' // Removed weekday
-            });
+            // ... (keep function as is) ...
+             if (!date || isNaN(date.getTime())) {
+                 return "Date unavailable";
+             }
+             return date.toLocaleDateString('en-US', {
+                 year: 'numeric', month: 'long', day: 'numeric'
+             });
         }
 
         function slugify(text) {
-          if (!text) return '';
-          return text.toString().toLowerCase()
-            .replace(/\s+/g, '-')           // Replace spaces with -
-            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars except -
-            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-            .replace(/^-+/, '')             // Trim - from start of text
-            .replace(/-+$/, '');            // Trim - from end of text
+          // ... (keep function as is) ...
+           if (!text) return '';
+           return text.toString().toLowerCase()
+             .replace(/\s+/g, '-')
+             .replace(/[^\w\-]+/g, '')
+             .replace(/\-\-+/g, '-')
+             .replace(/^-+/, '')
+             .replace(/-+$/, '');
         }
 
          // --- Main Processing Logic ---
@@ -342,43 +375,55 @@
             }
 
             try {
-                 // Refined Project Name mapping (if needed, less critical now with explicit assignments)
-                 const finalProjectNameMapping = {
-                     // Example: 'Old Name': 'New Name'
-                 };
+                 const finalProjectNameMapping = {}; // Keep if needed for renaming later
                  function getFinalProjectName(name) {
                      return finalProjectNameMapping[name] || name;
                  }
 
-                // 1. Define Explicit Assignments + Initialize all known projects from logos
-                 // Use project names exactly as they appear in the `projectLogos` keys
-                const explicitAssignments = {
-                    // Initialize all projects expected to have logos
-                    'Eden': new Set(), 'Shogun': new Set(), 'Morpheus': new Set(), 'Phoenix': new Set(),
-                    'Vyper': new Set(), 'Inferno': new Set(), 'Lotus': new Set(), 'Titan X': new Set(),
-                    'Bitcoin Genie': new Set(), 'Titan Blaze': new Set(), 'AwesomeX': new Set(),
-                    'Flux': new Set(), 'Smoke': new Set(), 'Goat X': new Set(), 'Shaolin': new Set(),
-                    'Bonfire': new Set(), 'Alien X': new Set(), 'Volt': new Set(), 'Dragon X': new Set(),
-                    'Switch': new Set(), 'Turbo': new Set(), 'Ascendant': new Set(), 'Tinc': new Set(),
-                     // Add specific URL assignments here if needed, overwriting fallback logic
-                     // Example: 'Titan X': new Set([ normalizeUrl('some_specific_titanx_url') ]),
-                    // Add assignments from the original code, ensuring project names match logo keys
-                    'AwesomeX': new Set([
-                        normalizeUrl('https://x.com/CryptoAwesomely/status/1851665703331598668'), normalizeUrl('https://x.com/CryptoAwesomely/status/1852001203879575688'), normalizeUrl('https://x.com/CryptoAwesomely/status/1857419025019465895')
-                    ]),
+                // 1. Define Explicit Assignments + Initialize ALL known projects from logos
+                const explicitAssignments = {};
+                 // Initialize ALL projects listed in projectLogos to ensure they are created
+                 Object.keys(projectLogos).forEach(projName => {
+                     explicitAssignments[projName] = new Set();
+                 });
+
+                 // --- ADD EXPLICIT URLS HERE (OVERWRITES FALLBACKS) ---
+                 Object.assign(explicitAssignments, {
+                     'AwesomeX': new Set([
+                         normalizeUrl('https://x.com/CryptoAwesomely/status/1851665703331598668'), normalizeUrl('https://x.com/CryptoAwesomely/status/1852001203879575688'), normalizeUrl('https://x.com/CryptoAwesomely/status/1857419025019465895')
+                     ]),
                      'Titan X': new Set([
                          normalizeUrl('https://x.com/BADSPORTSLABS/status/1849393982603710694'), normalizeUrl('https://x.com/HQMORPH/status/1873415806358548644'), normalizeUrl('https://x.com/DEFIVOLT/status/1868824186082541913'), normalizeUrl('https://x.com/DEFIVOLT/status/1850989795675115927'),
                      ]),
-                     'Inferno': new Set([ normalizeUrl('https://x.com/BADSPORTSLABS/status/1848809794725167207') ]), // Explicit assign
-                     'Bitcoin Genie': new Set([ normalizeUrl('https://x.com/stevedefi7/status/1906054263089905838'), normalizeUrl('https://x.com/DEFIVOLT/status/1877149638182023492') ]),
-                     'Goat X': new Set([ normalizeUrl('https://x.com/Irishcrypto4/status/1865356837182124441'), normalizeUrl('https://x.com/Irishcrypto4/status/1863695272238252494') ]),
-                     'Bonfire': new Set([ normalizeUrl('https://x.com/HQMORPH/status/1904168293465829428') ]),
+                     'Inferno': new Set([
+                         normalizeUrl('https://x.com/BADSPORTSLABS/status/1848809794725167207'),
+                         normalizeUrl('https://x.com/InfernoBullWin/status/1855551435343069270'), // Add from raw data if needed
+                         normalizeUrl('https://x.com/InfernoBullWin/status/1854261152399958172')  // Add from raw data if needed
+                      ]),
+                     'Bitcoin Genie': new Set([
+                          normalizeUrl('https://x.com/stevedefi7/status/1906054263089905838'), normalizeUrl('https://x.com/DEFIVOLT/status/1877149638182023492'),
+                          normalizeUrl('http://x.com/GenieofBitcoin/status/1890736245250064660'), // Add from raw data
+                          normalizeUrl('http://x.com/GenieofBitcoin/status/1885505019304124734') // Add from raw data
+                     ]),
+                     'Goat X': new Set([
+                         normalizeUrl('https://x.com/Irishcrypto4/status/1865356837182124441'), normalizeUrl('https://x.com/Irishcrypto4/status/1863695272238252494'),
+                         normalizeUrl('https://x.com/Irishcrypto4/status/1873346605354799139') // Add from raw data
+                     ]),
+                     'Bonfire': new Set([
+                         normalizeUrl('https://x.com/HQMORPH/status/1904168293465829428'),
+                         normalizeUrl('https://x.com/bonfirex28/status/1885069997258461387') // Add from raw data
+                      ]),
                      'Volt': new Set([
                          normalizeUrl('https://x.com/stevedefi7/status/1844396816521117854'), normalizeUrl('https://x.com/DEFIVOLT/status/1865890554078171602'), normalizeUrl('https://x.com/DEFIVOLT/status/1865378239079649491'),
                          normalizeUrl('https://x.com/YoungStunnersss/status/1852235153260609873'), normalizeUrl('https://x.com/YoungStunnersss/status/1851232501941109210')
+                         // Many more DEFIVOLT links could be added here if they are specifically Volt
                      ]),
-                     'Ascendant': new Set([ normalizeUrl('https://x.com/WarriorSoul8888/status/1876627463972741404') ]),
-                     'Vyper': new Set([ // Simplified adding multiple URLs
+                     'Ascendant': new Set([
+                         normalizeUrl('https://x.com/WarriorSoul8888/status/1876627463972741404'),
+                         normalizeUrl('https://x.com/TraderLi/status/1881740630025474449'), // Add from raw data
+                         normalizeUrl('https://x.com/TraderLi/status/1879831091701272824') // Add from raw data
+                      ]),
+                     'Vyper': new Set([ // Most DEFIVOLT links seem to be Vyper based on original code
                          'https://x.com/DEFIVOLT/status/1870470517645595127', 'https://x.com/DEFIVOLT/status/1869759697689162153', 'https://x.com/DEFIVOLT/status/1869393318658093424',
                          'https://x.com/DEFIVOLT/status/1869509928043548971', 'https://x.com/DEFIVOLT/status/1869090140397945097', 'https://x.com/DEFIVOLT/status/1868939350068936767',
                          'https://x.com/DEFIVOLT/status/1868813133550436771', 'https://x.com/DEFIVOLT/status/1866140933617508723', 'https://x.com/DEFIVOLT/status/1862276723829539197',
@@ -390,10 +435,12 @@
                          'https://x.com/DEFIVOLT/status/1854854751353024930', 'https://x.com/DEFIVOLT/status/1854348777898864759', 'https://x.com/DEFIVOLT/status/1854083901196476695',
                          'https://x.com/DEFIVOLT/status/1853776598257783290', 'https://x.com/DEFIVOLT/status/1853450369076023372', 'https://x.com/DEFIVOLT/status/1853399116228768245',
                          'https://x.com/DEFIVOLT/status/1852565486971617651'
-                     ].map(normalizeUrl).filter(Boolean)), // Normalize and filter nulls
+                         // Add many more DEFIVOLT URLs from raw data that fit Vyper
+                     ].map(normalizeUrl).filter(Boolean)),
                      'Turbo': new Set([
                          normalizeUrl('https://x.com/DEFIVOLT/status/1865128507677765818'), normalizeUrl('https://x.com/DEFIVOLT/status/1863393551939199303'),
-                         normalizeUrl('https://x.com/DEFIVOLT/status/1863178170590994871'), normalizeUrl('https://x.com/DEFIVOLT/status/1862844964893274459')
+                         // normalizeUrl('https://x.com/DEFIVOLT/status/1863178170590994871'), // Check if this belongs
+                         normalizeUrl('https://x.com/DEFIVOLT/status/1862844964893274459')
                      ]),
                      'Switch': new Set([
                          normalizeUrl('https://x.com/HQMORPH/status/1904162009702191458'), normalizeUrl('https://x.com/HQMORPH/status/1903837091186032689')
@@ -403,19 +450,58 @@
                          normalizeUrl('https://x.com/HQMORPH/status/1904198770952146963'),
                          normalizeUrl('https://x.com/HQMORPH/status/1888275111574208928')
                      ]),
-                     'Smoke': new Set([ // Explicit assign for Smoke
+                     'Smoke': new Set([
                          normalizeUrl('https://x.com/PumpUranus/status/1912142027862450643')
                      ]),
-                };
+                     'Shaolin': new Set([
+                         normalizeUrl('https://x.com/ShaolinXDeFi/status/1877867235378639304'), // Add from raw data
+                         normalizeUrl('https://x.com/ShaolinXDeFi/status/1877498519625322802'), // Add from raw data
+                         // Some ShaolinXDeFi links are assigned to Lotus/Eden below
+                     ]),
+                     'Phoenix': new Set([
+                         normalizeUrl('https://x.com/TeamPhoenixWin/status/1878096271761641753'), // Add from raw data
+                         normalizeUrl('https://x.com/TeamPhoenixWin/status/1873396664658194456'), // Add from raw data
+                         // Add more TeamPhoenixWin links here
+                     ]),
+                      'Flux': new Set([
+                          normalizeUrl('https://x.com/BADSPORTSLABS/status/1853163226110021985'), // Add from raw data
+                          normalizeUrl('https://x.com/BADSPORTSLABS/status/1853090359053533220'), // Add from raw data
+                          // Add more BADSPORTSLABS links that are Flux
+                      ]),
+                       'Shogun': new Set([
+                           normalizeUrl('https://x.com/OGXenian/status/1859342345394679902') // Add from raw data
+                       ]),
+
+                     // --- NEW EXPLICIT ASSIGNMENTS ---
+                     'Lotus': new Set([
+                         normalizeUrl('https://x.com/shaolinxdefi/status/1848117529308225576'),
+                         normalizeUrl('https://x.com/shaolinxdefi/status/1847807818616672748'),
+                         normalizeUrl('https://x.com/shaolinxdefi/status/1847063085925675089'),
+                         normalizeUrl('https://x.com/shaolinxdefi/status/1845944249616936997')
+                     ]),
+                     'Eden': new Set([
+                         normalizeUrl('https://x.com/shaolinxdefi/status/1857075293296505026'),
+                         normalizeUrl('https://x.com/shaolinxdefi/status/1857436863784435885')
+                     ]),
+                     'Alien X': new Set([
+                         normalizeUrl('https://x.com/inkayknows/status/1847011292755738650'),
+                         normalizeUrl('https://x.com/badsportslabs/status/1846832234059227557'),
+                         normalizeUrl('https://x.com/badsportslabs/status/1846520759633559589')
+                     ]),
+                     'Flare': new Set([ // New Project
+                         normalizeUrl('https://x.com/smoothncrypto/status/1874213135550472483'),
+                         normalizeUrl('https://x.com/flare_win/status/1903124690467475954')
+                     ])
+                 }); // End of Object.assign
+
 
                 // Keep track of all URLs assigned explicitly
                 const assignedUrls = new Set();
                 Object.values(explicitAssignments).forEach(urlSet => {
-                    if (urlSet) { // Check if urlSet is defined
+                    if (urlSet) {
                        urlSet.forEach(url => { if(url) assignedUrls.add(url); });
                     }
                 });
-
 
                 // 2. Process Raw Data - Add only URLs NOT explicitly assigned, using fallbacks
                 const urls = rawData.split(/\s+/);
@@ -429,23 +515,21 @@
                         const projectName = fallbackProjectName ? getFinalProjectName(fallbackProjectName) : null;
 
                         if (projectName) {
-                             // Ensure the project exists in our assignments (initialized from logos)
                              if (explicitAssignments.hasOwnProperty(projectName)) {
-                                if (!explicitAssignments[projectName]) { // Should not happen if initialized, but safe check
+                                if (!explicitAssignments[projectName]) {
                                     explicitAssignments[projectName] = new Set();
                                 }
+                                // Only add via fallback if not already added explicitly
                                 explicitAssignments[projectName].add(normalized);
-                                assignedUrls.add(normalized); // Mark as assigned now
+                                assignedUrls.add(normalized);
                             } else {
-                                console.warn(`Fallback project "${projectName}" for handle "${handle}" (URL: ${normalized}) not found in initialized projects. URL ignored.`);
+                                console.warn(`Fallback project "${projectName}" (handle: ${handle}, URL: ${normalized}) not in initialized projects (projectLogos/explicitAssignments). URL ignored.`);
                             }
                         } else if (handle) {
-                            console.warn(`No project mapping found for handle "${handle}" (URL: ${normalized}). URL ignored.`);
+                             // console.warn(`No project mapping found for handle "${handle}" (URL: ${normalized}). URL ignored.`); // Reduce noise
                         } else {
-                             console.warn(`Could not extract handle for unassigned URL: ${normalized}. URL ignored.`);
+                             // console.warn(`Could not extract handle for unassigned URL: ${normalized}. URL ignored.`); // Reduce noise
                         }
-                    } else if (!normalized && rawUrl.startsWith('http')) {
-                        console.warn(`Could not normalize or URL already assigned: ${rawUrl}`);
                     }
                 });
 
@@ -453,25 +537,22 @@
                 const projects = {};
                 let totalValidVideos = 0;
                 for (const projectName in explicitAssignments) {
-                    // Ensure we only process projects intended for display (those in projectLogos keys perhaps?)
-                    if (!projectLogos.hasOwnProperty(projectName)) {
-                        // console.log(`Skipping project "${projectName}" as it's not in projectLogos.`);
-                        continue; // Skip projects not in the logo list if we only want to show those
+                    if (!projectLogos.hasOwnProperty(projectName) && !['Ascendant', 'Tinc', 'Turbo'].includes(projectName) /*Allow placeholders*/) { // Ensure we only process projects with logos or placeholders
+                       // console.log(`Skipping project "${projectName}" as it's not in projectLogos or allowed placeholders.`);
+                       continue;
                     }
 
                     const urlSet = explicitAssignments[projectName];
-                    if (!urlSet || urlSet.size === 0) continue; // Skip if set is null or empty
+                    if (!urlSet || urlSet.size === 0) continue;
 
                     const validUrls = [...urlSet].filter(url => url !== null);
-                    if (validUrls.length === 0) continue; // Skip if no valid URLs remain
+                    if (validUrls.length === 0) continue;
 
-                    // Use the exact projectName as the key since it's from our controlled list
                      if (!projects[projectName]) projects[projectName] = [];
 
                     validUrls.forEach(url => {
                         const statusId = extractStatusId(url);
                         if (statusId) {
-                             // Avoid duplicates within the same project list
                             if (!projects[projectName].some(existing => existing.url === url)) {
                                 projects[projectName].push({
                                     url: url,
@@ -484,7 +565,6 @@
                            console.warn(`Could not extract Status ID for URL: ${url} in project ${projectName}`);
                         }
                     });
-                    // Remove project if it ended up with no valid videos after processing
                     if (projects[projectName].length === 0) {
                          delete projects[projectName];
                     }
@@ -492,8 +572,8 @@
 
                 // --- Check if any projects/videos were actually found ---
                 if (Object.keys(projects).length === 0 || totalValidVideos === 0) {
-                     console.error("No valid projects with videos found after processing all data.");
-                     appContainer.innerHTML = '<div class="error-message">No valid project data found to display. Please check the data source and assignments in the script.</div>';
+                     console.error("No valid projects with videos found after processing data.");
+                     appContainer.innerHTML = '<div class="error-message">No valid project data found to display. Check data source and assignments.</div>';
                      return;
                  }
 
@@ -501,124 +581,111 @@
                 const sortedProjectNames = Object.keys(projects).sort((a, b) => a.localeCompare(b));
 
                 // --- Start Rendering ---
-                appContainer.innerHTML = ''; // Clear initial message or previous content
+                appContainer.innerHTML = ''; // Clear initial message
 
-                // 5. Generate Navigation Menu
+                // 5. Generate Navigation Menu (including Reviews)
                 try {
                     const navMenu = document.createElement('div');
                     navMenu.className = 'nav-menu';
+
+                    // Add Project links
                     sortedProjectNames.forEach(projectName => {
                         const projectSlug = slugify(projectName);
-                        if (!projectSlug) {
-                           console.warn(`Could not generate slug for project name: ${projectName}. Skipping nav item.`);
-                           return; // Skip if slug is empty
-                        }
+                        if (!projectSlug) return; // Skip if slug is empty
 
-                        const navItem = document.createElement('div');
-                        navItem.className = 'nav-item';
-
-                        const navLink = document.createElement('a');
-                        navLink.className = 'nav-link';
-                        navLink.href = `#${projectSlug}`;
-
-                        // Create and append logo
-                        const logoImg = document.createElement('img');
-                        logoImg.className = 'nav-logo';
-                        logoImg.src = projectLogos[projectName] || defaultLogo;
-                        logoImg.alt = `${projectName} Logo`;
-                        // Fallback for broken image links
+                        const navItem = document.createElement('div'); navItem.className = 'nav-item';
+                        const navLink = document.createElement('a'); navLink.className = 'nav-link'; navLink.href = `#${projectSlug}`;
+                        const logoImg = document.createElement('img'); logoImg.className = 'nav-logo';
+                        logoImg.src = projectLogos[projectName] || defaultLogo; logoImg.alt = `${projectName} Logo`;
                         logoImg.onerror = function() { this.src = defaultLogo; this.alt = 'Default Logo'; };
                         navLink.appendChild(logoImg);
-
-                        // Append project name text
                         navLink.appendChild(document.createTextNode(projectName));
-
-                        navItem.appendChild(navLink);
-                        navMenu.appendChild(navItem);
+                        navItem.appendChild(navLink); navMenu.appendChild(navItem);
                     });
+
+                    // Add Reviews link
+                    const reviewsNavItem = document.createElement('div'); reviewsNavItem.className = 'nav-item';
+                    const reviewsNavLink = document.createElement('a'); reviewsNavLink.className = 'nav-link'; reviewsNavLink.href = '#reviews-section'; // Link to the new section ID
+                    // Optional: Add a placeholder or generic icon for visual consistency
+                    const iconPlaceholder = document.createElement('span'); iconPlaceholder.className = 'icon-placeholder';
+                    // Example: reviewsNavLink.appendChild(iconPlaceholder);
+                    reviewsNavLink.appendChild(document.createTextNode('Reviews'));
+                    reviewsNavItem.appendChild(reviewsNavLink); navMenu.appendChild(reviewsNavItem);
+
+
                     appContainer.appendChild(navMenu);
                 } catch (navError) {
-                    console.error("Error generating navigation menu:", navError);
-                    appContainer.innerHTML = '<div class="error-message">An error occurred while building the navigation. Check console.</div>';
-                    return; // Stop execution if nav fails
+                    console.error("Error generating navigation menu:", navError); appContainer.innerHTML = '<div class="error-message">Error building navigation. Check console.</div>'; return;
                 }
 
                 // 6. Generate Project Sections
                 try {
                     sortedProjectNames.forEach(projectName => {
                         const videos = projects[projectName] || [];
-                        // Sort videos by date, newest first (handle potential null dates)
-                        videos.sort((a, b) => (b.date?.getTime() || 0) - (a.date?.getTime() || 0));
+                        videos.sort((a, b) => (b.date?.getTime() || 0) - (a.date?.getTime() || 0)); // Safer sort
 
                         const projectSlug = slugify(projectName);
-                         if (!projectSlug) {
-                           console.warn(`Could not generate slug for project section: ${projectName}. Skipping section.`);
-                           return; // Skip if slug is empty
-                        }
+                        if (!projectSlug) return; // Skip if slug is empty
 
-                        const projectSection = document.createElement('div');
-                        projectSection.className = 'project-section';
-                        projectSection.id = projectSlug; // Use slugified ID
-
-                        const title = document.createElement('h2');
-                        title.className = 'project-title';
-
-                        // Create and append title logo
-                        const titleLogoImg = document.createElement('img');
-                        titleLogoImg.className = 'project-logo';
-                        titleLogoImg.src = projectLogos[projectName] || defaultLogo;
-                        titleLogoImg.alt = ''; // Alt text is optional for decorative title logos
-                         // Fallback for broken image links
-                        titleLogoImg.onerror = function() { this.style.display='none'; }; // Hide if broken
-                        title.appendChild(titleLogoImg);
-
-                        // Append project name text to title
-                        title.appendChild(document.createTextNode(projectName));
-                        projectSection.appendChild(title);
+                        const projectSection = document.createElement('div'); projectSection.className = 'project-section'; projectSection.id = projectSlug;
+                        const title = document.createElement('h2'); title.className = 'section-title'; // Use generic class
+                        const titleLogoImg = document.createElement('img'); titleLogoImg.className = 'project-logo'; titleLogoImg.src = projectLogos[projectName] || defaultLogo; titleLogoImg.alt = '';
+                        titleLogoImg.onerror = function() { this.style.display='none'; };
+                        title.appendChild(titleLogoImg); title.appendChild(document.createTextNode(projectName)); projectSection.appendChild(title);
 
                         if (videos.length > 0) {
-                            const videoList = document.createElement('ul');
-                            videoList.className = 'video-list';
+                            const videoList = document.createElement('ul'); videoList.className = 'video-list';
                             videos.forEach(video => {
-                                const item = document.createElement('li');
-                                item.className = 'video-item';
-
-                                const link = document.createElement('a');
-                                link.className = 'video-link';
-                                link.href = video.url;
-                                link.textContent = `View Post on X`; // Clearer link text
-                                link.target = '_blank'; // Open in new tab
-                                link.rel = 'noopener noreferrer'; // Security best practice
-
-                                const dateSpan = document.createElement('span');
-                                dateSpan.className = 'video-date';
-                                dateSpan.textContent = `Posted: ${formatDisplayDate(video.date)}`;
-
-                                item.appendChild(link);
-                                item.appendChild(dateSpan);
-                                videoList.appendChild(item);
+                                const item = document.createElement('li'); item.className = 'video-item';
+                                const link = document.createElement('a'); link.className = 'video-link'; link.href = video.url; link.textContent = `View Post on X`; link.target = '_blank'; link.rel = 'noopener noreferrer';
+                                const dateSpan = document.createElement('span'); dateSpan.className = 'video-date'; dateSpan.textContent = `Posted: ${formatDisplayDate(video.date)}`;
+                                item.appendChild(link); item.appendChild(dateSpan); videoList.appendChild(item);
                             });
                             projectSection.appendChild(videoList);
                         } else {
-                            // This case should ideally not happen due to earlier filtering, but good to have
-                            const noVideosMsg = document.createElement('p');
-                            noVideosMsg.className = 'no-videos';
-                            noVideosMsg.textContent = 'No videos found for this project.';
-                            projectSection.appendChild(noVideosMsg);
+                            const noVideosMsg = document.createElement('p'); noVideosMsg.className = 'no-videos'; noVideosMsg.textContent = 'No videos found for this project.'; projectSection.appendChild(noVideosMsg);
                         }
                         appContainer.appendChild(projectSection);
                     });
                 } catch (sectionError) {
-                     console.error("Error generating project sections:", sectionError);
-                     // Append error below nav if possible
-                     const errorDiv = document.createElement('div');
-                     errorDiv.className = 'error-message project-section'; // Style like a section
-                     errorDiv.textContent = 'An error occurred while building the project sections. Check console.';
-                     appContainer.appendChild(errorDiv);
+                     console.error("Error generating project sections:", sectionError); const errorDiv = document.createElement('div'); errorDiv.className = 'error-message project-section'; errorDiv.textContent = 'Error building project sections. Check console.'; appContainer.appendChild(errorDiv);
                 }
+
+                // 7. Generate Reviews Section
+                try {
+                    const reviewsSection = document.createElement('div');
+                    reviewsSection.className = 'reviews-section'; // Use new class
+                    reviewsSection.id = 'reviews-section'; // Add ID for linking
+
+                    const reviewsTitle = document.createElement('h2');
+                    reviewsTitle.className = 'section-title';
+                    reviewsTitle.textContent = 'Community Reviews & Feedback';
+                    reviewsSection.appendChild(reviewsTitle);
+
+                    const reviewsContent = document.createElement('div');
+                    reviewsContent.className = 'reviews-content';
+                    reviewsContent.innerHTML = `
+                        <p>See what others are saying or share your own experiences with these projects!</p>
+                        <p>We value your feedback. You can discuss these projects and share your reviews on X (formerly Twitter).</p>
+                        <p>
+                            <!-- Example: Link to a general discussion or a specific account -->
+                            <a href="https://x.com/YourCommunityHandle" target="_blank" rel="noopener noreferrer">Join the conversation on X!</a>
+                            <!-- Or add other relevant links -->
+                        </p>
+                        <p><em>More review features coming soon...</em></p>
+                    `; // Customize this HTML content as needed
+                    reviewsSection.appendChild(reviewsContent);
+
+                    appContainer.appendChild(reviewsSection); // Append after project sections
+
+                } catch (reviewsError) {
+                    console.error("Error generating reviews section:", reviewsError);
+                    const errorDiv = document.createElement('div'); errorDiv.className = 'error-message project-section'; errorDiv.textContent = 'Error building reviews section. Check console.'; appContainer.appendChild(errorDiv);
+                }
+
+
             } catch (mainError) {
-                 console.error("Major error during script execution:", mainError);
-                 appContainer.innerHTML = '<div class="error-message">A major error occurred processing the data. Check console.</div>';
+                 console.error("Major error during script execution:", mainError); appContainer.innerHTML = '<div class="error-message">A major error occurred processing the data. Check console.</div>';
             }
         });
 
