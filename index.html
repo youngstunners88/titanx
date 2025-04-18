@@ -3,1035 +3,490 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Website</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Project Video Library (Dynamic v4)</title>
     <style>
-        /* Global Styles */
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --dark-color: #2c3e50;
-            --light-color: #ecf0f1;
-            --danger-color: #e74c3c;
-            --success-color: #2ecc71;
-        }
-
-        body {
+            background-color: #f0f0f0;
             line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
         }
-
-        a {
-            text-decoration: none;
-            color: var(--primary-color);
-        }
-
-        ul {
-            list-style: none;
-        }
-
         .container {
             max-width: 1200px;
-            margin: auto;
-            padding: 0 20px;
-            overflow: hidden;
+            margin: 0 auto;
+            padding: 0 10px; /* Add some padding for smaller screens */
         }
-
-        .btn {
+        .nav-menu {
+            background-color: #3498db; /* The blue background */
+            padding: 10px 0;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            white-space: normal; /* Allow wrapping */
+        }
+        .nav-item {
             display: inline-block;
-            background: var(--primary-color);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary-color);
-            color: #fff;
-        }
-
-        .text-primary {
-            color: var(--primary-color);
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .py-1 { padding: 1rem 0; }
-        .py-2 { padding: 2rem 0; }
-        .py-3 { padding: 3rem 0; }
-
-        /* Navbar */
-        .navbar {
-            background: #fff;
-            color: #333;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-        }
-
-        .navbar .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .navbar .logo span {
-            color: var(--secondary-color);
-        }
-
-        .navbar ul {
-            display: flex;
-        }
-
-        .navbar ul li {
-            margin-left: 20px;
-        }
-
-        .navbar ul li a {
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .navbar ul li a:hover {
-            color: var(--primary-color);
-        }
-
-        .navbar .hamburger {
-            display: none;
-            cursor: pointer;
-            font-size: 24px;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            text-align: center;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-
-        /* About Section */
-        .about {
-            background: #fff;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            align-items: center;
-        }
-
-        .about-img img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-content h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
-        .about-content p {
-            margin-bottom: 15px;
-        }
-
-        /* Services Section */
-        .services {
-            background: var(--light-color);
-        }
-
-        .section-title {
-            font-size: 36px;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--primary-color);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .service-card {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .service-card i {
-            font-size: 40px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .service-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        /* Portfolio Section */
-        .portfolio {
-            background: #fff;
-        }
-
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .portfolio-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            height: 250px;
-        }
-
-        .portfolio-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .portfolio-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .portfolio-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(52, 152, 219, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            color: #fff;
-        }
-
-        .portfolio-item:hover .portfolio-overlay {
-            opacity: 1;
-        }
-
-        .portfolio-overlay h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        /* Testimonials Section */
-        .testimonials {
-            background: var(--light-color);
-        }
-
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .testimonial {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            display: none;
-        }
-
-        .testimonial.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .testimonial img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 5px solid var(--primary-color);
-        }
-
-        .testimonial p {
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .testimonial h4 {
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .testimonial .stars {
-            color: #f1c40f;
-            margin-bottom: 15px;
-        }
-
-        .slider-controls {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        .slider-controls button {
-            background: var(--primary-color);
-            color: #fff;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin: 0 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .slider-controls button:hover {
-            background: #2980b9;
-            transform: scale(1.1);
-        }
-
-        /* Contact Section */
-        .contact {
-            background: #fff;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-        }
-
-        .contact-info h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .contact-info p {
-            margin-bottom: 15px;
-        }
-
-        .contact-info ul li {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .contact-info ul li i {
-            margin-right: 15px;
-            color: var(--primary-color);
-            font-size: 20px;
-        }
-
-        .contact-form .form-group {
-            margin-bottom: 20px;
-        }
-
-        .contact-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .contact-form textarea {
-            height: 150px;
-            resize: vertical;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--dark-color);
-            color: #fff;
-            padding: 50px 0 20px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-col h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            position: relative;
+            margin: 5px 8px; /* Vertical margin for wrapping */
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            display: inline-flex; /* Key for aligning image and text */
+            align-items: center; /* Vertically align image and text */
+            font-size: 0.95em;
+            vertical-align: middle; /* Helps alignment when wrapping */
+        }
+        .nav-link:hover {
+            text-decoration: none;
+            background-color: #2980b9;
+        }
+        /* Style specifically for the logos in the navigation */
+        .nav-logo {
+            height: 20px;  /* Adjust size as needed */
+            width: 20px;   /* Adjust size as needed */
+            margin-right: 8px; /* Space between logo and text */
+            vertical-align: middle; /* Ensure alignment */
+            object-fit: contain; /* Prevent distortion */
+        }
+        .project-section {
+            background-color: white;
+            margin: 0 10px 30px 10px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            scroll-margin-top: 80px; /* Adjust based on final nav height */
+        }
+        .project-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
-        }
-
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: var(--primary-color);
-        }
-
-        .footer-col p {
-            margin-bottom: 15px;
-        }
-
-        .footer-col ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-col ul li a {
-            color: #ddd;
-            transition: color 0.3s ease;
-        }
-
-        .footer-col ul li a:hover {
-            color: var(--primary-color);
-        }
-
-        .social-links {
+            margin-top: 0;
             display: flex;
+            align-items: center;
+        }
+         /* Style for logos in the project titles */
+         .project-logo {
+            height: 28px;
+            width: 28px;
+            margin-right: 12px;
+            object-fit: contain;
+         }
+        .video-list {
+            list-style-type: none;
+            padding: 0;
             margin-top: 20px;
         }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            margin-right: 10px;
-            color: #fff;
-            transition: all 0.3s ease;
+        .video-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
-
-        .social-links a:hover {
-            background: var(--primary-color);
-            transform: translateY(-3px);
+        .video-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
-
-        .footer-bottom {
+        .video-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+        .video-link:hover {
+            text-decoration: underline;
+        }
+        .video-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            display: block;
+        }
+        :target {
+             animation: highlight 1.5s ease-out;
+        }
+        @keyframes highlight {
+            from { background-color: #fff3cd; }
+            to { background-color: white; }
+        }
+        .no-videos, .error-message {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 15px;
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .error-message {
+             color: #dc3545;
+             background-color: #f8d7da;
+             border-color: #f5c6cb;
         }
 
-        /* Back to Top Button */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--primary-color);
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 99;
-        }
-
-        .back-to-top.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            background: #2980b9;
-            transform: translateY(-5px);
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .about-grid,
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .about-img {
-                order: -1;
-            }
-
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .navbar ul {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: #fff;
-                flex-direction: column;
-                align-items: center;
-                padding: 50px 0;
-                transition: all 0.5s ease;
-            }
-
-            .navbar ul.active {
-                left: 0;
-            }
-
-            .navbar ul li {
-                margin: 15px 0;
-            }
-
-            .navbar .hamburger {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .hero p {
-                font-size: 18px;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 30px;
-            }
+            .nav-menu { padding: 10px 5px; }
+            .nav-item { margin: 5px; }
+            .nav-link { font-size: 0.9em; padding: 6px 10px; }
+            .project-section { margin-left: 5px; margin-right: 5px; }
+        }
+         @media (max-width: 480px) {
+            .nav-link { font-size: 0.85em; padding: 5px 8px; }
+             .nav-logo { height: 18px; width: 18px; margin-right: 5px; }
+             .project-logo { height: 24px; width: 24px; margin-right: 8px; }
         }
 
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 28px;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">Modern<span>Site</span></div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Welcome to Our Modern Website</h1>
-            <p>We create beautiful, responsive websites that help your business grow online.</p>
-            <a href="#about" class="btn">Learn More</a>
-            <a href="#contact" class="btn btn-outline">Contact Us</a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about py-3">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our Team">
-                </div>
-                <div class="about-content">
-                    <h2>About Our Company</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.</p>
-                    <p>Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus. Mauris iaculis porttitor posuere.</p>
-                    <p>Praesent id metus massa, ut blandit odio. Proin quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet.</p>
-                    <a href="#" class="btn">Read More</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services py-3">
-        <div class="container">
-            <h2 class="section-title text-center">Our Services</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <i class="fas fa-code"></i>
-                    <h3>Web Development</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3>Graphic Design</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h3>Mobile Apps</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-search"></i>
-                    <h3>SEO Optimization</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>Digital Marketing</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-headset"></i>
-                    <h3>24/7 Support</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio py-3">
-        <div class="container">
-            <h2 class="section-title text-center">Our Portfolio</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=764&q=80" alt="Project 1">
-                    <div class="portfolio-overlay">
-                        <h3>Project Title</h3>
-                        <p>Web Design</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 2">
-                    <div class="portfolio-overlay">
-                        <h3>Project Title</h3>
-                        <p>Mobile App</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 3">
-                    <div class="portfolio-overlay">
-                        <h3>Project Title</h3>
-                        <p>Graphic Design</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 4">
-                    <div class="portfolio-overlay">
-                        <h3>Project Title</h3>
-                        <p>SEO</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 5">
-                    <div class="portfolio-overlay">
-                        <h3>Project Title</h3>
-                        <p>Web Development</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Project 6">
-                    <div class="portfolio-overlay">
-                        <h3>Project Title</h3>
-                        <p>Digital Marketing</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials py-3">
-        <div class="container">
-            <h2 class="section-title text-center">What Our Clients Say</h2>
-            <div class="testimonial-slider">
-                <div class="testimonial active">
-                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Client 1">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor."</p>
-                    <h4>Sarah Johnson</h4>
-                    <p>CEO, Company Inc.</p>
-                </div>
-                <div class="testimonial">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client 2">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <p>"Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus. Mauris iaculis porttitor posuere."</p>
-                    <h4>Michael Smith</h4>
-                    <p>Marketing Director, ABC Corp</p>
-                </div>
-                <div class="testimonial">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client 3">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p>"Praesent id metus massa, ut blandit odio. Proin quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet."</p>
-                    <h4>Emily Davis</h4>
-                    <p>Founder, Startup Co.</p>
-                </div>
-            </div>
-            <div class="slider-controls">
-                <button class="prev-btn"><i class="fas fa-chevron-left"></i></button>
-                <button class="next-btn"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact py-3">
-        <div class="container">
-            <h2 class="section-title text-center">Contact Us</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Get In Touch</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</p>
-                    <ul>
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Main Street, New York, NY 10001</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <span>+1 (555) 123-4567</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <span>info@example.com</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <span>Mon-Fri: 9AM - 5PM</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="contact-form">
-                    <form>
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" id="subject" name="subject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>About Us</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Services</h3>
-                    <ul>
-                        <li><a href="#">Web Development</a></li>
-                        <li><a href="#">Graphic Design</a></li>
-                        <li><a href="#">Mobile Apps</a></li>
-                        <li><a href="#">SEO Optimization</a></li>
-                        <li><a href="#">Digital Marketing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Newsletter</h3>
-                    <p>Subscribe to our newsletter to receive updates and special offers.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Your Email" required>
-                        <button type="submit" class="btn">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 ModernSite. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Back to Top Button -->
-    <div class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
+    <div class="container" id="app-container">
+        <!-- Content will be generated here -->
+         <div id="initial-message" class="error-message" style="display: none;">Loading or processing error occurred. Check console.</div>
+         <!-- If you want a static 'Reviews' link like in the screenshot, add it manually near the nav or elsewhere -->
+         <!-- Example: <a href="#reviews-section" class="nav-link" style="background-color:#3498db; display:inline-block; margin: 5px;">Reviews</a> -->
     </div>
 
-    <!-- JavaScript -->
     <script>
-        // Mobile Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
+        // --- Data Configuration ---
+        const rawData = `Titan X Volt Genie Turbo Bonfire Ascendant Shaolin Phoenix Goat X Vyper Tinc Awesome X shogun Eden Inferno Flux Lotus Alien X Flare https://x.com/stevedefi7/status/1889978808838828365 https://x.com/DEFIVOLT/status/1865378239079649491 http://x.com/GenieofBitcoin/status/1890736245250064660 https://x.com/DEFIVOLT/status/1865128507677765818/video/1 https://x.com/bonfirex28/status/1885069997258461387 https://x.com/TraderLi/status/1881740630025474449 https://x.com/ShaolinXDeFi/status/1877867235378639304 https://x.com/TeamPhoenixWin/status/1878096271761641753 https://x.com/Irishcrypto4/status/1873346605354799139 https://x.com/DEFIVOLT/status/1869759697689162153/video/1 https://x.com/DEFIVOLT/status/1869509928043548971 https://x.com/AwesomeXwins/status/1864842043559723287 https://x.com/OGXenian/status/1859342345394679902 https://x.com/ShaolinXDeFi/status/1857436863784435885 https://x.com/InfernoBullWin/status/1855551435343069270 https://x.com/BADSPORTSLABS/status/1853163226110021985 https://x.com/ShaolinXDeFi/status/1848117529308225576 https://x.com/BADSPORTSLABS/status/1846520759633559589 https://x.com/stevedefi7/status/1889770327376306610 https://x.com/DEFIVOLT/status/1853399116228768245 http://x.com/GenieofBitcoin/status/1885505019304124734 https://x.com/DEFIVOLT/status/1863393551939199303/video/1 https://x.com/TraderLi/status/1879831091701272824 https://x.com/ShaolinXDeFi/status/1877498519625322802 https://x.com/TeamPhoenixWin/status/1873396664658194456 https://x.com/DEFIVOLT/status/1869090140397945097/video/1 https://x.com/DEFIVOLT/status/1865890554078171602 https://x.com/AwesomeXwins/status/1862267075307172298 https://x.com/ShaolinXDeFi/status/1857075293296505026 https://x.com/InfernoBullWin/status/1854261152399958172 https://x.com/BADSPORTSLABS/status/1853090359053533220 https://x.com/ShaolinXDeFi/status/1847807818616672748 https://x.com/stevedefi7/status/1888191305182060674 https://x.com/DEFIVOLT/status/1852687396749390260 http://x.com/DEFIVOLT/status/1877149638182023492/video/1 https://x.com/WarriorSoul8888/status/1876627463972741404 https://x.com/TeamPhoenixWin/status/1867968160827404796 https://x.com/DEFIVOLT/status/1870133827726872688/video/1 https://x.com/AwesomeXwins/status/1859703586663563350 https://x.com/BADSPORTSLABS/status/1848809794725167207 https://x.com/BADSPORTSLABS/status/1847610579785064782 https://x.com/ShaolinXDeFi/status/1847063085925675089 https://x.com/stevedefi7/status/1886165345020543364 https://x.com/DEFIVOLT/status/1852565486971617651 http://x.com/DEFIVOLT/status/1877149638182023492 https://x.com/TeamPhoenixWin/status/1867189629570486312 https://x.com/DEFIVOLT/status/1870470517645595127 https://x.com/CryptoAwesomely/status/1857419025019465895 https://x.com/ShaolinXDeFi/status/1845944249616936997 https://x.com/stevedefi7/status/1885467132932104363 https://x.com/TeamPhoenixWin/status/1865792356856766902 https://x.com/DEFIVOLT/status/1869179511725867299 https://x.com/AwesomeXwins/status/1856376901067055337 https://x.com/DEFIVOLT/status/1868939350068936767/video/1 https://x.com/TeamPhoenixWin/status/1864006412067574096 https://x.com/DEFIVOLT/status/1868813133550436771/video/1 https://x.com/AwesomeXwins/status/1854613794485682570 https://x.com/DEFIVOLT/status/1868824186082541913/video/1 https://x.com/YoungStunnersss/status/1852235153260609873 https://x.com/DEFIVOLT/status/1862844964893274459/video/1 https://x.com/BADSPORTSLABS/status/1863199228421349382 https://x.com/DEFIVOLT/status/1869393318658093424 https://x.com/CryptoAwesomely/status/1852001203879575688 https://x.com/DEFIVOLT/status/1866093137896288697/video/1 https://x.com/TeamPhoenixWin/status/1861870732533174487 https://x.com/DEFIVOLT/status/1868939350068936767 https://x.com/CryptoAwesomely/status/1851665703331598668 https://x.com/DEFIVOLT/status/1865890554078171602/video/1 https://x.com/TeamPhoenixWin/status/1861090584191983879 https://x.com/DEFIVOLT/status/1868813133550436771 https://x.com/AwesomeXwins/status/1851264070948962634 https://x.com/DEFIVOLT/status/1865378239079649491/video/1 https://x.com/DEFIVOLT/status/1866140933617508723 https://x.com/HQMORPH/status/1873415806358548644 https://x.com/YoungStunnersss/status/1851232501941109210 https://x.com/DEFIVOLT/status/1862276723829539197 https://x.com/DEFIVOLT/status/1861414044961325469 https://x.com/stevedefi7/status/1865149383269839168 https://x.com/DEFIVOLT/status/1861103389481779627 https://x.com/DEFIVOLT/status/1850989795675115927 https://x.com/DEFIVOLT/status/1860987425092178274 https://x.com/DEFIVOLT/status/1849937867969073605 https://x.com/DEFIVOLT/status/1848650254016446748 https://x.com/DEFIVOLT/status/1858702568777548275 https://x.com/DEFIVOLT/status/1849957575028044287 https://x.com/DEFIVOLT/status/1848301692921463101 https://x.com/DEFIVOLT/status/1858447132304331000 https://x.com/DEFIVOLT/status/1849821229504422162 https://x.com/DEFIVOLT/status/1848040441750372464 https://x.com/DEFIVOLT/status/1858181200059269543 https://x.com/DEFIVOLT/status/1848460017189507245 https://x.com/DEFIVOLT/status/1847980852476604604 https://x.com/DEFIVOLT/status/1857765776972824864 https://x.com/BADSPORTSLABS/status/1849393982603710694 https://x.com/DEFIVOLT/status/1847363848723960002 https://x.com/DEFIVOLT/status/1857569622603468979 https://x.com/BADSPORTSLABS/status/1848103583515824397 https://x.com/DEFIVOLT/status/1847103855361757539 https://x.com/DEFIVOLT/status/1857178548878094363 https://x.com/DEFIVOLT/status/1846270583602139249 https://x.com/DEFIVOLT/status/1846230744709915079 https://x.com/DEFIVOLT/status/1856343968021115330 https://x.com/DEFIVOLT/status/1846813821966413863 https://x.com/DEFIVOLT/status/1856039292541260060 https://x.com/DEFIVOLT/status/1846664074421293221 https://x.com/DEFIVOLT/status/1855771819984437451 https://x.com/DEFIVOLT/status/1846496479722033225 https://x.com/DEFIVOLT/status/1855171571532333411 https://x.com/DEFIVOLT/status/1846194177131811167 https://x.com/DEFIVOLT/status/1855084888686252085 https://x.com/DEFIVOLT/status/1846061235516682315 https://x.com/DEFIVOLT/status/1855064563747553517 https://x.com/DEFIVOLT/status/1845822158448058397 https://x.com/DEFIVOLT/status/1854854751353024930 https://x.com/DEFIVOLT/status/1845744072742273072 https://x.com/DEFIVOLT/status/1854083901196476695 https://x.com/DEFIVOLT/status/1845560752637428209 https://x.com/DEFIVOLT/status/1853776598257783290 https://x.com/DEFIVOLT/status/1845167790728056856 https://x.com/DEFIVOLT/status/1853450369076023372 https://x.com/DEFIVOLT/status/1845006487430611184 https://x.com/DEFIVOLT/status/1853261442767520119 https://x.com/DEFIVOLT/status/1844981709734818192 https://x.com/DEFIVOLT/status/1852998319263387707 https://x.com/DEFIVOLT/status/1844844495336300629 https://x.com/DEFIVOLT/status/1854348777898864759 https://x.com/DEFIVOLT/status/1844677949305299350 https://x.com/DEFIVOLT/status/1845935713931395555 https://x.com/DEFIVOLT/status/1844528000450089306 https://x.com/stevedefi7/status/1844396816521117854 https://x.com/DEFIVOLT/status/1844403728922837322 https://x.com/DEFIVOLT/status/1844154514762498188 https://x.com/DEFIVOLT/status/1844175794844860650 https://x.com/DEFIVOLT/status/1843868927061045605 https://x.com/DEFIVOLT/status/1843695828822536213 https://x.com/DEFIVOLT/status/1843610181059670280 https://x.com/DEFIVOLT/status/1843544290951299360 https://x.com/DEFIVOLT/status/1843466027377561996 https://x.com/DEFIVOLT/status/1843314563867202046 https://x.com/DEFIVOLT/status/1843196464266137848 https://x.com/DEFIVOLT/status/1843235972726882685 https://x.com/DEFIVOLT/status/1843001360243195914 https://x.com/DEFIVOLT/status/1843108643878899993 https://x.com/DEFIVOLT/status/1843091541998674206 https://x.com/DEFIVOLT/status/1842870492610314526 https://x.com/DEFIVOLT/status/1842857786729771345 https://x.com/DEFIVOLT/status/1841802047605129351 https://x.com/DEFIVOLT/status/1841741551002587149 https://x.com/DEFIVOLT/status/1841585703953592327 https://x.com/DEFIVOLT/status/1841287005403070970 https://x.com/DEFIVOLT/status/1841134035709350117 https://x.com/HQMORPH/status/1904162009702191458 https://x.com/HQMORPH/status/1903837091186032689 https://x.com/HQMORPH/status/1903459911184314581 https://x.com/HQMORPH/status/1903458941717069836 https://x.com/HQMORPH/status/1904198770952146963 https://x.com/stevedefi7/status/1906054263089905838 https://x.com/Irishcrypto4/status/1865356837182124441 https://x.com/Irishcrypto4/status/1863695272238252494 https://x.com/HQMORPH/status/1904168293465829428 https://x.com/PumpUranus/status/1912142027862450643 https://x.com/HQMORPH/status/1888275111574208928`; // Added Flare to raw names for potential future auto-assignment
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            hamburger.innerHTML = navLinks.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
 
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
+        // Fallback mapping (less critical with explicit assignments but good backup)
+        const handleToProjectFallback = {
+            'stevedefi7': 'Titan X',          // Or Bitcoin Genie depending on context
+            'DEFIVOLT': 'Volt',              // Or Vyper, Turbo... context needed
+            'GenieofBitcoin': 'Bitcoin Genie',
+            'bonfirex28': 'Bonfire',
+            'TraderLi': 'Ascendant',
+            'ShaolinXDeFi': 'Shaolin',
+            'TeamPhoenixWin': 'Phoenix',
+            'Irishcrypto4': 'Goat X',
+            'AwesomeXwins': 'AwesomeX',
+            'CryptoAwesomely': 'AwesomeX',   // Added handle
+            'OGXenian': 'Shogun',
+            'InfernoBullWin': 'Inferno',
+            'BADSPORTSLABS': 'Flux',          // Or Titan X, Inferno... context needed
+            'WarriorSoul8888': 'Ascendant',
+            'HQMORPH': 'Morpheus',           // Or Bonfire, Switch... context needed
+            'PumpUranus': 'Smoke',
+             // Add Flare handle if known: 'FlareHandle': 'Flare',
+             // Add Tinc handle if known: 'TincHandle': 'Tinc',
+             // Add Titan Blaze handle if known: 'TitanBlazeHandle': 'Titan Blaze',
+             // Add Alien X handle if known: 'AlienXHandle': 'Alien X',
+             // Add Eden handle if known: 'EdenHandle': 'Eden',
+             // Add Lotus handle if known: 'LotusHandle': 'Lotus'
+        };
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+        // *** LOGO CONFIGURATION - UPDATED ***
+        // IMPORTANT: Create an 'images' folder and place these files inside it!
+        // Filenames must match exactly (lowercase, .png assumed).
+        const projectLogos = {
+           'Alien X': 'images/alien-x.png',
+           'Ascendant': 'images/ascendant.png',
+           'AwesomeX': 'images/awesomex.png',
+           'Bitcoin Genie': 'images/bitcoin-genie.png',
+           'Bonfire': 'images/bonfire.png',
+           'Eden': 'images/eden.png',
+           'Flare': 'images/flare.png',         // NEW - save flare.png
+           'Flux': 'images/flux.png',
+           'Goat X': 'images/goat-x.png',
+           'Inferno': 'images/inferno.png',
+           'Lotus': 'images/lotus.png',
+           'Morpheus': 'images/morpheus.png',
+           'Phoenix': 'images/phoenix.png',
+           'Shaolin': 'images/shaolin.png',
+           'Shogun': 'images/shogun.png',
+           'Smoke': 'images/smoke.png',
+           'Switch': 'images/switch.png',        // NEW - save switch.png (even if text logo)
+           'Titan X': 'images/titan-x.png',
+           'Turbo': 'images/turbo.png',         // NEW - save turbo.png
+           'Volt': 'images/volt.png',          // NEW - save volt.png
+           'Vyper': 'images/vyper.png',
 
-        // Testimonial Slider
-        const testimonials = document.querySelectorAll('.testimonial');
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
-        let currentIndex = 0;
+           // Keep projects from previous list that might have data but no logo provided *yet*
+           'Titan Blaze': 'images/titan-blaze.png', // Keep if file exists or use placeholder
+           'Dragon X': 'images/dragon-x.png',     // Keep if file exists or use placeholder
 
-        function showTestimonial(index) {
-            testimonials.forEach(testimonial => testimonial.classList.remove('active'));
-            testimonials[index].classList.add('active');
+           // Placeholders for projects with no logo provided in this batch
+           'Tinc': 'https://via.placeholder.com/30/3357FF/FFFFFF?text=Ti'
+           // Add 'Titan Blaze' or 'Dragon X' placeholders if logos don't exist:
+           // 'Titan Blaze': 'https://via.placeholder.com/30/E67E22/FFFFFF?text=TB',
+           // 'Dragon X': 'https://via.placeholder.com/30/9B59B6/FFFFFF?text=DX',
+        };
+        const defaultLogo = 'https://via.placeholder.com/30/cccccc/FFFFFF?text=?'; // Fallback
+
+        // --- Helper Functions ---
+         function normalizeUrl(url) {
+            if (!url || typeof url !== 'string') return null;
+            url = url.trim().replace(/\/+$/, ''); // Trim and remove trailing slashes
+            url = url.replace(/^http:\/\/(www\.)?x\.com/, 'https://x.com');
+            url = url.replace(/^https:\/\/(www\.)?x\.com/, 'https://x.com');
+            url = url.replace(/^http:\/\/(www\.)?twitter\.com/, 'https://x.com');
+            url = url.replace(/^https:\/\/(www\.)?twitter\.com/, 'https://x.com');
+            url = url.replace(/\/video\/1$/, ''); // Remove /video/1 suffix
+            if (!url.startsWith('https://x.com/') || !url.includes('/status/')) return null;
+            try {
+                const urlObj = new URL(url);
+                const pathSegments = urlObj.pathname.split('/');
+                if (pathSegments.length < 4 || pathSegments[2] !== 'status' || !/^\d+$/.test(pathSegments[3])) return null;
+                return urlObj.origin + urlObj.pathname;
+            } catch (e) { return null; }
         }
 
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
-            showTestimonial(currentIndex);
-        });
+        function extractStatusId(url) {
+            if (!url) return null;
+            try {
+                const match = url.match(/\/status\/(\d+)/);
+                if (match && match[1]) return BigInt(match[1]);
+            } catch (e) { console.error(`Error extracting status ID from ${url}`, e); }
+            return null;
+        }
 
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % testimonials.length;
-            showTestimonial(currentIndex);
-        });
+        function getHandle(url) {
+             if (!url) return null;
+             try {
+                 const match = url.match(/x\.com\/([a-zA-Z0-9_]+)\//);
+                 if (match && match[1]) return match[1];
+             } catch (e) { console.error(`Error extracting handle from ${url}`, e); }
+             return null;
+        }
 
-        // Auto-rotate testimonials
-        let testimonialInterval = setInterval(() => {
-            currentIndex = (currentIndex + 1) % testimonials.length;
-            showTestimonial(currentIndex);
-        }, 5000);
+        function getApproxDateFromStatusId(statusId) {
+            if (!statusId) return null;
+            const twitterEpoch = 1288834974657n;
+            try {
+                const timestampMs = Number(statusId >> 22n) + Number(twitterEpoch);
+                return new Date(timestampMs);
+            } catch (e) { return null; }
+        }
 
-        // Pause auto-rotation on hover
-        const testimonialSlider = document.querySelector('.testimonial-slider');
-        testimonialSlider.addEventListener('mouseenter', () => {
-            clearInterval(testimonialInterval);
-        });
+        function formatDisplayDate(date) {
+            if (!date || isNaN(date.getTime())) return "Date unavailable";
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
 
-        testimonialSlider.addEventListener('mouseleave', () => {
-            testimonialInterval = setInterval(() => {
-                currentIndex = (currentIndex + 1) % testimonials.length;
-                showTestimonial(currentIndex);
-            }, 5000);
-        });
+        function slugify(text) {
+          if (!text) return '';
+          return text.toString().toLowerCase()
+            .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+        }
 
-        // Back to Top Button
-        const backToTopBtn = document.querySelector('.back-to-top');
+         // --- Main Processing Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const appContainer = document.getElementById('app-container');
+            const initialMessageDiv = document.getElementById('initial-message');
+            if (!appContainer || !initialMessageDiv) {
+                console.error("Critical HTML elements not found!");
+                if(initialMessageDiv) initialMessageDiv.style.display = 'block';
+                return;
+            }
 
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopBtn.classList.add('active');
-            } else {
-                backToTopBtn.classList.remove('active');
+            try {
+                // Initialize projects based on the comprehensive logo list
+                const explicitAssignments = {};
+                Object.keys(projectLogos).forEach(projectName => {
+                    explicitAssignments[projectName] = new Set(); // Initialize all known projects
+                });
+
+                // Add specific pre-assignments if any (can override fallbacks later)
+                // Example: explicitAssignments['Titan X'].add(normalizeUrl('some_specific_url'));
+                 // Re-apply known assignments from previous logic, ensuring project names match logo keys
+                 const knownAssignments = {
+                    'AwesomeX': ['https://x.com/CryptoAwesomely/status/1851665703331598668', 'https://x.com/CryptoAwesomely/status/1852001203879575688', 'https://x.com/CryptoAwesomely/status/1857419025019465895'],
+                    'Titan X': ['https://x.com/BADSPORTSLABS/status/1849393982603710694', 'https://x.com/HQMORPH/status/1873415806358548644', 'https://x.com/DEFIVOLT/status/1868824186082541913', 'https://x.com/DEFIVOLT/status/1850989795675115927'],
+                    'Inferno': ['https://x.com/BADSPORTSLABS/status/1848809794725167207'],
+                    'Bitcoin Genie': ['https://x.com/stevedefi7/status/1906054263089905838', 'https://x.com/DEFIVOLT/status/1877149638182023492'],
+                    'Goat X': ['https://x.com/Irishcrypto4/status/1865356837182124441', 'https://x.com/Irishcrypto4/status/1863695272238252494'],
+                    'Bonfire': ['https://x.com/HQMORPH/status/1904168293465829428'],
+                    'Volt': ['https://x.com/stevedefi7/status/1844396816521117854', 'https://x.com/DEFIVOLT/status/1865890554078171602', 'https://x.com/DEFIVOLT/status/1865378239079649491', 'https://x.com/YoungStunnersss/status/1852235153260609873', 'https://x.com/YoungStunnersss/status/1851232501941109210'],
+                    'Ascendant': ['https://x.com/WarriorSoul8888/status/1876627463972741404'],
+                    'Vyper': ['https://x.com/DEFIVOLT/status/1870470517645595127', 'https://x.com/DEFIVOLT/status/1869759697689162153', 'https://x.com/DEFIVOLT/status/1869393318658093424', 'https://x.com/DEFIVOLT/status/1869509928043548971', 'https://x.com/DEFIVOLT/status/1869090140397945097', 'https://x.com/DEFIVOLT/status/1868939350068936767', 'https://x.com/DEFIVOLT/status/1868813133550436771', 'https://x.com/DEFIVOLT/status/1866140933617508723', 'https://x.com/DEFIVOLT/status/1862276723829539197', 'https://x.com/DEFIVOLT/status/1861414044961325469', 'https://x.com/DEFIVOLT/status/1861103389481779627', 'https://x.com/DEFIVOLT/status/1860987425092178274', 'https://x.com/DEFIVOLT/status/1858702568777548275', 'https://x.com/DEFIVOLT/status/1858447132304331000', 'https://x.com/DEFIVOLT/status/1858181200059269543', 'https://x.com/DEFIVOLT/status/1857765776972824864', 'https://x.com/DEFIVOLT/status/1857569622603468979', 'https://x.com/DEFIVOLT/status/1857178548878094363', 'https://x.com/DEFIVOLT/status/1856343968021115330', 'https://x.com/DEFIVOLT/status/1856039292541260060', 'https://x.com/DEFIVOLT/status/1855771819984437451', 'https://x.com/DEFIVOLT/status/1855171571532333411', 'https://x.com/DEFIVOLT/status/1855084888686252085', 'https://x.com/DEFIVOLT/status/1855064563747553517', 'https://x.com/DEFIVOLT/status/1854854751353024930', 'https://x.com/DEFIVOLT/status/1854348777898864759', 'https://x.com/DEFIVOLT/status/1854083901196476695', 'https://x.com/DEFIVOLT/status/1853776598257783290', 'https://x.com/DEFIVOLT/status/1853450369076023372', 'https://x.com/DEFIVOLT/status/1853399116228768245', 'https://x.com/DEFIVOLT/status/1852565486971617651'],
+                    'Turbo': ['https://x.com/DEFIVOLT/status/1865128507677765818', 'https://x.com/DEFIVOLT/status/1863393551939199303', 'https://x.com/DEFIVOLT/status/1863178170590994871', 'https://x.com/DEFIVOLT/status/1862844964893274459'],
+                    'Switch': ['https://x.com/HQMORPH/status/1904162009702191458', 'https://x.com/HQMORPH/status/1903837091186032689'],
+                    'Morpheus': ['https://x.com/HQMORPH/status/1903459911184314581', 'https://x.com/HQMORPH/status/1903458941717069836', 'https://x.com/HQMORPH/status/1904198770952146963', 'https://x.com/HQMORPH/status/1888275111574208928'],
+                    'Smoke': ['https://x.com/PumpUranus/status/1912142027862450643'],
+                 };
+
+                 // Apply these known assignments
+                const assignedUrls = new Set();
+                 for (const projName in knownAssignments) {
+                     if (explicitAssignments.hasOwnProperty(projName)) {
+                         knownAssignments[projName].forEach(rawUrl => {
+                             const normUrl = normalizeUrl(rawUrl);
+                             if (normUrl) {
+                                 explicitAssignments[projName].add(normUrl);
+                                 assignedUrls.add(normUrl);
+                             }
+                         });
+                     } else {
+                         console.warn(`Project "${projName}" from knownAssignments not in logo list.`);
+                     }
+                 }
+
+                // Process Raw Data for unassigned URLs using fallbacks
+                const urls = rawData.split(/\s+/);
+                const potentialUrls = urls.filter(u => u.startsWith('http') || u.startsWith('x.com') || u.startsWith('twitter.com'));
+
+                potentialUrls.forEach(rawUrl => {
+                    const normalized = normalizeUrl(rawUrl);
+                    if (normalized && !assignedUrls.has(normalized)) {
+                        const handle = getHandle(normalized);
+                        const fallbackProjectName = handle ? handleToProjectFallback[handle] : null;
+
+                        if (fallbackProjectName && explicitAssignments.hasOwnProperty(fallbackProjectName)) {
+                             explicitAssignments[fallbackProjectName].add(normalized);
+                             assignedUrls.add(normalized); // Mark as assigned
+                        } else if (handle) {
+                            // console.warn(`No project mapping OR project not initialized for handle "${handle}" (URL: ${normalized}).`);
+                        }
+                    }
+                });
+
+                // Finalize Projects Data Structure
+                const projects = {};
+                let totalValidVideos = 0;
+                for (const projectName in explicitAssignments) {
+                    const urlSet = explicitAssignments[projectName];
+                    if (!urlSet || urlSet.size === 0) continue;
+
+                    const validVideosForProject = [];
+                    const seenUrlsInProject = new Set(); // Avoid duplicates within a project
+
+                    [...urlSet].forEach(url => {
+                        if (url && !seenUrlsInProject.has(url)) {
+                            const statusId = extractStatusId(url);
+                            if (statusId) {
+                                validVideosForProject.push({
+                                    url: url,
+                                    statusId: statusId,
+                                    date: getApproxDateFromStatusId(statusId)
+                                });
+                                totalValidVideos++;
+                                seenUrlsInProject.add(url);
+                            }
+                        }
+                    });
+
+                    if (validVideosForProject.length > 0) {
+                        projects[projectName] = validVideosForProject;
+                    }
+                }
+
+                // Check if any projects/videos were found
+                if (Object.keys(projects).length === 0 || totalValidVideos === 0) {
+                     console.error("No valid projects with videos found.");
+                     appContainer.innerHTML = '<div class="error-message">No valid project data found to display.</div>';
+                     return;
+                 }
+
+                // Sort Project Names Alphabetically for display
+                const sortedProjectNames = Object.keys(projects).sort((a, b) => a.localeCompare(b));
+
+                // --- Start Rendering ---
+                appContainer.innerHTML = ''; // Clear loading message
+
+                // Generate Navigation Menu
+                const navMenu = document.createElement('div');
+                navMenu.className = 'nav-menu';
+                sortedProjectNames.forEach(projectName => {
+                    const projectSlug = slugify(projectName);
+                    if (!projectSlug) return; // Skip if slug is empty
+
+                    const navItem = document.createElement('div');
+                    navItem.className = 'nav-item';
+                    const navLink = document.createElement('a');
+                    navLink.className = 'nav-link';
+                    navLink.href = `#${projectSlug}`;
+
+                    // ** Add Logo **
+                    const logoImg = document.createElement('img');
+                    logoImg.className = 'nav-logo'; // Use the specific nav logo class
+                    logoImg.src = projectLogos[projectName] || defaultLogo;
+                    logoImg.alt = `${projectName} Logo`;
+                    logoImg.onerror = function() { this.src = defaultLogo; this.alt = 'Default Logo'; }; // Fallback
+                    navLink.appendChild(logoImg); // Append logo *before* text
+
+                    // Add Project Name Text
+                    navLink.appendChild(document.createTextNode(projectName));
+
+                    navItem.appendChild(navLink);
+                    navMenu.appendChild(navItem);
+                });
+                appContainer.appendChild(navMenu); // Add nav to the container
+
+                // Generate Project Sections
+                sortedProjectNames.forEach(projectName => {
+                    const videos = projects[projectName] || [];
+                    videos.sort((a, b) => (b.date?.getTime() || 0) - (a.date?.getTime() || 0)); // Sort videos
+
+                    const projectSlug = slugify(projectName);
+                    if (!projectSlug) return; // Skip if slug is empty
+
+                    const projectSection = document.createElement('div');
+                    projectSection.className = 'project-section';
+                    projectSection.id = projectSlug;
+
+                    const title = document.createElement('h2');
+                    title.className = 'project-title';
+
+                    // Add Title Logo
+                    const titleLogoImg = document.createElement('img');
+                    titleLogoImg.className = 'project-logo'; // Use the project title logo class
+                    titleLogoImg.src = projectLogos[projectName] || defaultLogo;
+                    titleLogoImg.alt = ''; // Decorative
+                    titleLogoImg.onerror = function() { this.style.display='none'; }; // Hide if broken
+                    title.appendChild(titleLogoImg);
+
+                    title.appendChild(document.createTextNode(projectName));
+                    projectSection.appendChild(title);
+
+                    // Add Video List (if videos exist)
+                    if (videos.length > 0) {
+                        const videoList = document.createElement('ul');
+                        videoList.className = 'video-list';
+                        videos.forEach(video => {
+                            const item = document.createElement('li');
+                            item.className = 'video-item';
+                            const link = document.createElement('a');
+                            link.className = 'video-link';
+                            link.href = video.url;
+                            link.textContent = `View Post on X`;
+                            link.target = '_blank';
+                            link.rel = 'noopener noreferrer';
+                            const dateSpan = document.createElement('span');
+                            dateSpan.className = 'video-date';
+                            dateSpan.textContent = `Posted: ${formatDisplayDate(video.date)}`;
+                            item.appendChild(link);
+                            item.appendChild(dateSpan);
+                            videoList.appendChild(item);
+                        });
+                        projectSection.appendChild(videoList);
+                    } else {
+                        // Should not happen if project only added if videos exist, but safe fallback
+                        const noVideosMsg = document.createElement('p');
+                        noVideosMsg.className = 'no-videos';
+                        noVideosMsg.textContent = 'No videos found for this project.';
+                        projectSection.appendChild(noVideosMsg);
+                    }
+                    appContainer.appendChild(projectSection); // Add section to container
+                });
+
+            } catch (mainError) {
+                 console.error("Major error during script execution:", mainError);
+                 appContainer.innerHTML = '<div class="error-message">A major error occurred. Check console.</div>';
             }
         });
 
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // Form submission
-        const contactForm = document.querySelector('.contact-form form');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const name = this.querySelector('#name').value;
-            const email = this.querySelector('#email').value;
-            const subject = this.querySelector('#subject').value;
-            const message = this.querySelector('#message').value;
-            
-            // Here you would typically send the data to a server
-            // For this example, we'll just show an alert
-            alert(`Thank you, ${name}! Your message has been received. We'll contact you at ${email} soon.`);
-            
-            // Reset form
-            this.reset();
-        });
-
-        // Newsletter form
-        const newsletterForm = document.querySelector('.newsletter-form');
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = this.querySelector('input[type="email"]').value;
-            alert(`Thank you for subscribing with ${email}!`);
-            this.reset();
-        });
     </script>
 </body>
 </html>
-
