@@ -425,6 +425,14 @@ section { position: relative; z-index: 1; }
   color: #000;
   font-family: 'Orbitron', monospace;
   flex-shrink: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.project-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 .project-name {
   font-family: 'Orbitron', monospace;
@@ -836,6 +844,7 @@ footer span { color: var(--gold); }
     <span class="ticker-item">Genie</span><span class="ticker-item">•</span>
     <span class="ticker-item">Bonfire</span><span class="ticker-item">•</span>
     <span class="ticker-item">Vyper</span><span class="ticker-item">•</span>
+    <span class="ticker-item">Inferno</span><span class="ticker-item">•</span>
     <span class="ticker-item">The Verse</span><span class="ticker-item">•</span>
     <span class="ticker-item">Crypto Connoisseur</span><span class="ticker-item">•</span>
     <span class="ticker-item">DRAGONX</span><span class="ticker-item">•</span>
@@ -855,6 +864,7 @@ footer span { color: var(--gold); }
     <span class="ticker-item">Genie</span><span class="ticker-item">•</span>
     <span class="ticker-item">Bonfire</span><span class="ticker-item">•</span>
     <span class="ticker-item">Vyper</span><span class="ticker-item">•</span>
+    <span class="ticker-item">Inferno</span><span class="ticker-item">•</span>
     <span class="ticker-item">The Verse</span><span class="ticker-item">•</span>
     <span class="ticker-item">Crypto Connoisseur</span><span class="ticker-item">•</span>
     <span class="ticker-item">DRAGONX</span><span class="ticker-item">•</span>
@@ -976,7 +986,7 @@ footer span { color: var(--gold); }
       <!-- Morph -->
       <div class="project-card card-teal" data-type="twitter">
         <div class="project-header">
-          <div class="project-avatar">M</div>
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/c87e5e199_IMG_9497.jpg" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
           <div>
             <div class="project-name">Morph</div>
             <div class="project-category">X / Twitter</div>
@@ -1167,7 +1177,7 @@ footer span { color: var(--gold); }
       <!-- Diamonds -->
       <div class="project-card card-blue" data-type="twitter">
         <div class="project-header">
-          <div class="project-avatar">💎</div>
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/660d56379_IMG_9502.png" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
           <div>
             <div class="project-name">Diamonds</div>
             <div class="project-category">X / Twitter · Video</div>
@@ -1255,7 +1265,7 @@ footer span { color: var(--gold); }
       <!-- TitanX -->
       <div class="project-card card-gold" data-type="twitter" id="titan-x">
         <div class="project-header">
-          <div class="project-avatar">TX</div>
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/15c14d207_IMG_9495.jpeg" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
           <div>
             <div class="project-name">TitanX</div>
             <div class="project-category">X / Twitter — Flagship</div>
@@ -1361,7 +1371,7 @@ footer span { color: var(--gold); }
       <!-- $DRAGONX -->
       <div class="project-card card-red" data-type="twitter">
         <div class="project-header">
-          <div class="project-avatar">🐉</div>
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/c8ad5a13a_IMG_9496.jpeg" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
           <div>
             <div class="project-name">$DRAGONX</div>
             <div class="project-category">X / Twitter</div>
@@ -1445,7 +1455,7 @@ footer span { color: var(--gold); }
       <!-- TitanBlaze -->
       <div class="project-card card-red" data-type="twitter">
         <div class="project-header">
-          <div class="project-avatar">TB</div>
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/2f4fc2466_IMG_9500.jpeg" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
           <div>
             <div class="project-name">TitanBlaze</div>
             <div class="project-category">X / Twitter</div>
@@ -1478,7 +1488,7 @@ footer span { color: var(--gold); }
       <!-- GoatX -->
       <div class="project-card card-green" data-type="twitter">
         <div class="project-header">
-          <div class="project-avatar">🐐</div>
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/9b940fe81_IMG_9504.png" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
           <div>
             <div class="project-name">GoatX</div>
             <div class="project-category">X / Twitter</div>
@@ -1494,7 +1504,7 @@ footer span { color: var(--gold); }
       <!-- Vyper -->
       <div class="project-card card-purple" data-type="twitter">
         <div class="project-header">
-          <div class="project-avatar">🐍</div>
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/56a2739ca_IMG_9501.png" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
           <div>
             <div class="project-name">Vyper</div>
             <div class="project-category">X / Twitter · Video</div>
@@ -1508,6 +1518,24 @@ footer span { color: var(--gold); }
           <a class="project-link" href="https://x.com/defivolt/status/1866140933617508723" target="_blank" rel="noopener"><span class="link-icon">🐦</span><span class="link-text">@defivolt — 1866140933617508723</span><span class="link-arrow">→</span></a>
         </div>
         <div class="project-count"><span>4</span> pieces of content</div>
+      </div>
+
+
+      <!-- Inferno -->
+      <div class="project-card card-red" data-type="twitter">
+        <div class="project-header">
+          <div class="project-avatar"><img src="https://media.base44.com/images/public/69e0db87d6edaefff72b3269/90f55880a_IMG_9503.jpeg" alt="logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;"></div>
+          <div>
+            <div class="project-name">Inferno</div>
+            <div class="project-category">X / Twitter</div>
+          </div>
+          <span class="project-badge">X</span>
+        </div>
+        <div class="project-links">
+          <a class="project-link" href="https://x.com/InfernoBullWin/status/1855551435343069270" target="_blank" rel="noopener"><span class="link-icon">🐦</span><span class="link-text">@InfernoBullWin — 1855551435343069270</span><span class="link-arrow">→</span></a>
+          <a class="project-link" href="https://x.com/InfernoBullWin/status/1854261152399958172" target="_blank" rel="noopener"><span class="link-icon">🐦</span><span class="link-text">@InfernoBullWin — 1854261152399958172</span><span class="link-arrow">→</span></a>
+        </div>
+        <div class="project-count"><span>2</span> pieces of content</div>
       </div>
 
     </div><!-- /projects-grid -->
