@@ -11,9 +11,9 @@
 :root {
   --gold: #ffffff;
   --gold2: #f2f2f2;
-  --dark: #070b14;
-  --dark2: #0d1525;
-  --dark3: #111d35;
+  --dark: #08080a;
+  --dark2: #111113;
+  --dark3: #1a1a1c;
   --blue: #ffffff;
   --blue2: #ffffff;
   --glow: 0 0 20px rgba(204,0,0,0.4);
@@ -76,6 +76,7 @@ nav {
   letter-spacing: 1px;
   text-shadow: var(--glow);
 }
+.nav-logo-img { height: 34px; width: auto; display: block; }
 .nav-links {
   display: flex;
   align-items: center;
@@ -187,13 +188,21 @@ h1 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+.hero-logo-img {
+  width: min(90vw, 460px);
+  height: auto;
+  margin: 0 auto 16px;
+  display: block;
+  filter: drop-shadow(0 0 24px rgba(204,0,0,0.35));
+}
 .hero-sub {
   font-family: 'Orbitron', monospace;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   color: var(--blue2);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   font-weight: 600;
   letter-spacing: 2px;
+  text-transform: uppercase;
 }
 .hero-desc {
   font-size: clamp(0.95rem, 2vw, 1.1rem);
@@ -685,11 +694,11 @@ section { position: relative; z-index: 1; }
 }
 .social-x:hover { background: rgba(255,255,255,0.12); transform: translateY(-3px); }
 .social-ig {
-  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  background: linear-gradient(135deg, #cc0000, #440000);
   color: #fff;
   border: none;
 }
-.social-ig:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(253,29,29,0.3); }
+.social-ig:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(204,0,0,0.3); }
 .contact-note {
   margin-top: 32px;
   color: var(--muted);
@@ -762,13 +771,13 @@ footer span { color: var(--gold); }
   to { transform: translateX(-50%); }
 }
 
-/* project color variants */
-.card-blue .project-avatar { background: linear-gradient(135deg, #cc0000, #440000); }
-.card-purple .project-avatar { background: linear-gradient(135deg, #7c3aed, #db2777); }
-.card-green .project-avatar { background: linear-gradient(135deg, #059669, #34d399); }
-.card-orange .project-avatar { background: linear-gradient(135deg, #ea580c, #ff2222); }
-.card-red .project-avatar { background: linear-gradient(135deg, #dc2626, #f87171); }
-.card-teal .project-avatar { background: linear-gradient(135deg, #0891b2, #67e8f9); }
+/* unified black/red/white theme — no per-category rainbow colors */
+.card-blue .project-avatar,
+.card-purple .project-avatar,
+.card-green .project-avatar,
+.card-orange .project-avatar,
+.card-red .project-avatar,
+.card-teal .project-avatar,
 .card-gold .project-avatar { background: linear-gradient(135deg, #cc0000, #1a1a1a); }
 </style>
 </head>
@@ -777,7 +786,7 @@ footer span { color: var(--gold); }
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a class="nav-brand" href="#top">⚡ YOUNG STUNNERS</a>
+    <a class="nav-brand" href="#top"><img src="brand/young-stunners-logo.png" alt="Young Stunners" class="nav-logo-img"></a>
     <div class="nav-links">
       <a href="#services">Services</a>
       <a href="#portfolio">Portfolio</a>
@@ -795,13 +804,9 @@ footer span { color: var(--gold); }
   <div class="orb orb3"></div>
 
   <div class="hero-content">
-    <div class="hero-badge">🔥 Web3 Content Creator</div>
-    <h1>YOUNG STUNNERS</h1>
-    <div class="hero-sub">Amplifying the Web3 Ecosystem</div>
-    <p class="hero-desc">
-      I create viral crypto content — video edits, X threads, community hype — that turns
-      unknown projects into trending conversations. If your token needs a voice, I'm it.
-    </p>
+    <img src="brand/young-stunners-logo.png" alt="Young Stunners" class="hero-logo-img">
+    <div class="hero-sub">Web3 Content Creator</div>
+    <p class="hero-desc">Viral crypto content that turns unknown projects into trending conversations.</p>
     <div class="hero-buttons">
       <a href="#portfolio" class="btn-primary">🎬 View My Work</a>
       <a href="#contact" class="btn-secondary">💬 Let's Collab</a>
