@@ -1,0 +1,356 @@
+{
+ "run": "2026-10-01 02:02 UTC",
+ "full": true,
+ "passed": 58,
+ "total": 58,
+ "gates": [
+  {
+   "stage": "static",
+   "name": "check_site.py (SEO, schema, facts, dates, budgets, secrets)",
+   "pass": true,
+   "detail": "OK"
+  },
+  {
+   "stage": "ops",
+   "name": "ops offline tests",
+   "pass": true,
+   "detail": "OK"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "LCP <= 2500 ms (local lab)",
+   "pass": true,
+   "detail": "132 ms"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "CLS <= 0.1",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "transfer <= 600 KB",
+   "pass": true,
+   "detail": "314 KB, 42 requests"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "no third-party hosts on load",
+   "pass": true,
+   "detail": "['127.0.0.1:43891']"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "no console errors / failed requests",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "no horizontal overflow",
+   "pass": true,
+   "detail": "390"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "no clipped buttons/chips",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "no broken images",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "tap targets >= 44px",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "axe-core: 0 violations",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "first video tile above the fold (<= 75% of viewport)",
+   "pass": true,
+   "detail": "436px of 844px"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "first project link in first screen (<= viewport)",
+   "pass": true,
+   "detail": "723px"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "LCP <= 2500 ms (local lab)",
+   "pass": true,
+   "detail": "108 ms"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "CLS <= 0.1",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "transfer <= 600 KB",
+   "pass": true,
+   "detail": "314 KB, 42 requests"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no third-party hosts on load",
+   "pass": true,
+   "detail": "['127.0.0.1:43891']"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no console errors / failed requests",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no horizontal overflow",
+   "pass": true,
+   "detail": "320"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no clipped buttons/chips",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no broken images",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "tap targets >= 44px",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "axe-core: 0 violations",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "LCP <= 2500 ms (local lab)",
+   "pass": true,
+   "detail": "120 ms"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "CLS <= 0.1",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "transfer <= 600 KB",
+   "pass": true,
+   "detail": "314 KB, 42 requests"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "no third-party hosts on load",
+   "pass": true,
+   "detail": "['127.0.0.1:43891']"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "no console errors / failed requests",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "no horizontal overflow",
+   "pass": true,
+   "detail": "1280"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "no clipped buttons/chips",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "no broken images",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "tap targets >= 44px",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "axe-core: 0 violations",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "first video tile above the fold (<= 75% of viewport)",
+   "pass": true,
+   "detail": "494px of 800px"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "first project link in first screen (<= viewport)",
+   "pass": true,
+   "detail": "725px"
+  },
+  {
+   "stage": "interact",
+   "name": "filter: instagram shows only IG cards",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "filter: aria-pressed updates",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "filter: live count text",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "search: \"volt\" narrows results",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "search: empty state visible",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "search: input is not injected as HTML",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "card: \"show all\" expands links",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "keyboard: first focus is skip link",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "player: embed or graceful fallback (never stuck)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "brief: copies a filled brief to clipboard",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "brief: opens x.com/youngstunnersss synchronously in the tap (Safari-safe)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "brief: shows success toast",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "faq: details open",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "sticky CTA hidden at top",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "sticky CTA shows after hero",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "sticky CTA hides at contact form",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "mobile: no horizontal overflow",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "privacy: no analytics requests without a configured key",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "privacy: no third-party requests on load",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "links",
+   "name": "every X post link resolves (oEmbed)",
+   "pass": true,
+   "detail": "130 ok/unverified, 0 bad"
+  },
+  {
+   "stage": "copy",
+   "name": "every block has a hype decision",
+   "pass": true,
+   "detail": "0 inconclusive"
+  },
+  {
+   "stage": "copy",
+   "name": "no hype-flagged copy (typed review, live)",
+   "pass": true,
+   "detail": ""
+  }
+ ]
+}

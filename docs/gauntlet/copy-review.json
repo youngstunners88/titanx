@@ -1,0 +1,260 @@
+[
+ {
+  "section": "top",
+  "text": "Short crypto promo videos and X & Instagram campaigns for Web3 projects",
+  "hype": 0.19,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "top",
+  "text": "50+ projects promoted, 100+ videos created. Watch 38 of them below.",
+  "hype": 0.76,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": true,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "portfolio",
+  "text": "38 projects · 130 posts · 123 X links verified live 1 Oct 2026",
+  "hype": 0.06,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": true,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "portfolio",
+  "text": "No projects match that search.",
+  "hype": 0,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Short crypto promo videos for X and Instagram.",
+  "hype": 0.16,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Posts and video shoutouts to crypto-native audiences.",
+  "hype": 0.31,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Pre-launch, launch-day and post-launch content.",
+  "hype": 0.01,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Meme assets and raid-ready clips for holders.",
+  "hype": 0.92,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "DM me your project and goal.",
+  "hype": 0.04,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "You get a clear quote.",
+  "hype": 0.2,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "I make it. You approve it.",
+  "hype": 0.06,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "It goes live on X and Instagram.",
+  "hype": 0.01,
+  "concrete": true,
+  "standalone": false,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "What does Young Stunners do?",
+  "hype": 0,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": [
+   "not_concrete"
+  ]
+ },
+ {
+  "section": "services",
+  "text": "Young Stunners makes short crypto promo videos and runs X and Instagram campaigns for Web3 projects.",
+  "hype": 0.04,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "How much does a campaign cost?",
+  "hype": 0,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": [
+   "not_concrete"
+  ]
+ },
+ {
+  "section": "services",
+  "text": "Pricing is a custom quote per project. Send a brief and you get a price before any work starts.",
+  "hype": 0.02,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Which chains do you cover?",
+  "hype": 0,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": [
+   "not_concrete"
+  ]
+ },
+ {
+  "section": "services",
+  "text": "Ethereum, BSC, Base and the TitanX ecosystem, posted on X and Instagram.",
+  "hype": 0.04,
+  "concrete": false,
+  "standalone": false,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Can I see past work?",
+  "hype": 0,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Yes. The portfolio lists 38 projects and every entry links to the live post.",
+  "hype": 0.02,
+  "concrete": true,
+  "standalone": false,
+  "numeric_claim": true,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Do I approve videos first?",
+  "hype": 0,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "Yes. You approve every video before it is posted.",
+  "hype": 0.06,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "services",
+  "text": "How do I book?",
+  "hype": 0,
+  "concrete": false,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": [
+   "not_concrete"
+  ]
+ },
+ {
+  "section": "services",
+  "text": "Use the brief form below, or DM @youngstunnersss on X or @chris1dragon on Instagram.",
+  "hype": 0.02,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "footer",
+  "text": "Posts promote client projects. Nothing here is financial advice.",
+  "hype": 0.2,
+  "concrete": true,
+  "standalone": true,
+  "numeric_claim": false,
+  "simulated": false,
+  "flags": []
+ }
+]

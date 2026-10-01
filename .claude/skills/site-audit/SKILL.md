@@ -13,3 +13,6 @@ description: Run the automated audit and visual check for the Young Stunners sit
 4. With keys available, also run PageSpeed (Searchata `pagespeed_insights_run_audit` or the public PageSpeed API) and Core Web Vitals (`check_core_web_vitals`). Target LCP < 2.5s, CLS < 0.1, INP < 200ms on mobile.
 
 Never print env values. The audit prints variable names only.
+
+## Superseded by the gauntlet
+Use `python3 scripts/gauntlet.py [--full]` (see `gauntlet-loop`). It runs `check_site.py`, the ops tests, the lab at 390/320/1280px with axe-core, 19 interaction tests, link health and the typed copy review, and writes `docs/gauntlet/latest.md`.
