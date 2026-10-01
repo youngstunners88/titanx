@@ -30,3 +30,6 @@ Cards are plain HTML in `#projects-grid`: `.project-card[data-type="twitter|inst
 - When adding a portfolio card, also add it to the ItemList JSON-LD and `llms.txt`.
 - `robots.txt`, `sitemap.xml` and `llms.txt` live at the repo root. GitHub Pages project sites serve under `/titanx/`, so crawlers only read `robots.txt` at a custom domain root; submit the sitemap in Search Console / Bing Webmaster.
 - Never add schema for data that is not visible on the page (no fake ratings, reviews or prices).
+
+## Avoid the AI-design tells (from impeccable)
+Inter for everything, purple-to-blue gradients, cards nested in cards, grey text on coloured backgrounds, a rounded icon tile above every heading. Keep one accent (brand red), real hierarchy, and few cards. Durable product facts live in `PRODUCT.md`.

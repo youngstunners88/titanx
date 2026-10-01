@@ -1,0 +1,5 @@
+{"id": "page-audit", "doc": "Static audit of index.html and companions. No network, no spend.",
+ "steps": [
+  {"id": "audit", "type": "shell", "cmd": ["python3", "scripts/check_site.py"]},
+  {"id": "report", "type": "note", "text": "Audit done. If it failed, fix and rerun before committing."}
+ ]}

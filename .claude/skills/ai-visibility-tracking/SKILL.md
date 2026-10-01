@@ -27,3 +27,5 @@ Why: GEO has little proof of what works, so measure. Evidence says changes show 
 - Sampling is non-deterministic; trend over weeks, do not react to one run.
 - Keep volume small (<= 25 queries x 4 engines per week) to limit spend.
 - Do not game results (no prompt injection, no hidden text).
+
+See `aeo-citation-mining` for the entity-based probe wording, metrics (position, mention share, citation share) and the one-change-per-week loop. Workflow checklist: `ops/workflows/visibility-sample.json`.

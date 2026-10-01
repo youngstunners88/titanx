@@ -1,0 +1,9 @@
+{"id": "prospect-research", "doc": "Backlink and partner prospecting. Research and drafts only. Sending anything needs approval (policy approval_required).",
+ "steps": [
+  {"id": "find", "type": "manual", "text": "Find 20-50 relevant targets (Web3 marketing directories, TitanX/ICP community lists, KOL roundups). Use Exa/TinyFish; save CSV to docs/outreach/prospects.csv with columns: domain,why_relevant,contact_route,pitch_angle,status."},
+  {"id": "screen", "type": "decide", "needs": "prospects", "questions": {
+     "relevant": {"type": "noul", "instructions": "Is the `site` about Web3, crypto marketing, or content creators, and does it list or link to creators or projects?"},
+     "legit": {"type": "noul", "instructions": "Does the `site` look like a real publication or directory rather than a link farm?"}}},
+  {"id": "draft", "type": "manual", "text": "Write one short personalised pitch per accepted prospect. Do not send."},
+  {"id": "gate", "type": "gate", "action": "send_outreach"}
+ ]}

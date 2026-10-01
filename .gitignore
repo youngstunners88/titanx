@@ -1,0 +1,9 @@
+# ops runtime data (never commit)
+ops/state/*
+!ops/state/.gitkeep
+ops/queue/*/*
+!ops/queue/*/.gitkeep
+__pycache__/
+*.pyc
+.env
+.env.*

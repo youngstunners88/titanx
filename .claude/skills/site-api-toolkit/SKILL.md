@@ -22,7 +22,7 @@ Status = result of one minimal read-only check on 2026-10-01 (HTTP code only). "
 | `NAMESILO_API_KEY` | NameSilo registrar | search/register a domain, set DNS | API call succeeded; domain list not inspected |
 | `POSTHOG_PERSONAL_API_KEY`, `POSTHOG_PROJECT_ID`, `POSTHOG_TOKEN` | PostHog | funnel analytics: CTA click, brief submit, X DM open | project API OK (200) |
 | `SENTRY_TOKEN`, `SENTRY_ORGANISATION_TOKEN` | Sentry | JS error monitoring | OK (200) |
-| `OPENROUTER_API_KEY` | OpenRouter | many LLMs: copy edits, AI-visibility sampling | OK (200) |
+| `OPENROUTER_API_KEY` | OpenRouter | many LLMs, and **Jev** (`typesafe/jev-1.13`) for typed decisions via `ops/` (verified live 2026-10-01) | OK (200) |
 | `GEMINI_API_KEY` | Google Gemini | copy, image generation, query sampling | OK (200) |
 | `MINSTRAL_API_KEY`, `MINSTRAL_API_KEY2` | Mistral | cheap LLM for drafts/sampling | key 1 OK (200) |
 | `XAI_API` | xAI Grok | Grok sampling for X-native visibility | 403, likely no access; verify |
@@ -48,3 +48,6 @@ MCP servers also connected: Exa (search/fetch), TinyFish, Searchata (Search Cons
 - **Visibility sampling**: see `ai-visibility-tracking`.
 - **Media**: see `site-media-assets`.
 - **Brief form inbox**: AgentMail would need server-side code; a static page cannot hold the key. Keep the current copy-to-clipboard + X DM flow unless the owner approves a small proxy (for example a Cloudflare Worker holding the secret).
+
+## ops layer
+`ops/` wraps these keys behind `ops/lib/llm.py` (capability chains in `ops/registry.json`, limits in `ops/policy.json`). Prefer `python3 ops/run.py ... --live` over ad-hoc curl: it enforces the daily budget, scrubs key values from errors and defaults to dry-run. `TYPESAFE_API_KEY` is not set; Jev is reached through OpenRouter.

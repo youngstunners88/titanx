@@ -31,3 +31,11 @@ Competitors (kolhq, LuvKaizen, Lever, Myosin) all show: a clear service list, na
 - Never invent metrics, clients, testimonials or prices. Only use numbers the owner has confirmed (50+ projects, 100+ videos) or that can be derived from the portfolio.
 - Cite sources for every competitor claim.
 - Never write API key values into files, commits or PRs.
+
+## Deep-research protocol (from claude-deep-research-skill, trimmed)
+1. Check today's date first (avoid stale-year assumptions).
+2. Scope the question and plan sub-questions.
+3. Retrieve in parallel (Exa, TinyFish); read primary pages, not just snippets.
+4. Triangulate: a claim needs two independent sources or is marked unverified.
+5. Critique: list gaps and contradictions, loop back once.
+6. Package into `docs/research/<date>-<topic>.md` with URLs. Mark vendor-blog numbers as directional.

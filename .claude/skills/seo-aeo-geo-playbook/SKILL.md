@@ -14,7 +14,9 @@ Evidence and sources: `docs/research/2026-10-01-seo-aeo-geo.md`. Read its backlo
 4. **Answer-first copy**: each section opens with one plain sentence under ~150 characters that names "Young Stunners" and stands alone.
 5. **Entity**: Organization JSON-LD with `sameAs` (X @youngstunnersss, Instagram @chris1dragon), same name and handles everywhere.
 6. **Freshness**: visible "Last updated" + `dateModified` that match, bumped only on real content change.
-7. **Measure**: `ai-visibility-tracking`, PostHog funnel.
+7. **Measure**: `ai-visibility-tracking` and `aeo-citation-mining`, PostHog funnel.
+8. **Other indexes**: ChatGPT leans on Bing, Claude on Brave, Gemini on Google. Submit to Bing Webmaster and check Brave, not only Google.
+9. **Link building**: `backlink-prospecting` (drafts only, approval to send).
 
 ## Rules
 - Schema must match visible content. No fake ratings, reviews, prices, or hidden FAQs.
