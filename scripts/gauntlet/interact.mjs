@@ -6,7 +6,7 @@ const g = require('node:child_process').execSync('npm root -g').toString().trim(
 const args = process.argv.slice(2); const shots = args.includes('--shots') ? args[args.indexOf('--shots') + 1] : null;
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.png': 'image/png', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml' };
 const srv = http.createServer((q, r) => { let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html'; const f = path.join(root, p); if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); return r.end(); } r.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream' }); fs.createReadStream(f).pipe(r); });
-await new Promise(r => srv.listen(0, '127.0.0.1', r)); const base = `http://127.0.0.1:${srv.address().port}/`;
+await new Promise(r => srv.listen(0, '127.0.0.1', r)); const base = process.env.GAUNTLET_URL || `http://127.0.0.1:${srv.address().port}/`;
 const b = await chromium.launch(); const tests = []; const t = (name, pass, detail = '') => tests.push({ name, pass: !!pass, detail: String(detail).slice(0, 200) });
 
 async function fresh(vp, extra = {}) { const c = await b.newContext({ ignoreHTTPSErrors: true, viewport: vp, permissions: ['clipboard-read', 'clipboard-write'], ...extra }); const p = await c.newPage(); await p.goto(base); await p.waitForTimeout(500); return { c, p }; }

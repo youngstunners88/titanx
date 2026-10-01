@@ -45,8 +45,14 @@ class TestDecisions(Sandbox):
         q = {"k": {"type": "choice", "instructions": "x", "criteria": {"a": "A", "other": "O"}}}
         self.assertEqual(llm.interpret(q, {"k": {"probabilities": {"other": 0.99, "a": 0.01}}})["k"]["status"], "needs_review")
     def test_scrub_removes_key_values(self):
-        os.environ["GEMINI_API_KEY"] = "SECRETVALUE12345"
-        self.assertNotIn("SECRETVALUE12345", llm._scrub("boom SECRETVALUE12345 boom"))
+        old = os.environ.get("GEMINI_API_KEY")
+        fake = "fake-" + "x" * 12          # built at runtime; never a literal in the repo
+        os.environ["GEMINI_API_KEY"] = fake
+        try:
+            self.assertNotIn(fake, llm._scrub("boom " + fake + " boom"))
+        finally:
+            if old is None: os.environ.pop("GEMINI_API_KEY", None)
+            else: os.environ["GEMINI_API_KEY"] = old
 
 
 class TestState(Sandbox):

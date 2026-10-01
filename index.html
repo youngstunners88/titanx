@@ -71,7 +71,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,12,.85);backdrop-fil
 .btn-ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
 
 /* HERO */
-.hero{position:relative;padding:32px 0 20px;text-align:center;overflow:hidden}
+.hero{position:relative;padding:24px 0 14px;text-align:center;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 0%,rgba(225,6,0,.22),transparent 65%),radial-gradient(ellipse 50% 40% at 90% 90%,rgba(225,6,0,.1),transparent 60%);pointer-events:none}
 .hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 70%);opacity:.5;pointer-events:none}
 .hero .wrap{position:relative;z-index:1}
@@ -79,7 +79,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,12,.85);backdrop-fil
 .eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 2s infinite}
 @keyframes pulse{50%{opacity:.4;transform:scale(1.5)}}
 .hero-logo{width:min(78vw,380px);margin:28px auto 8px;display:block;background:#fff;border-radius:24px;padding:18px 26px;box-shadow:0 0 60px var(--red-glow)}
-h1{font-family:var(--head);font-weight:900;font-size:clamp(1.8rem,4.4vw,3rem);line-height:1.1;letter-spacing:-.02em;max-width:960px;margin:14px auto 12px}
+h1{font-family:var(--head);font-weight:900;font-size:clamp(1.55rem,3.6vw,2.6rem);line-height:1.12;letter-spacing:-.02em;max-width:1000px;margin:14px auto 12px;text-wrap:balance}
 h1 em{font-style:normal;color:var(--red)}
 .lede{font-size:clamp(.95rem,1.8vw,1.1rem);color:var(--muted);max-width:620px;margin:0 auto 20px}
 .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
@@ -100,7 +100,9 @@ h1 em{font-style:normal;color:var(--red)}
 @media(max-width:560px){
   .eyebrow{display:none}
   .hero{padding:20px 0 8px}
-  h1{font-size:1.65rem;margin:6px auto 10px}
+  h1{font-size:1.5rem;margin:6px auto 8px}
+  .feat-label{display:none}
+  .sec-head.compact p{margin-bottom:0}
   .lede{font-size:.92rem;margin-bottom:14px}
   .hero-btns{gap:10px;flex-wrap:nowrap}
   .hero-btns .btn{padding:12px 14px;font-size:.88rem;flex:1;white-space:nowrap}
@@ -245,8 +247,8 @@ footer a{color:#fff;text-decoration:underline;text-underline-offset:3px}
 <header class="hero" id="top">
   <div class="wrap">
     <span class="eyebrow"><i></i>Web3 Video Content &amp; KOL Marketing</span>
-    <h1>Crypto video content that makes your project <em>impossible to scroll past.</em></h1>
-    <p class="lede">Short-form videos and X &amp; Instagram campaigns for crypto projects. 50+ projects, 100+ videos.</p>
+    <h1>Short crypto promo videos and X &amp; Instagram campaigns for <em>Web3 projects</em></h1>
+    <p class="lede">50+ projects promoted, 100+ videos created. Watch 38 of them below.</p>
     <div class="hero-btns">
       <a class="btn btn-red" href="#portfolio">▶ Watch the Videos</a>
       <a class="btn btn-ghost" href="#contact">Book a Campaign</a>

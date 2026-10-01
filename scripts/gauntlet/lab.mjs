@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream' }); fs.createReadStream(f).pipe(res);
 });
 await new Promise(r => server.listen(0, '127.0.0.1', r));
-const base = `http://127.0.0.1:${server.address().port}/`;
+const base = process.env.GAUNTLET_URL || `http://127.0.0.1:${server.address().port}/`;
 
 const browser = await chromium.launch();
 const out = {};
@@ -45,8 +45,8 @@ for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { n
   await page.goto(base, { waitUntil: 'load' });
   await page.waitForTimeout(1200);
   const above = await page.evaluate(() => {
-    const first = document.querySelector('.project-link'); const r = first ? first.getBoundingClientRect() : null;
-    return { firstProjectLinkTop: r ? Math.round(r.top + scrollY) : null, viewport: innerHeight };
+    const first = document.querySelector('.project-link'); const r = first ? first.getBoundingClientRect() : null; const f = document.querySelector('.feat'); const fr = f ? f.getBoundingClientRect() : null;
+    return { firstProjectLinkTop: r ? Math.round(r.top + scrollY) : null, firstVideoTileTop: fr ? Math.round(fr.top + scrollY) : null, viewport: innerHeight };
   });
   // scroll through to trigger reveal + lazy
   const total = await page.evaluate(() => document.documentElement.scrollHeight);
