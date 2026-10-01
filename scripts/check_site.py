@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+"""Static audit for index.html. Run: python3 scripts/check_site.py
+Exit code 1 on any FAIL. Prints names only, never secret values."""
+import re, json, os, sys, html, subprocess, pathlib
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+src = (ROOT / "index.html").read_text()
+fails, warns = [], []
+def fail(m): fails.append(m)
+def warn(m): warns.append(m)
+
+# --- head
+title = re.search(r"<title>(.*?)</title>", src, re.S)
+t = html.unescape(title.group(1)).strip() if title else ""
+if not t: fail("missing <title>")
+elif len(t) > 65: warn(f"title is {len(t)} chars (aim <= 60)")
+desc = re.search(r'<meta name="description" content="(.*?)"', src)
+d = html.unescape(desc.group(1)) if desc else ""
+if not d: fail("missing meta description")
+elif not 70 <= len(d) <= 165: warn(f"description is {len(d)} chars (aim 120-160)")
+for pat, name in [(r'rel="canonical"', "canonical"), (r'property="og:image"', "og:image"),
+                  (r'name="twitter:card"', "twitter:card"), (r'name="viewport"', "viewport"),
+                  (r'<html lang=', "html lang"), (r"<main", "<main>")]:
+    if not re.search(pat, src): fail(f"missing {name}")
+if len(re.findall(r"<h1[ >]", src)) != 1: fail("page must have exactly one <h1>")
+
+# --- JSON-LD
+blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', src, re.S)
+types, items = [], []
+if not blocks: fail("no JSON-LD")
+for b in blocks:
+    try:
+        data = json.loads(b.replace("<\\/", "</"))
+    except Exception as e:
+        fail(f"JSON-LD does not parse: {e}"); continue
+    for n in data.get("@graph", [data]):
+        types.append(n.get("@type"))
+        if n.get("@type") == "ItemList":
+            items = [i["item"]["name"] for i in n["itemListElement"]]
+flat = {x for t in types for x in (t if isinstance(t, list) else [t])}
+for need in ("Organization", "WebSite", "WebPage", "ItemList"):
+    if need not in flat: fail(f"JSON-LD missing {need}")
+
+# --- portfolio parity
+cards = [html.unescape(x).strip() for x in re.findall(r'class="project-name">(.*?)<', src)]
+if sorted(cards) != sorted(items): fail(f"ItemList ({len(items)}) != portfolio cards ({len(cards)})")
+llms = (ROOT / "llms.txt").read_text() if (ROOT / "llms.txt").exists() else ""
+miss = [c for c in cards if c not in llms]
+if miss: fail(f"llms.txt missing projects: {miss[:5]}")
+
+# --- required files
+for f in ("robots.txt", "sitemap.xml", "llms.txt", "brand/og-image.png", "brand/young-stunners-logo.png"):
+    if not (ROOT / f).exists(): fail(f"missing file {f}")
+
+# --- links / images
+ids = set(re.findall(r'id="([^"]+)"', src))
+for a in set(re.findall(r'href="#([^"]+)"', src)):
+    if a not in ids: fail(f"broken anchor #{a}")
+for img in re.findall(r"<img [^>]*>", src):
+    if "alt=" not in img: fail(f"img without alt: {img[:60]}")
+for local in set(re.findall(r'(?:src|href)="((?:brand|logos)/[^"]+)"', src)):
+    if not (ROOT / local).exists(): fail(f"missing asset {local}")
+
+# --- verbosity budget (visible words outside project cards)
+body = re.sub(r'<div class="projects-grid".*?</div>\s*<p class="empty"', '<p class="empty"', src, flags=re.S)
+body = re.sub(r"<script.*?</script>|<style.*?</style>|<head>.*?</head>", "", body, flags=re.S)
+words = len(html.unescape(re.sub(r"<[^>]+>", " ", body)).split())
+BUDGET = 400
+if words > BUDGET: fail(f"copy budget exceeded: {words} words > {BUDGET} (outside portfolio cards)")
+
+# --- secret leak scan: env values must not appear in tracked files (names printed only)
+leaks = []
+tracked = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.split()
+texts = {}
+for f in tracked:
+    p = ROOT / f
+    if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp", ".gif"): continue
+    try: texts[f] = p.read_text(errors="ignore")
+    except Exception: pass
+for k, v in os.environ.items():
+    if len(v) >= 16 and re.search(r"KEY|TOKEN|SECRET|API|PASS", k, re.I):
+        if any(v in tx for tx in texts.values()): leaks.append(k)
+if leaks: fail(f"SECRET VALUE FOUND in tracked files for env var(s): {leaks}")
+
+print(f"words outside cards: {words} (budget {BUDGET}); projects: {len(cards)}")
+for w in warns: print("WARN", w)
+for f in fails: print("FAIL", f)
+print("OK" if not fails else f"{len(fails)} failure(s)")
+sys.exit(1 if fails else 0)

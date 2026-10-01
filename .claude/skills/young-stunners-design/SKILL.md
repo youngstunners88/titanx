@@ -26,8 +26,7 @@ Cards are plain HTML in `#projects-grid`: `.project-card[data-type="twitter|inst
 
 ## SEO / AEO / GEO (keep in sync when editing)
 - Page order puts the portfolio directly under a compact hero: videos first, selling sections after.
-- `<head>` holds title, description, canonical, OG/Twitter tags. JSON-LD `@graph` has Organization, WebSite, WebPage, FAQPage and an ItemList of every portfolio card.
-- The FAQ text in the HTML and the FAQPage JSON-LD must match. Write answers answer-first (one or two plain sentences naming "Young Stunners").
+- `<head>` holds title, description, canonical, OG/Twitter tags. JSON-LD `@graph` has Organization, WebSite, WebPage and an ItemList of every portfolio card (no FAQPage; see seo-aeo-geo-playbook).
 - When adding a portfolio card, also add it to the ItemList JSON-LD and `llms.txt`.
 - `robots.txt`, `sitemap.xml` and `llms.txt` live at the repo root. GitHub Pages project sites serve under `/titanx/`, so crawlers only read `robots.txt` at a custom domain root; submit the sitemap in Search Console / Bing Webmaster.
 - Never add schema for data that is not visible on the page (no fake ratings, reviews or prices).
