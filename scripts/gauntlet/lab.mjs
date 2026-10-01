@@ -51,8 +51,8 @@ for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { n
   // scroll through to trigger reveal + lazy
   const total = await page.evaluate(() => document.documentElement.scrollHeight);
   for (let y = 0; y < total; y += vp.height * 0.8) { await page.evaluate(v => scrollTo(0, v), y); await page.waitForTimeout(120); }
-  await page.evaluate(() => scrollTo(0, 0));
-  for (let i = 0; i < 20; i++) { const pending = await page.evaluate(() => [...document.images].filter(x => !x.complete).length); if (!pending) break; await page.waitForTimeout(250); }
+  await page.evaluate(() => { document.querySelectorAll('img[loading=lazy]').forEach(i => { i.loading = 'eager'; }); scrollTo(0, 0); });
+  for (let i = 0; i < 30; i++) { const pending = await page.evaluate(() => [...document.images].filter(x => !x.complete).length); if (!pending) break; await page.waitForTimeout(250); }
   await page.waitForTimeout(300);
   const m = await page.evaluate(() => {
     const vis = e => { const r = e.getBoundingClientRect(), s = getComputedStyle(e); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
