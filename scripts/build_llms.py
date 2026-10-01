@@ -29,6 +29,9 @@ Last updated: {upd}
 - Instagram: https://www.instagram.com/chris1dragon
 - Posts promote client projects. Nothing here is financial advice.
 
+## Latest project
+- Lil Blunt: The Smoke Realm, a free Wild West 2D platformer in the browser on the Internet Computer: https://www.smokegame.win/ (code: https://github.com/youngstunners88/GM-GAME)
+
 ## How to hire
 Use the brief form on the website, or DM @youngstunnersss on X or @chris1dragon on Instagram with project name, chain, goal and timeline.
 

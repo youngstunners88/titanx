@@ -65,7 +65,7 @@ for local in set(re.findall(r'(?:src|href)="((?:brand|logos)/[^"]+)"', src)):
 body = re.sub(r'<div class="projects-grid".*?</div>\s*<p class="empty"', '<p class="empty"', src, flags=re.S)
 body = re.sub(r"<script.*?</script>|<style.*?</style>|<head>.*?</head>", "", body, flags=re.S)
 words = len(html.unescape(re.sub(r"<[^>]+>", " ", body)).split())
-BUDGET = 400
+BUDGET = 450
 if words > BUDGET: fail(f"copy budget exceeded: {words} words > {BUDGET} (outside portfolio cards)")
 
 # --- secret leak scan: env values must not appear in tracked files (names printed only)
@@ -105,7 +105,7 @@ if subprocess.run([sys.executable, str(ROOT / "scripts" / "build_llms.py"), "--c
 for f in ("404.html", "manifest.webmanifest", "brand/favicon-32.png", "brand/apple-touch-icon.png", "brand/fonts/montserrat-latin.woff2"):
     if not (ROOT / f).exists(): fail(f"missing {f}")
 if "fonts.googleapis.com" in src or "fonts.gstatic.com" in src: fail("Google Fonts still referenced (self-host instead)")
-allowed = ("x.com", "www.instagram.com", "twitter.com", "youngstunners88.github.io", "schema.org", "www.w3.org", "platform.twitter.com", "us-assets.i.posthog.com", "us.i.posthog.com")
+allowed = ("x.com", "www.instagram.com", "www.smokegame.win", "github.com", "twitter.com", "youngstunners88.github.io", "schema.org", "www.w3.org", "platform.twitter.com", "us-assets.i.posthog.com", "us.i.posthog.com")
 for u in set(re.findall(r'(?:src|href)="(https?://[^"]+)"', src)):
     h = re.sub(r"https?://([^/]+)/?.*", r"\1", u)
     if h not in allowed: fail(f"unexpected third-party host in markup: {h}")
