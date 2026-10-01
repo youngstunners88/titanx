@@ -1,35 +1,22 @@
 ---
 name: young-stunners-design
-description: Design system and page-structure rules for the Young Stunners site (index.html). Use when editing layout, styling, sections, or adding portfolio entries.
+description: Page structure and component rules for the Young Stunners site (index.html): sections, cards, featured player, adding portfolio entries. Use when editing layout or content structure. Visual style lives in anti-slop-design.
 ---
 
-# Young Stunners design system
+# Young Stunners page structure
 
-Single-file static site: `index.html` (inline CSS/JS), assets in `brand/` and `logos/`.
+Single-file static site: `index.html` (inline CSS/JS), assets in `brand/`. Visual system: see `anti-slop-design`. Durable facts: `PRODUCT.md`.
 
-## Brand
-- Palette: near-black `#0a0a0c`, surface `#18181c`, brand red `#e10600`, white text. Tokens live in `:root`.
-- Type: Montserrat 800/900 for headings (matches the logo), Inter for body.
-- **Logo**: `brand/young-stunners-logo.png` has transparent letter fill, so it is unreadable on dark. Always place it on a white plate (`background:#fff` + radius + padding), as in `.nav-logo`, `.hero-logo`, footer.
+## Order (videos first)
+nav -> hero (definition lede, 2 CTAs, logo sticker) -> black band "Watch the work" (facts line, playable featured tiles + player) -> filters + 38 project cards -> services (numbered list) -> how it works -> questions -> contact (red band, brief form) -> footer. Primary CTA wording: "Book a campaign", repeated in nav, hero, sticky bar (phones) and contact.
 
-## Page order (conversion-led)
-Hero (outcome headline + 2 CTAs + stats) -> ticker -> Services -> Who it's for -> Process -> Portfolio (proof) -> FAQ -> Contact brief -> footer. Keep one primary CTA ("Book a Campaign") repeated in nav, hero and contact.
-
-## Portfolio entries
-Cards are plain HTML in `#projects-grid`: `.project-card[data-type="twitter|instagram"]` with `.project-header`, `.project-links` (one `a.project-link` per post) and `.project-count`. JS handles filter, search, ticker, avatar fallback and collapsing lists over 3 links, so just add the card markup.
+## Components
+- **Project card**: `div.project-card[data-type="twitter|instagram"]` > `.project-header` (avatar img 48x48, `h3.project-name`, `.project-category`, `.project-badge`) + `.project-links` (one `a.project-link` per post, text "@handle · Video" or "Reel · View post") + `.project-count`. JS handles filter, search, collapse above 3 links. Keep the count correct (`build_llms.py` and `check_site.py` verify).
+- **Add a card**: paste the card, run `scripts/build_assets.py` (localizes the avatar), `scripts/gauntlet/linkcheck.py`, `scripts/build_llms.py`, then update the facts line and JSON-LD via the gauntlet failures.
+- **Featured player**: see `featured-player`.
+- **New section**: copy `.split` (heading left, content right) with `aria-labelledby` and an `id` on the h2.
 
 ## Rules
-- Mobile first: no horizontal scroll at 390px; tap targets >= 44px.
-- Respect `prefers-reduced-motion`; keep contrast AA; keep focus outlines.
-- No fabricated stats, logos, testimonials or prices.
-- Verify visually: `chromium --headless --screenshot` at 1280 and 390 widths before committing.
-
-## SEO / AEO / GEO (keep in sync when editing)
-- Page order puts the portfolio directly under a compact hero: videos first, selling sections after.
-- `<head>` holds title, description, canonical, OG/Twitter tags. JSON-LD `@graph` has Organization, WebSite, WebPage and an ItemList of every portfolio card (no FAQPage; see seo-aeo-geo-playbook).
-- When adding a portfolio card, also add it to the ItemList JSON-LD and `llms.txt`.
-- `robots.txt`, `sitemap.xml` and `llms.txt` live at the repo root. GitHub Pages project sites serve under `/titanx/`, so crawlers only read `robots.txt` at a custom domain root; submit the sitemap in Search Console / Bing Webmaster.
-- Never add schema for data that is not visible on the page (no fake ratings, reviews or prices).
-
-## Avoid the AI-design tells (from impeccable)
-Inter for everything, purple-to-blue gradients, cards nested in cards, grey text on coloured backgrounds, a rounded icon tile above every heading. Keep one accent (brand red), real hierarchy, and few cards. Durable product facts live in `PRODUCT.md`.
+- Mobile first; no horizontal scroll at 320px; targets >= 44px.
+- Never invent metrics, quotes or prices. Keep copy under the word budget (`concise-copy`).
+- Run `python3 scripts/gauntlet.py` before every commit.

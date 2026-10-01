@@ -11,7 +11,7 @@ Gate: axe-core must report 0 violations at 390, 320 and 1280px; every button, ta
 - Skip link to `#main`; one `<h1>`; landmarks `nav`, `main`, `footer`; the mobile sticky CTA is `role="region"` and `visibility:hidden` while hidden (not focusable off-screen).
 - Filter chips are a labelled group of `button[aria-pressed]` (not an incomplete tablist). A polite live region announces "Showing N of 38 projects".
 - Text links inside paragraphs are underlined (never colour-only).
-- Focus is always visible; `prefers-reduced-motion` disables animation and smooth scroll.
+- Focus is always visible; `prefers-reduced-motion` disables animation and smooth scroll. There is no scroll-reveal: content must never depend on JS to be visible.
 - The featured player is a labelled `role="region"` with `aria-live="polite"`; its fallback is a real link.
 - Images have alt text (avatars: "<Project> logo"; decorative tile icons use `alt=""`).
 

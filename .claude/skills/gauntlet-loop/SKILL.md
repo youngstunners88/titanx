@@ -7,8 +7,8 @@ description: The measure-fix-remeasure loop that decides whether the Young Stunn
 
 `python3 scripts/gauntlet.py` (fast) or `--full` (adds link health + live copy review, small spend). Output: `docs/gauntlet/latest.md` and `latest.json`. Exit 1 on any failed gate. `GAUNTLET_URL=https://youngstunners88.github.io/titanx/` tests the deployed site.
 
-## Gates (58 in full mode)
-static (SEO, schema, facts, dates, budgets, secret scan) | ops tests | lab at 390, 320 and 1280px (LCP, CLS, transfer <= 600 KB, no third-party hosts, no console errors, overflow, clipping, broken images, 44px targets, axe-core 0 violations, first video tile above the fold) | 19 interaction tests | link health | typed copy review.
+## Gates (56 in full mode)
+static (SEO, schema, facts, dates, budgets, secret scan, well-formed HTML, anti-slop tells, AEO/GEO structure) | ops tests | lab at 390, 320 and 1280px (LCP, CLS, transfer <= 600 KB, no third-party hosts, no console errors, overflow, clipping, broken images, 44px targets, axe-core 0 violations, first playable video tile above the fold (75% of viewport; replaced the older "first project link" gate because videos now lead)) | 19 interaction tests | link health | typed copy review.
 
 ## The loop
 1. Run the gauntlet. Read only the failing rows.

@@ -64,6 +64,7 @@ src = re.sub(r'<img src="(brand/projects/[^"]+)" alt="([^"]*)" style="[^"]*">',
 logo = Image.open(ROOT / "brand" / "young-stunners-logo.png").convert("RGBA")
 w, h = logo.size
 nav = logo.resize((round(76 * w / h), 76), Image.LANCZOS); nav.save(ROOT / "brand" / "logo-nav.webp", "WEBP", quality=85, method=6)
+logo.resize((680, round(680 * h / w)), Image.LANCZOS).save(ROOT / "brand" / "logo-hero.webp", "WEBP", quality=88, method=6)
 for px, name in [(180, "apple-touch-icon.png"), (192, "icon-192.png"), (512, "icon-512.png"), (32, "favicon-32.png")]:
     bg = Image.new("RGBA", (px, px), (255, 255, 255, 255)); k = (px * 0.86) / max(w, h)
     lg = logo.resize((round(w * k), round(h * k)), Image.LANCZOS); bg.alpha_composite(lg, ((px - lg.width) // 2, (px - lg.height) // 2))

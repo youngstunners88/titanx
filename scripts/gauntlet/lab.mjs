@@ -39,13 +39,13 @@ for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { n
   await page.goto(base, { waitUntil: 'load' });
   await page.waitForTimeout(1200);
   const above = await page.evaluate(() => {
-    const first = document.querySelector('.project-link'); const r = first ? first.getBoundingClientRect() : null; const f = document.querySelector('.feat'); const fr = f ? f.getBoundingClientRect() : null;
-    return { firstProjectLinkTop: r ? Math.round(r.top + scrollY) : null, firstVideoTileTop: fr ? Math.round(fr.top + scrollY) : null, viewport: innerHeight };
+    const f = document.querySelector('.feat'); const fr = f ? f.getBoundingClientRect() : null;
+    return { firstVideoTileTop: fr ? Math.round(fr.top + scrollY) : null, viewport: innerHeight };
   });
-  // scroll through to trigger reveal + lazy
+  // scroll through the page so lazy images start loading
   const total = await page.evaluate(() => document.documentElement.scrollHeight);
-  for (let y = 0; y < total; y += vp.height * 0.8) { await page.evaluate(v => scrollTo(0, v), y); await page.waitForTimeout(120); }
-  await page.evaluate(() => { document.querySelectorAll('img[loading=lazy]').forEach(i => { i.loading = 'eager'; }); scrollTo(0, 0); });
+  for (let y = 0; y < total; y += vp.height * 0.8) { await page.evaluate(v => scrollTo({ top: v, behavior: 'instant' }), y); await page.waitForTimeout(120); }
+  await page.evaluate(() => { document.querySelectorAll('img[loading=lazy]').forEach(i => { i.loading = 'eager'; }); scrollTo({ top: 0, behavior: 'instant' }); });
   for (let i = 0; i < 30; i++) { const pending = await page.evaluate(() => [...document.images].filter(x => !x.complete).length); if (!pending) break; await page.waitForTimeout(250); }
   await page.waitForTimeout(300);
   const m = await page.evaluate(() => {
