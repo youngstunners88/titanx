@@ -1,8 +1,8 @@
 {
- "run": "2026-10-01 12:38 UTC",
- "full": false,
- "passed": 56,
- "total": 56,
+ "run": "2026-10-01 16:11 UTC",
+ "full": true,
+ "passed": 58,
+ "total": 59,
  "gates": [
   {
    "stage": "static",
@@ -20,7 +20,7 @@
    "stage": "lab:mobile",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "88 ms"
+   "detail": "248 ms"
   },
   {
    "stage": "lab:mobile",
@@ -38,7 +38,7 @@
    "stage": "lab:mobile",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:44137']"
+   "detail": "own host only"
   },
   {
    "stage": "lab:mobile",
@@ -86,7 +86,7 @@
    "stage": "lab:tiny",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "76 ms"
+   "detail": "92 ms"
   },
   {
    "stage": "lab:tiny",
@@ -104,7 +104,7 @@
    "stage": "lab:tiny",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:44137']"
+   "detail": "own host only"
   },
   {
    "stage": "lab:tiny",
@@ -146,7 +146,7 @@
    "stage": "lab:desktop",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "112 ms"
+   "detail": "116 ms"
   },
   {
    "stage": "lab:desktop",
@@ -164,7 +164,7 @@
    "stage": "lab:desktop",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:44137']"
+   "detail": "own host only"
   },
   {
    "stage": "lab:desktop",
@@ -337,6 +337,24 @@
   {
    "stage": "interact",
    "name": "privacy: no third-party requests on load",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "links",
+   "name": "every X post link resolves (oEmbed)",
+   "pass": true,
+   "detail": "130 ok/unverified, 0 bad"
+  },
+  {
+   "stage": "copy",
+   "name": "every block has a hype decision",
+   "pass": false,
+   "detail": "29 inconclusive"
+  },
+  {
+   "stage": "copy",
+   "name": "no hype-flagged copy (typed review, live)",
    "pass": true,
    "detail": ""
   }

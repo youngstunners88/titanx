@@ -17,7 +17,7 @@ sources = json.loads(sources_path.read_text()) if sources_path.exists() else {}
 def fetch(url):
     if url.startswith(("http://", "https://")):
         for _ in range(3):
-            r = subprocess.run(["curl", "-sL", "-m", "40", url], capture_output=True)
+            r = subprocess.run(["curl", "-sfL", "-m", "40", url], capture_output=True)
             if r.returncode == 0 and len(r.stdout) > 200:
                 return r.stdout
         raise SystemExit(f"download failed: {url}")
@@ -41,6 +41,10 @@ def to_webp(data, size=96, q=82, box=None):
 
 # --- project avatars: one per card, named after the project
 changed = 0
+seen_slugs = {}
+for _m in re.finditer(r'<div class="project-card.*?<div class="project-count">', src, re.S):   # collisions among ALL cards, localized or not
+    _n = html.unescape(re.search(r'class="project-name">(.*?)<', _m.group(0)).group(1)).strip()
+    if seen_slugs.setdefault(slug(_n), _n) != _n: raise SystemExit(f'slug collision: {_n!r} and {seen_slugs[slug(_n)]!r}')
 seen_slugs = {}
 for m in list(re.finditer(r'<div class="project-card.*?<div class="project-count">', src, re.S)):
     blk = m.group(0)
@@ -73,7 +77,7 @@ src = re.sub(r'<img src="(brand/projects/[^"]+)" alt="([^"]*)" style="[^"]*">',
 logo = Image.open(ROOT / "brand" / "young-stunners-logo.png").convert("RGBA")
 w, h = logo.size
 nav = logo.resize((round(76 * w / h), 76), Image.LANCZOS); nav.save(ROOT / "brand" / "logo-nav.webp", "WEBP", quality=85, method=6)
-logo.resize((680, round(680 * h / w)), Image.LANCZOS).save(ROOT / "brand" / "logo-hero.webp", "WEBP", quality=88, method=6)
+logo.resize((680, round(680 * h / w)), Image.LANCZOS).save(ROOT / "brand" / "logo-hero.webp", "WEBP", quality=78, method=6)
 for px, name in [(180, "apple-touch-icon.png"), (192, "icon-192.png"), (512, "icon-512.png"), (32, "favicon-32.png")]:
     bg = Image.new("RGBA", (px, px), (255, 255, 255, 255)); k = (px * 0.86) / max(w, h)
     lg = logo.resize((round(w * k), round(h * k)), Image.LANCZOS); bg.alpha_composite(lg, ((px - lg.width) // 2, (px - lg.height) // 2))

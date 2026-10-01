@@ -2,7 +2,7 @@
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path'; import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
-const g = require('node:child_process').execSync('npm root -g').toString().trim(); const { chromium } = require(path.join(g, 'playwright'));
+let chromium; try { ({ chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright')); } catch { const g = require('node:child_process').execSync('npm root -g').toString().trim(); ({ chromium } = require(path.join(g, 'playwright'))); }
 const args = process.argv.slice(2); const shots = args.includes('--shots') ? args[args.indexOf('--shots') + 1] : null;
 import { serve } from './server.mjs';
 const srvh = await serve(root);
@@ -17,9 +17,10 @@ async function fresh(vp, extra = {}) { const c = await b.newContext({ ignoreHTTP
   const total = await p.$$eval('.project-card', e => e.length);
   await p.click('.tab[data-filter="instagram"]');
   const igShown = await p.$$eval('.project-card', e => e.filter(x => getComputedStyle(x).display !== 'none').length);
-  t('filter: instagram shows only IG cards', igShown === 2, `shown=${igShown}`);
+  const igTotal = await p.$$eval('.project-card[data-type="instagram"]', e => e.length);
+  t('filter: instagram shows only IG cards', igShown === igTotal && igTotal > 0, `shown=${igShown} of ${igTotal}`);
   t('filter: aria-pressed updates', (await p.getAttribute('.tab[data-filter="instagram"]', 'aria-pressed')) === 'true' && (await p.getAttribute('.tab[data-filter="all"]', 'aria-pressed')) === 'false');
-  t('filter: live count text', /Showing 2 of 38/.test(await p.textContent('#count')), await p.textContent('#count'));
+  t('filter: live count text', (await p.textContent('#count')) === `Showing ${igTotal} of ${total} projects`, await p.textContent('#count'));
   await p.click('.tab[data-filter="all"]'); await p.fill('#search', 'volt');
   const volt = await p.$$eval('.project-card', e => e.filter(x => getComputedStyle(x).display !== 'none').length);
   t('search: "volt" narrows results', volt >= 2 && volt < total, `shown=${volt}`);
@@ -67,7 +68,7 @@ async function fresh(vp, extra = {}) { const c = await b.newContext({ ignoreHTTP
 {
   const c = await b.newContext({ ignoreHTTPSErrors: true }); const p = await c.newPage(); const hits = []; p.on('request', r => { if (/posthog|google-analytics|googletagmanager/.test(r.url())) hits.push(r.url()); });
   await p.goto(base); await p.waitForTimeout(800); t('privacy: no analytics requests without a configured key', hits.length === 0, hits.join(','));
-  const ext = []; p.on('request', r => { if (!r.url().startsWith('http://127.0.0.1')) ext.push(new URL(r.url()).host); }); await p.reload(); await p.waitForTimeout(800); t('privacy: no third-party requests on load', ext.length === 0, [...new Set(ext)].join(','));
+  const own = new URL(base).host; const ext = []; p.on('request', r => { const h = new URL(r.url()).host; if (h !== own) ext.push(h); }); await p.reload(); await p.waitForTimeout(800); t('privacy: no third-party requests on load', ext.length === 0, [...new Set(ext)].join(','));
   await c.close();
 }
 await b.close(); srvh.close();

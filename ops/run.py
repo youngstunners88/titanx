@@ -5,7 +5,7 @@
   triage "<message>" [--live]   typed triage of an inbound DM/brief, queues result
   queue | status | recover
 Dry-run is the default. --live uses provider keys from the environment (names only)."""
-import argparse, json, subprocess, sys
+import argparse, json, re, subprocess, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from ops.lib import llm, state
@@ -40,14 +40,17 @@ def route_lead(ctx):
 
 
 def run_workflow(wid, live=False, text=None):
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", wid):
+        raise SystemExit(f"invalid workflow id: {wid!r}")
     wf = json.loads((ROOT / "workflows" / f"{wid}.json").read_text())
+    stakes = wf.get("stakes", "medium")
     state.append_event("run_start", workflow=wid, live=live)
     ctx, trace = {"input": text}, []
     for s in wf["steps"]:
         t = s["type"]
         if t == "shell": r = run_shell(s["cmd"])
         elif t == "decide":
-            r = llm.decide({"message": text or "", "site": text or ""}, s["questions"], live=live)
+            r = llm.decide({"message": text or "", "site": text or ""}, s["questions"], live=live, stakes=stakes)
         elif t == "route_lead": r = route_lead(ctx)
         elif t == "gate": r = gate(s["action"])
         elif t in ("note", "manual"): r = {"text": s["text"]}
@@ -64,18 +67,24 @@ def main(argv=None):
     r = sub.add_parser("route"); r.add_argument("text"); r.add_argument("--live", action="store_true")
     w = sub.add_parser("workflow"); w.add_argument("id"); w.add_argument("--live", action="store_true"); w.add_argument("--input")
     t = sub.add_parser("triage"); t.add_argument("text"); t.add_argument("--live", action="store_true")
+    t.add_argument("--sender", default="unknown", help="handle or id; part of the job identity so identical texts from different senders stay separate")
     sub.add_parser("queue"); sub.add_parser("status"); sub.add_parser("recover")
     a = ap.parse_args(argv)
     if a.cmd == "route": out = route(a.text, a.live)
     elif a.cmd == "workflow": out = run_workflow(a.id, a.live, a.input)
     elif a.cmd == "triage":
-        res = run_workflow("lead-triage", a.live, a.text)
-        dest = res["ctx"]["route"]["destination"]
-        jid, new = state.enqueue({"message": a.text}, kind="lead")
-        if new:
-            if dest == "review":
-                state.claim(); state.finish(jid, "review", res["ctx"]["route"])
-        out = {"id": jid, "new": new, "destination": dest, "decision": res["ctx"]["route"]}
+        payload = {"message": a.text, "sender": a.sender}
+        jid = state.job_id(payload)
+        stage, _ = state.find_job(jid)
+        if stage:                                   # idempotent: no LLM spend for a lead we already hold
+            out = {"id": jid, "new": False, "stage": stage}
+        else:
+            res = run_workflow("lead-triage", a.live, a.text)
+            dest = res["ctx"]["route"]["destination"]
+            jid, new = state.enqueue(payload, kind="lead")
+            if new and dest == "review":
+                state.claim(jid); state.finish(jid, "review", res["ctx"]["route"])
+            out = {"id": jid, "new": new, "destination": dest, "decision": res["ctx"]["route"], "provider_error": res["ctx"]["classify"].get("error")}
     elif a.cmd == "queue": out = state.listing()
     elif a.cmd == "status": out = {"snapshot": state.snapshot(), "budget": state.budget_read(), "providers": {p: llm.key_present(p) for p in llm.REGISTRY["env_names"]}}
     else: out = {"recovered": state.recover()}

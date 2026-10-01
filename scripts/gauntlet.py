@@ -16,7 +16,7 @@ gates = []   # (stage, name, pass, detail)
 
 
 def gate(stage, name, ok, detail=""):
-    gates.append((stage, name, bool(ok), str(detail)))
+    gates.append((stage, name, bool(ok), " ".join(str(detail).split())))
 
 
 def run(cmd, timeout=600, env=None):
@@ -43,7 +43,7 @@ if lab:
         gate(s, "LCP <= 2500 ms (local lab)", v["lcpMs"] <= 2500, f"{v['lcpMs']} ms")
         gate(s, "CLS <= 0.1", v["cls"] <= 0.1, v["cls"])
         gate(s, "transfer <= 600 KB", v["transferKB"] <= 600, f"{v['transferKB']} KB, {v['requests']} requests")
-        gate(s, "no third-party hosts on load", set(h.split(":")[0] for h in v["hostsKB"]) <= {"127.0.0.1"} or bool(os.environ.get("GAUNTLET_URL")), list(v["hostsKB"])[:4])
+        gate(s, "no third-party hosts on load", set(v["hostsKB"]) <= {v["ownHost"]}, [h for h in v["hostsKB"] if h != v["ownHost"]][:4] or "own host only")
         gate(s, "no console errors / failed requests", not v["consoleErrors"] and not v["failedRequests"], (v["consoleErrors"] + v["failedRequests"])[:2])
         gate(s, "no horizontal overflow", not v["overflowX"], v["scrollWidth"])
         gate(s, "no clipped buttons/chips", v["clippedControls"] == 0, v["clippedControls"])

@@ -4,7 +4,9 @@ Only run this when content really changed (freshness must be honest)."""
 import datetime, re, sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
-d = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
+import re as _re
+d = sys.argv[1] if len(sys.argv) > 1 else datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+if not _re.fullmatch(r"\d{4}-\d{2}-\d{2}", d): raise SystemExit(f"date must be YYYY-MM-DD, got {d!r}")
 dt = datetime.date.fromisoformat(d); human = f"{dt.day} {dt.strftime('%b %Y')}"
 p = ROOT / "index.html"; s = p.read_text()
 s = re.sub(r'Last updated <time datetime="[^"]+">[^<]*</time>', f'Last updated <time datetime="{d}">{human}</time>', s)

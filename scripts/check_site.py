@@ -70,18 +70,21 @@ if words > BUDGET: fail(f"copy budget exceeded: {words} words > {BUDGET} (outsid
 
 # --- secret leak scan: env values must not appear in tracked files (names printed only)
 leaks = []
-tracked = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.split()
+gl = subprocess.run(["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"], cwd=ROOT, capture_output=True)
+if gl.returncode != 0:
+    fail("secret scan could not list files (git failed); refusing to pass")
+files = [f for f in gl.stdout.decode("utf-8", "replace").split("\0") if f]
 SKIP = (".png", ".jpg", ".jpeg", ".webp", ".gif", ".woff2", ".ico")
 blob = []
-for f in tracked:
-    p = ROOT / f
-    if p.suffix.lower() in SKIP: continue
-    try: blob.append(p.read_text(errors="ignore"))
+for f in files:
+    p_ = ROOT / f
+    if p_.suffix.lower() in SKIP or not p_.is_file(): continue
+    try: blob.append(p_.read_text(errors="ignore"))
     except Exception: pass
 blob = "\n".join(blob)
+# every sufficiently long, secret-shaped env value (not only names containing KEY/TOKEN): names are printed, values never
 for k_, v in os.environ.items():
-    if not re.search(r"KEY|TOKEN|SECRET|PASS", k_, re.I) or re.search(r"(URL|URI|PATH|FILE|HOST|DIR)$", k_, re.I): continue
-    if len(v) >= 16 and not re.match(r"(https?://|/)", v) and not re.search(r"\s", v) and v in blob:
+    if len(v) >= 20 and not re.search(r"\s", v) and not re.match(r"(https?://|/|[A-Za-z]:\\)", v) and v in blob:
         leaks.append(k_)
 if leaks: fail(f"SECRET VALUE FOUND in tracked files for env var(s): {leaks}")
 
@@ -94,7 +97,9 @@ else:
     if int(m.group(1)) != len(cards): fail(f"facts line says {m.group(1)} projects, page has {len(cards)}")
     if int(m.group(2)) != posts: fail(f"facts line says {m.group(2)} posts, page has {posts}")
     lj = ROOT / "docs" / "gauntlet" / "links.json"
-    if lj.exists():
+    if not lj.exists():
+        fail("facts line claims verified X links but docs/gauntlet/links.json is missing (run scripts/gauntlet/linkcheck.py)")
+    else:
         ok = sum(1 for r in json.loads(lj.read_text()) if r["status"] == "ok")
         if int(m.group(3)) != ok: fail(f"facts line says {m.group(3)} verified X links, links.json has {ok} ok (rerun linkcheck, update line)")
 vis = re.search(r'Last updated <time datetime="([^"]+)"', src)
@@ -130,7 +135,7 @@ _p = _P(); _p.feed(src)
 if _p.err or _p.st: fail(f"HTML not well-formed: {(_p.err or [''])[0]} unclosed={_p.st[:3]}")
 vis = re.sub(r"<script.*?</script>|<style.*?</style>", "", src, flags=re.S)
 text = html.unescape(re.sub(r"<[^>]+>", " ", vis))
-style = re.search(r"<style>(.*?)</style>", src, re.S).group(1)
+style = re.sub(r"\s*([:;,{}])\s*", r"\1", re.search(r"<style>(.*?)</style>", src, re.S).group(1))   # minified view: formatting cannot hide a tell
 if re.search("[\U0001F300-\U0001FAFF\u25A0-\u25FF\u2600-\u27BF\u2B00-\u2BFF]", text): fail("emoji or pictograph glyph in visible text (AI-slop tell)")
 if "\u2014" in text: fail("em dash in visible text (AI-slop tell)")
 if "background-clip:text" in style or "-webkit-background-clip:text" in style: fail("gradient text (AI-slop tell)")
@@ -151,7 +156,7 @@ if bad: fail(f"banned filler words in copy: {sorted(set(x[0] if isinstance(x, tu
 lede = re.search(r'<p class="lede">(.*?)</p>', src, re.S)
 lt = html.unescape(re.sub(r"<[^>]+>", "", lede.group(1))) if lede else ""
 if "Young Stunners" not in lt or not 15 <= len(lt.split()) <= 60: fail(f"lede must define Young Stunners in 15-60 words ({len(lt.split())})")
-for q, a in re.findall(r"<details[^>]*><summary>(.*?)</summary><p>(.*?)</p></details>", src, re.S):
+for q, a in re.findall(r"<details[^>]*>\s*<summary>(.*?)</summary>\s*<p>(.*?)</p>\s*</details>", src, re.S):
     if len(a.split()) > 40: fail(f"FAQ answer over 40 words: {q[:40]}")
 levels = [int(x) for x in re.findall(r"<h([1-6])[ >]", src)]
 if any(b - a_ > 1 for a_, b in zip(levels, levels[1:])): fail("heading levels skip")
@@ -190,10 +195,17 @@ for n in graph_nodes:
                 if it["item"].get("datePublished") != want: fail(f"datePublished wrong for {u}: {it['item'].get('datePublished')} != {want}")
 lj = ROOT / "docs" / "gauntlet" / "links.json"
 vt = re.search(r"X links verified live <time datetime=\"([^\"]+)\"", src)
+if vt and not lj.exists():
+    fail("verification date claimed but links.json is missing")
 if lj.exists() and vt:
     checked = max((r.get("checked", "") for r in json.loads(lj.read_text())), default="")
     if checked != vt.group(1): fail(f"facts line says verified {vt.group(1)} but links.json was checked {checked or 'never'} (run scripts/gauntlet/linkcheck.py)")
 if "live post" in text and "verified live" not in text: fail("'live post' claim without verification statement")
+
+nums = set(re.findall(r"(?<![A-Za-z0-9])(\d+) projects?\b", src))
+if nums - {str(len(cards))}: fail(f"project count mentions disagree with the {len(cards)} cards: {sorted(nums)}")
+for n in graph_nodes:
+    if n.get("@type") == "ItemList" and n.get("numberOfItems") != len(cards): fail("ItemList numberOfItems != card count")
 
 print(f"words outside cards: {words} (budget {BUDGET}); projects: {len(cards)}")
 for w in warns: print("WARN", w)
