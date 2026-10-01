@@ -1,8 +1,8 @@
 {
- "run": "2026-10-01 02:02 UTC",
+ "run": "2026-10-01 10:58 UTC",
  "full": true,
- "passed": 58,
- "total": 58,
+ "passed": 56,
+ "total": 56,
  "gates": [
   {
    "stage": "static",
@@ -20,7 +20,7 @@
    "stage": "lab:mobile",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "132 ms"
+   "detail": "172 ms"
   },
   {
    "stage": "lab:mobile",
@@ -32,13 +32,13 @@
    "stage": "lab:mobile",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "314 KB, 42 requests"
+   "detail": "526 KB, 42 requests"
   },
   {
    "stage": "lab:mobile",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:43891']"
+   "detail": "['127.0.0.1:42231']"
   },
   {
    "stage": "lab:mobile",
@@ -80,19 +80,13 @@
    "stage": "lab:mobile",
    "name": "first video tile above the fold (<= 75% of viewport)",
    "pass": true,
-   "detail": "436px of 844px"
-  },
-  {
-   "stage": "lab:mobile",
-   "name": "first project link in first screen (<= viewport)",
-   "pass": true,
-   "detail": "723px"
+   "detail": "541px of 844px"
   },
   {
    "stage": "lab:tiny",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "108 ms"
+   "detail": "80 ms"
   },
   {
    "stage": "lab:tiny",
@@ -104,13 +98,13 @@
    "stage": "lab:tiny",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "314 KB, 42 requests"
+   "detail": "526 KB, 42 requests"
   },
   {
    "stage": "lab:tiny",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:43891']"
+   "detail": "['127.0.0.1:42231']"
   },
   {
    "stage": "lab:tiny",
@@ -152,7 +146,7 @@
    "stage": "lab:desktop",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "120 ms"
+   "detail": "128 ms"
   },
   {
    "stage": "lab:desktop",
@@ -164,13 +158,13 @@
    "stage": "lab:desktop",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "314 KB, 42 requests"
+   "detail": "526 KB, 42 requests"
   },
   {
    "stage": "lab:desktop",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:43891']"
+   "detail": "['127.0.0.1:42231']"
   },
   {
    "stage": "lab:desktop",
@@ -212,13 +206,7 @@
    "stage": "lab:desktop",
    "name": "first video tile above the fold (<= 75% of viewport)",
    "pass": true,
-   "detail": "494px of 800px"
-  },
-  {
-   "stage": "lab:desktop",
-   "name": "first project link in first screen (<= viewport)",
-   "pass": true,
-   "detail": "725px"
+   "detail": "594px of 800px"
   },
   {
    "stage": "interact",

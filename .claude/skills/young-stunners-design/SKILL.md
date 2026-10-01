@@ -5,6 +5,8 @@ description: Design system and page-structure rules for the Young Stunners site 
 
 # Young Stunners design system
 
+> Superseded for visuals by `anti-slop-design` (paper/ink/red sticker system, Montserrat only). The notes below on page order, cards and SEO still apply; ignore the old dark/red-glow palette and Inter/Orbitron mentions.
+
 Single-file static site: `index.html` (inline CSS/JS), assets in `brand/` and `logos/`.
 
 ## Brand

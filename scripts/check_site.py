@@ -26,7 +26,7 @@ if len(re.findall(r"<h1[ >]", src)) != 1: fail("page must have exactly one <h1>"
 
 # --- JSON-LD
 blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', src, re.S)
-types, items = [], []
+types, items, graph_nodes = [], [], []
 if not blocks: fail("no JSON-LD")
 for b in blocks:
     try:
@@ -34,7 +34,7 @@ for b in blocks:
     except Exception as e:
         fail(f"JSON-LD does not parse: {e}"); continue
     for n in data.get("@graph", [data]):
-        types.append(n.get("@type"))
+        graph_nodes.append(n); types.append(n.get("@type"))
         if n.get("@type") == "ItemList":
             items = [i["item"]["name"] for i in n["itemListElement"]]
 flat = {x for t in types for x in (t if isinstance(t, list) else [t])}
@@ -102,7 +102,7 @@ mod = re.search(r'"dateModified":"([^"]+)"', src)
 lm = re.search(r"<lastmod>([^<]+)</lastmod>", (ROOT / "sitemap.xml").read_text()) if (ROOT / "sitemap.xml").exists() else None
 if not (vis and mod and lm and vis.group(1) == mod.group(1) == lm.group(1)): fail("dates disagree: visible / JSON-LD dateModified / sitemap lastmod (run scripts/stamp.py)")
 if subprocess.run([sys.executable, str(ROOT / "scripts" / "build_llms.py"), "--check"]).returncode != 0: fail("llms.txt out of date (run scripts/build_llms.py)")
-for f in ("404.html", "manifest.webmanifest", "brand/favicon-32.png", "brand/apple-touch-icon.png", "brand/fonts/inter-latin.woff2", "brand/fonts/montserrat-latin.woff2"):
+for f in ("404.html", "manifest.webmanifest", "brand/favicon-32.png", "brand/apple-touch-icon.png", "brand/fonts/montserrat-latin.woff2"):
     if not (ROOT / f).exists(): fail(f"missing {f}")
 if "fonts.googleapis.com" in src or "fonts.gstatic.com" in src: fail("Google Fonts still referenced (self-host instead)")
 allowed = ("x.com", "www.instagram.com", "twitter.com", "youngstunners88.github.io", "schema.org", "www.w3.org", "platform.twitter.com", "us-assets.i.posthog.com", "us.i.posthog.com")
@@ -114,6 +114,64 @@ for img in re.findall(r"<img [^>]*>", src):
 imgs_kb = sum(f.stat().st_size for f in (ROOT / "brand" / "projects").glob("*.webp")) / 1024
 if imgs_kb > 400: fail(f"project avatars weigh {imgs_kb:.0f} KB (budget 400)")
 if len(src.encode()) > 140_000: fail("index.html over 140 KB")
+
+# --- round 2: well-formed HTML, anti-slop, AEO/GEO structure
+from html.parser import HTMLParser
+VOID = {"meta", "link", "img", "input", "br", "hr", "source"}
+class _P(HTMLParser):
+    def __init__(s): super().__init__(); s.st = []; s.err = []
+    def handle_starttag(s, t, a):
+        if t not in VOID: s.st.append(t)
+    def handle_endtag(s, t):
+        if t in VOID: return
+        if not s.st or s.st[-1] != t: s.err.append(f"unexpected </{t}> (open: {s.st[-3:]}) at line {s.getpos()[0]}")
+        else: s.st.pop()
+_p = _P(); _p.feed(src)
+if _p.err or _p.st: fail(f"HTML not well-formed: {(_p.err or [''])[0]} unclosed={_p.st[:3]}")
+vis = re.sub(r"<script.*?</script>|<style.*?</style>", "", src, flags=re.S)
+text = html.unescape(re.sub(r"<[^>]+>", " ", vis))
+style = re.search(r"<style>(.*?)</style>", src, re.S).group(1)
+if re.search("[\U0001F300-\U0001FAFF\u2600-\u27BF]", text): fail("emoji in visible text (AI-slop tell)")
+if "\u2014" in text: fail("em dash in visible text (AI-slop tell)")
+if "background-clip:text" in style or "-webkit-background-clip:text" in style: fail("gradient text (AI-slop tell)")
+if "backdrop-filter" in style: fail("glassmorphism blur (AI-slop tell)")
+if re.search(r"box-shadow:0 0 \d{2,}px", style): fail("soft glow shadow (AI-slop tell)")
+if re.search(r"\.ico\b|class=\"ico\"", src): fail("icon tile above headings (AI-slop tell)")
+fams = set(re.findall(r"font-family:'([^']+)'", style))
+if len(fams) > 1: fail(f"more than one webfont family: {fams}")
+if re.search(r"(purple|violet|#[89a-f][0-9a-f]5cf6)", style, re.I): fail("purple palette (AI-slop tell)")
+BANNED = r"\b(revolutionary|cutting-edge|seamless(ly)?|unlock|elevate|supercharge|game-?chang\w*|next-level|leverage|synerg\w*|empower\w*|journey|landscape|delve|tapestry|robust|holistic|world-class|best-in-class)\b"
+bad = re.findall(BANNED, text, re.I)
+if bad: fail(f"banned filler words in copy: {sorted(set(x[0] if isinstance(x, tuple) else x for x in bad))[:4]}")
+# AEO: definitional lede, answer-first FAQ, heading hygiene
+lede = re.search(r'<p class="lede">(.*?)</p>', src, re.S)
+lt = html.unescape(re.sub(r"<[^>]+>", "", lede.group(1))) if lede else ""
+if "Young Stunners" not in lt or not 15 <= len(lt.split()) <= 60: fail(f"lede must define Young Stunners in 15-60 words ({len(lt.split())})")
+for q, a in re.findall(r"<details[^>]*><summary>(.*?)</summary><p>(.*?)</p></details>", src, re.S):
+    if len(a.split()) > 40: fail(f"FAQ answer over 40 words: {q[:40]}")
+levels = [int(x) for x in re.findall(r"<h([1-6])[ >]", src)]
+if any(b - a_ > 1 for a_, b in zip(levels, levels[1:])): fail("heading levels skip")
+for hid in re.findall(r"<h2([^>]*)>", src):
+    if "id=" not in hid: fail("h2 without id (deep-link anchor)")
+# GEO: entity + dated, checkable specifics
+org = next((n for n in graph_nodes if isinstance(n.get("@type"), list) and "Organization" in n["@type"]), None)
+if not org or len(org.get("sameAs", [])) < 2 or "contactPoint" not in org: fail("Organization needs sameAs (>=2) and contactPoint")
+dated = sum(1 for n in graph_nodes if n.get("@type") == "ItemList" for i in n["itemListElement"] if "datePublished" in i["item"])
+xposts = sum(1 for n in graph_nodes if n.get("@type") == "ItemList" for i in n["itemListElement"] if "x.com" in i["item"]["url"])
+if dated != xposts: fail(f"ItemList: {xposts} X items but {dated} carry datePublished")
+sp = re.search(r"X posts dated ([A-Z][a-z]{2} \d{4}) to ([A-Z][a-z]{2} \d{4})", src)
+if not sp: fail("date-span fact missing ('X posts dated Mon YYYY to Mon YYYY')")
+else:
+    import datetime as _dt
+    ids = [int(x) for x in re.findall(r"x\.com/[^/\"]+/status/(\d+)", re.search(r'<div class="projects-grid".*?<p class="empty"', src, re.S).group(0))]
+    f = lambda i: _dt.datetime.fromtimestamp(((i >> 22) + 1288834974657) / 1000, _dt.timezone.utc)
+    want = (min(map(f, ids)).strftime("%b %Y"), max(map(f, ids)).strftime("%b %Y"))
+    if (sp.group(1), sp.group(2)) != want: fail(f"date span says {sp.groups()} but post IDs say {want}")
+import struct
+og = ROOT / "brand" / "og-image.png"
+if og.exists():
+    w_, h_ = struct.unpack(">II", og.read_bytes()[16:24])
+    if (w_, h_) != (1200, 630): fail(f"og-image is {w_}x{h_}, want 1200x630")
 
 print(f"words outside cards: {words} (budget {BUDGET}); projects: {len(cards)}")
 for w in warns: print("WARN", w)

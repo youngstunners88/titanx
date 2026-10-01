@@ -24,3 +24,9 @@ Evidence and sources: `docs/research/2026-10-01-seo-aeo-geo.md`. Read its backlo
 - llms.txt is cheap and kept in sync, but has no measured citation effect. Do not spend time on it.
 - Titles <= 60 chars, descriptions 120-160, one H1, canonical on every page.
 - Run `python3 scripts/check_site.py` before every commit (see `site-audit`).
+
+## Round 2 additions (2026-10-01)
+- AEO: the hero lede is a standalone definition naming "Young Stunners"; FAQ answers are one or two sentences; FAQ items have deep-link ids (#cost, #chains...); every h2 has an id; heading levels never skip. All gated.
+- GEO: Organization has `sameAs` (X, Instagram) and `contactPoint`; ItemList items for X posts carry `datePublished` derived from post IDs; the page states its verifiable date span and verification date.
+- SEO: valid HTML (a missing `</section>` was fixed and is now a gate), self-hosted font, OG image regenerated in the new look.
+- Still needs the owner: custom domain, Search Console + Bing verification, real results/quotes.

@@ -5,7 +5,7 @@ import re, subprocess
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
-url = "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Montserrat:wght@700..900&display=swap"
+url = "https://fonts.googleapis.com/css2?family=Montserrat:wght@400..900&display=swap"
 css = subprocess.run(["curl", "-s", "-m", "30", "-A", UA, url], capture_output=True, text=True).stdout
 out = []
 for m in re.finditer(r"/\* latin \*/\s*@font-face \{(.*?)\}", css, re.S):

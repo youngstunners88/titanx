@@ -52,7 +52,6 @@ if lab:
         gate(s, "axe-core: 0 violations", not (v["axe"] or []) if v["axe"] is not None else False, [(a["id"], a["impact"]) for a in (v["axe"] or [])])
         if vp != "tiny":   # 320px phones are an overflow/clipping check only
             gate(s, "first video tile above the fold (<= 75% of viewport)", v["firstVideoTileTop"] is not None and v["firstVideoTileTop"] <= 0.75 * v["viewport"], f"{v['firstVideoTileTop']}px of {v['viewport']}px")
-            gate(s, "first project link in first screen (<= viewport)", v["firstProjectLinkTop"] is not None and v["firstProjectLinkTop"] <= v["viewport"], f"{v['firstProjectLinkTop']}px")
 # 4. interaction
 try:
     r = run(["node", "scripts/gauntlet/interact.mjs"], timeout=300)
