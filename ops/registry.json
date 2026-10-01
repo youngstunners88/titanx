@@ -1,0 +1,25 @@
+{
+  "_doc": "Capability -> ordered provider chain. Add a provider here and in ops/lib/llm.py PROVIDERS; nothing else changes.",
+  "capabilities": {
+    "decide":   ["jev_openrouter", "gemini", "mistral", "openrouter"],
+    "generate": ["gemini", "mistral", "openrouter"]
+  },
+  "env_names": {
+    "jev_openrouter": "OPENROUTER_API_KEY",
+    "openrouter":     "OPENROUTER_API_KEY",
+    "gemini":         "GEMINI_API_KEY",
+    "mistral":        "MINSTRAL_API_KEY"
+  },
+  "models": {
+    "jev_openrouter": "typesafe/jev-1.13",
+    "openrouter":     {"cheap": "google/gemini-2.5-flash", "strong": "anthropic/claude-sonnet-4.5"},
+    "gemini":         {"cheap": "gemini-2.5-flash", "strong": "gemini-2.5-pro"},
+    "mistral":        {"cheap": "mistral-small-latest", "strong": "mistral-large-latest"}
+  },
+  "mcp_only": {
+    "_doc": "These are reachable only through MCP tools in an agent session, not from scripts.",
+    "search": ["Exa web_search_exa / web_fetch_exa", "TinyFish search / fetch_content"],
+    "seo": ["Searchata (GSC, Bing, PageSpeed, schema)", "Advanced GSC (CWV, SERP)"],
+    "files": ["Google Drive read_file_content"]
+  }
+}

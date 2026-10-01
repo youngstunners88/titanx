@@ -1,0 +1,16 @@
+{
+  "_doc": "Deterministic routing first (free, instant, auditable). Ambiguous input falls to a typed LLM decision, then to human review.",
+  "rules": [
+    {"id": "page_edit",      "any": ["edit page", "change copy", "headline", "hero", "layout", "css", "add card", "portfolio entry"], "skill": "young-stunners-design", "workflow": "page-audit", "tier": "cheap", "stakes": "medium"},
+    {"id": "copy_trim",      "any": ["too wordy", "verbose", "shorten", "concise", "cut copy"], "skill": "concise-copy", "workflow": "page-audit", "tier": "cheap", "stakes": "low"},
+    {"id": "seo_work",       "any": ["seo", "aeo", "geo", "schema", "json-ld", "sitemap", "robots", "llms.txt", "canonical", "meta description"], "skill": "seo-aeo-geo-playbook", "workflow": "page-audit", "tier": "strong", "stakes": "medium"},
+    {"id": "citation_probe", "any": ["cited", "citation", "chatgpt", "perplexity", "ai overview", "visibility", "mention share"], "skill": "aeo-citation-mining", "workflow": "visibility-sample", "tier": "strong", "stakes": "low"},
+    {"id": "backlinks",      "any": ["backlink", "outreach", "guest post", "directory", "prospect", "link building"], "skill": "backlink-prospecting", "workflow": "prospect-research", "tier": "cheap", "stakes": "high"},
+    {"id": "lead_triage",    "any": ["dm", "inquiry", "brief", "lead", "client message", "quote request", "collab request"], "skill": "lead-triage", "workflow": "lead-triage", "tier": "cheap", "stakes": "medium"},
+    {"id": "domain",         "any": ["domain", "dns", "cname", "namesilo", "cloudflare"], "skill": "custom-domain-setup", "workflow": null, "tier": "strong", "stakes": "high"},
+    {"id": "media",          "any": ["thumbnail", "og image", "poster", "graphic", "voiceover"], "skill": "site-media-assets", "workflow": null, "tier": "cheap", "stakes": "low"},
+    {"id": "keys",           "any": ["api key", "credential", "token", "env var"], "skill": "site-api-toolkit", "workflow": null, "tier": "cheap", "stakes": "high"},
+    {"id": "browse",         "any": ["browse", "scrape", "crawl", "click through", "fill form"], "skill": "safe-browsing", "workflow": null, "tier": "cheap", "stakes": "medium"}
+  ],
+  "min_hits": 1
+}

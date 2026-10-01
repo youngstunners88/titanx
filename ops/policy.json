@@ -1,0 +1,27 @@
+{
+  "_doc": "Single source of truth for what the ops layer may do. Code reads this; skills explain it. Edit here, not in scripts.",
+  "default_mode": "dry-run",
+  "budgets": {
+    "max_live_calls_per_run": 25,
+    "max_live_calls_per_day": 200,
+    "max_est_cost_usd_per_day": 0.5
+  },
+  "thresholds": {
+    "confidence_floor": 0.6,
+    "act_default": 0.85,
+    "act_high_stakes": 0.9,
+    "min_margin": 0.15
+  },
+  "approval_required": [
+    "register_domain", "change_dns", "send_outreach", "post_social",
+    "publish_main", "spend_credits", "send_email"
+  ],
+  "never": [
+    "print_secret_values", "commit_secret_values", "bypass_captcha_or_login",
+    "automate_unsolicited_dms_at_scale", "invent_metrics_or_testimonials"
+  ],
+  "shell_allowlist": [
+    ["python3", "scripts/check_site.py"],
+    ["python3", "ops/tests/test_ops.py"]
+  ]
+}

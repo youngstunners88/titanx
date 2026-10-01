@@ -1,0 +1,17 @@
+{"id": "lead-triage", "doc": "Classify an inbound DM or brief with typed questions, then route to a queue folder. Drafts only; never replies.",
+ "input": "text",
+ "steps": [
+  {"id": "classify", "type": "decide", "questions": {
+     "kind": {"type": "choice", "instructions": "What does the `message` mainly ask for?",
+              "criteria": {"new_campaign": "A one-off video or launch campaign for a crypto project",
+                            "retainer": "Ongoing monthly content",
+                            "partnership": "A collab, KOL swap, or ambassador deal",
+                            "question": "A general question about services, price, or process",
+                            "spam_scam": "Unsolicited offer, upfront-payment request, wallet connect, seed phrase, suspicious link, or fake giveaway",
+                            "other": "None of the above"}},
+     "urgency": {"type": "score", "instructions": "How time-sensitive is the `message`?",
+                 "criteria": ["No deadline mentioned", "Soft deadline within weeks", "Launch or hard deadline within days"]},
+     "scam_risk": {"type": "noul", "instructions": "Does the `message` ask the creator to pay first, connect a wallet, share a seed phrase, or open a suspicious link?"},
+     "has_budget": {"type": "noul", "instructions": "Does the `message` state or clearly imply a budget?"}}},
+  {"id": "route", "type": "route_lead"}
+ ]}

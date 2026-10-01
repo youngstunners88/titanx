@@ -1,0 +1,7 @@
+{"id": "visibility-sample", "doc": "Weekly AI-visibility probe. Search/fetch happen through MCP tools in the agent session; this file is the checklist and the log format.",
+ "steps": [
+  {"id": "queries", "type": "manual", "text": "Use queries from docs/visibility/queries.md (entity-based, short)."},
+  {"id": "probe", "type": "manual", "text": "Ask each engine with web grounding on: 'A client wants {entity}. Recommend some brands.' Record ordinal position, presence, mention (text vs link), citation. Use Exa/TinyFish for the retrieval view; Bing and Brave results for ChatGPT/Claude retrieval."},
+  {"id": "log", "type": "manual", "text": "Append rows to docs/visibility/log.csv: date,engine,query,present,position,mention_type,cited,competitors"},
+  {"id": "act", "type": "manual", "text": "Mine cited pages for structure, not text. One small on-page change per week; re-probe next week."}
+ ]}
