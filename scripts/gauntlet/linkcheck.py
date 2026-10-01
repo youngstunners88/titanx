@@ -20,7 +20,7 @@ for i, (name, u) in enumerate(rows):
         time.sleep(0.35)
     else:
         status = "unverified"
-    out.append({"project": name, "url": u, "status": status})
+    out.append({"project": name, "url": u, "status": status, "checked": time.strftime("%Y-%m-%d", time.gmtime())})
     if status == "ratelimited": time.sleep(5)
 (ROOT / "docs" / "gauntlet").mkdir(parents=True, exist_ok=True)
 (ROOT / "docs" / "gauntlet" / "links.json").write_text(json.dumps(out, indent=1))
@@ -28,3 +28,11 @@ from collections import Counter
 print(Counter(o["status"] for o in out))
 for o in out:
     if o["status"] not in ("ok", "unverified"): print(o["status"], o["project"], o["url"])
+
+# keep the page's verification claim in sync with what was just verified
+import datetime
+ok = sum(1 for o in out if o["status"] == "ok")
+today = datetime.date.today()
+idx = ROOT / "index.html"; page = idx.read_text()
+new = re.sub(r"\d+ X links verified live <time datetime=\"[^\"]+\">[^<]*</time>", f'{ok} X links verified live <time datetime="{today.isoformat()}">{today.day} {today.strftime("%b %Y")}</time>', page)
+if new != page: idx.write_text(new); print("facts line refreshed:", ok, "ok,", today)

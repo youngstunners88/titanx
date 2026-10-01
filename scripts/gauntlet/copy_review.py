@@ -18,22 +18,31 @@ for sec in re.finditer(r"<(header|section|footer)\b([^>]*)>(.*?)</\1>", body, re
     for t in re.findall(r"<(?:h1|h2|h3|p|summary)[^>]*>(.*?)</(?:h1|h2|h3|p|summary)>", sec.group(3), re.S):
         txt = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t))).strip()
         if len(txt.split()) >= 4: blocks.append({"section": name, "text": txt})
-Q = {
-    "hype": {"type": "score", "instructions": "How promotional or hype-heavy is the `text`?",
-             "criteria": ["Plain and factual", "Some promotional wording but still concrete", "Hype: superlatives or unverifiable promises"]},
-    "concrete": {"type": "noul", "instructions": "Does the `text` state something concrete a reader can check or act on?"},
-    "standalone": {"type": "noul", "instructions": "Can the `text` be understood and quoted on its own, without the surrounding page?"},
-    "numeric_claim": {"type": "noul", "instructions": "Does the `text` make a numeric or performance claim?"},
-}
+def questions_for(key):
+    f = f"`blocks.{key}`"
+    return {
+        f"{key}__hype": {"type": "score", "instructions": f"How promotional or hype-heavy is the text at {f}?",
+                         "criteria": ["Plain and factual", "Some promotional wording but still concrete", "Hype: superlatives or unverifiable promises"]},
+        f"{key}__concrete": {"type": "noul", "instructions": f"Does the text at {f} state something concrete a reader can check or act on?"},
+        f"{key}__standalone": {"type": "noul", "instructions": f"Can the text at {f} be understood and quoted on its own, without the surrounding page?"},
+        f"{key}__numeric": {"type": "noul", "instructions": f"Does the text at {f} make a numeric or performance claim?"},
+    }
+
+
 live = "--live" in sys.argv
+Q, state_blocks = {}, {}
+for i, b in enumerate(blocks):
+    key = f"b{i}"; state_blocks[key] = b["text"]; Q.update(questions_for(key))
+r = llm.decide({"blocks": state_blocks}, Q, live=live)     # ONE request for the whole page
+D = r["decisions"]
 out = []
-for b in blocks:
-    r = llm.decide({"text": b["text"], "section": b["section"]}, Q, live=live)
-    d = r["decisions"]
-    out.append({**b, "hype": d["hype"].get("value"), "concrete": d["concrete"].get("value"), "standalone": d["standalone"].get("value"),
-                "numeric_claim": d["numeric_claim"].get("value"), "simulated": r["simulated"],
-                "flags": [k for k, bad in (("hype", isinstance(d["hype"].get("value"), (int, float)) and d["hype"]["value"] >= 1.5), ("not_concrete", d["concrete"].get("value") is False and d["concrete"].get("status") == "selected"),
-                                          ("not_standalone", d["standalone"].get("value") is False and d["standalone"].get("status") == "selected")) if bad]})
+for i, b in enumerate(blocks):
+    k = f"b{i}"; h, c, st, n = (D[f"{k}__{x}"] for x in ("hype", "concrete", "standalone", "numeric"))
+    hv = h.get("value")
+    out.append({**b, "hype": hv, "concrete": c.get("value"), "standalone": st.get("value"), "numeric_claim": n.get("value"), "simulated": r["simulated"],
+                "flags": [k_ for k_, bad in (("hype", isinstance(hv, (int, float)) and hv >= 1.5),
+                                             ("not_concrete", c.get("value") is False and c.get("status") == "selected"),
+                                             ("not_standalone", st.get("value") is False and st.get("status") == "selected")) if bad]})
 (ROOT / "docs" / "gauntlet").mkdir(parents=True, exist_ok=True)
 (ROOT / "docs" / "gauntlet" / "copy-review.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
 print(f"{len(out)} blocks, live={live}")

@@ -117,7 +117,7 @@ if len(src.encode()) > 140_000: fail("index.html over 140 KB")
 
 # --- round 2: well-formed HTML, anti-slop, AEO/GEO structure
 from html.parser import HTMLParser
-VOID = {"meta", "link", "img", "input", "br", "hr", "source"}
+VOID = {"meta", "link", "img", "input", "br", "hr", "source", "wbr", "col", "area", "base", "embed", "param", "track"}
 class _P(HTMLParser):
     def __init__(s): super().__init__(); s.st = []; s.err = []
     def handle_starttag(s, t, a):
@@ -131,16 +131,20 @@ if _p.err or _p.st: fail(f"HTML not well-formed: {(_p.err or [''])[0]} unclosed=
 vis = re.sub(r"<script.*?</script>|<style.*?</style>", "", src, flags=re.S)
 text = html.unescape(re.sub(r"<[^>]+>", " ", vis))
 style = re.search(r"<style>(.*?)</style>", src, re.S).group(1)
-if re.search("[\U0001F300-\U0001FAFF\u2600-\u27BF]", text): fail("emoji in visible text (AI-slop tell)")
+if re.search("[\U0001F300-\U0001FAFF\u25A0-\u25FF\u2600-\u27BF\u2B00-\u2BFF]", text): fail("emoji or pictograph glyph in visible text (AI-slop tell)")
 if "\u2014" in text: fail("em dash in visible text (AI-slop tell)")
 if "background-clip:text" in style or "-webkit-background-clip:text" in style: fail("gradient text (AI-slop tell)")
 if "backdrop-filter" in style: fail("glassmorphism blur (AI-slop tell)")
 if re.search(r"box-shadow:0 0 \d{2,}px", style): fail("soft glow shadow (AI-slop tell)")
 if re.search(r"\.ico\b|class=\"ico\"", src): fail("icon tile above headings (AI-slop tell)")
-fams = set(re.findall(r"font-family:'([^']+)'", style))
-if len(fams) > 1: fail(f"more than one webfont family: {fams}")
+fams = set()
+for decl in re.findall(r"font-family:([^;}]+)", style) + re.findall(r"--font:([^;}]+)", style):
+    for name in decl.split(","):
+        name = name.strip().strip("'\"")
+        if name and name.lower() not in ("system-ui", "-apple-system", "segoe ui", "sans-serif", "serif", "monospace", "inherit", "var(--font)"): fams.add(name)
+if fams - {"Montserrat"}: fail(f"font families other than Montserrat: {sorted(fams - {'Montserrat'})}")
 if re.search(r"(purple|violet|#[89a-f][0-9a-f]5cf6)", style, re.I): fail("purple palette (AI-slop tell)")
-BANNED = r"\b(revolutionary|cutting-edge|seamless(ly)?|unlock|elevate|supercharge|game-?chang\w*|next-level|leverage|synerg\w*|empower\w*|journey|landscape|delve|tapestry|robust|holistic|world-class|best-in-class)\b"
+BANNED = r"\b(revolutionary|cutting-edge|seamless(ly)?|unlock\w*|elevate\w*|supercharge|game-?chang\w*|next-level|leverage|synerg\w*|empower\w*|journey|landscape|delve|tapestry|robust|holistic|world-class|best-in-class)\b"
 bad = re.findall(BANNED, text, re.I)
 if bad: fail(f"banned filler words in copy: {sorted(set(x[0] if isinstance(x, tuple) else x for x in bad))[:4]}")
 # AEO: definitional lede, answer-first FAQ, heading hygiene
@@ -172,6 +176,23 @@ og = ROOT / "brand" / "og-image.png"
 if og.exists():
     w_, h_ = struct.unpack(">II", og.read_bytes()[16:24])
     if (w_, h_) != (1200, 630): fail(f"og-image is {w_}x{h_}, want 1200x630")
+
+# --- round 2 review fixes: numbers agree everywhere, per-item dates, verification date
+if "50+" in src: fail("unverifiable '50+' claim in page/metadata (owner claim lives in llms.txt only)")
+import datetime as _d
+for n in graph_nodes:
+    if n.get("@type") == "ItemList":
+        for it in n["itemListElement"]:
+            u = it["item"].get("url", ""); xm = re.search(r"x\.com/[^/]+/status/(\d+)", u)
+            if xm:
+                want = _d.datetime.fromtimestamp(((int(xm.group(1)) >> 22) + 1288834974657) / 1000, _d.timezone.utc).strftime("%Y-%m-%d")
+                if it["item"].get("datePublished") != want: fail(f"datePublished wrong for {u}: {it['item'].get('datePublished')} != {want}")
+lj = ROOT / "docs" / "gauntlet" / "links.json"
+vt = re.search(r"X links verified live <time datetime=\"([^\"]+)\"", src)
+if lj.exists() and vt:
+    checked = max((r.get("checked", "") for r in json.loads(lj.read_text())), default="")
+    if checked != vt.group(1): fail(f"facts line says verified {vt.group(1)} but links.json was checked {checked or 'never'} (run scripts/gauntlet/linkcheck.py)")
+if "live post" in text and "verified live" not in text: fail("'live post' claim without verification statement")
 
 print(f"words outside cards: {words} (budget {BUDGET}); projects: {len(cards)}")
 for w in warns: print("WARN", w)

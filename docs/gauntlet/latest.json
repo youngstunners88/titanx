@@ -1,8 +1,8 @@
 {
- "run": "2026-10-01 10:58 UTC",
- "full": true,
- "passed": 56,
- "total": 56,
+ "run": "2026-10-01 11:09 UTC",
+ "full": false,
+ "passed": 53,
+ "total": 53,
  "gates": [
   {
    "stage": "static",
@@ -20,7 +20,7 @@
    "stage": "lab:mobile",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "172 ms"
+   "detail": "104 ms"
   },
   {
    "stage": "lab:mobile",
@@ -32,13 +32,13 @@
    "stage": "lab:mobile",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "526 KB, 42 requests"
+   "detail": "320 KB, 42 requests"
   },
   {
    "stage": "lab:mobile",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:42231']"
+   "detail": "['127.0.0.1:36861']"
   },
   {
    "stage": "lab:mobile",
@@ -86,7 +86,7 @@
    "stage": "lab:tiny",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "80 ms"
+   "detail": "104 ms"
   },
   {
    "stage": "lab:tiny",
@@ -98,13 +98,13 @@
    "stage": "lab:tiny",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "526 KB, 42 requests"
+   "detail": "320 KB, 42 requests"
   },
   {
    "stage": "lab:tiny",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:42231']"
+   "detail": "['127.0.0.1:36861']"
   },
   {
    "stage": "lab:tiny",
@@ -146,25 +146,25 @@
    "stage": "lab:desktop",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "128 ms"
+   "detail": "96 ms"
   },
   {
    "stage": "lab:desktop",
    "name": "CLS <= 0.1",
    "pass": true,
-   "detail": "0"
+   "detail": "0.0076"
   },
   {
    "stage": "lab:desktop",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "526 KB, 42 requests"
+   "detail": "320 KB, 42 requests"
   },
   {
    "stage": "lab:desktop",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:42231']"
+   "detail": "['127.0.0.1:36861']"
   },
   {
    "stage": "lab:desktop",
@@ -319,24 +319,6 @@
   {
    "stage": "interact",
    "name": "privacy: no third-party requests on load",
-   "pass": true,
-   "detail": ""
-  },
-  {
-   "stage": "links",
-   "name": "every X post link resolves (oEmbed)",
-   "pass": true,
-   "detail": "130 ok/unverified, 0 bad"
-  },
-  {
-   "stage": "copy",
-   "name": "every block has a hype decision",
-   "pass": true,
-   "detail": "0 inconclusive"
-  },
-  {
-   "stage": "copy",
-   "name": "no hype-flagged copy (typed review, live)",
    "pass": true,
    "detail": ""
   }

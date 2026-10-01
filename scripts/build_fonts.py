@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-host Inter (400-600) and Montserrat (700-900), latin subset, variable woff2.
+"""Self-host Montserrat (400-900), latin subset, variable woff2. One family only (anti-slop rule).
 Writes brand/fonts/*.woff2 and prints the @font-face CSS (kept inline in index.html)."""
 import re, subprocess
 from pathlib import Path
