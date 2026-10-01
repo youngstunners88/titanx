@@ -1,8 +1,8 @@
 {
- "run": "2026-10-01 12:20 UTC",
+ "run": "2026-10-01 12:38 UTC",
  "full": false,
- "passed": 55,
- "total": 55,
+ "passed": 56,
+ "total": 56,
  "gates": [
   {
    "stage": "static",
@@ -20,7 +20,7 @@
    "stage": "lab:mobile",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "128 ms"
+   "detail": "88 ms"
   },
   {
    "stage": "lab:mobile",
@@ -32,13 +32,13 @@
    "stage": "lab:mobile",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "338 KB, 43 requests"
+   "detail": "348 KB, 43 requests"
   },
   {
    "stage": "lab:mobile",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:39171']"
+   "detail": "['127.0.0.1:44137']"
   },
   {
    "stage": "lab:mobile",
@@ -86,7 +86,7 @@
    "stage": "lab:tiny",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "80 ms"
+   "detail": "76 ms"
   },
   {
    "stage": "lab:tiny",
@@ -98,13 +98,13 @@
    "stage": "lab:tiny",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "338 KB, 43 requests"
+   "detail": "348 KB, 43 requests"
   },
   {
    "stage": "lab:tiny",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:39171']"
+   "detail": "['127.0.0.1:44137']"
   },
   {
    "stage": "lab:tiny",
@@ -146,7 +146,7 @@
    "stage": "lab:desktop",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "108 ms"
+   "detail": "112 ms"
   },
   {
    "stage": "lab:desktop",
@@ -158,13 +158,13 @@
    "stage": "lab:desktop",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "338 KB, 43 requests"
+   "detail": "348 KB, 43 requests"
   },
   {
    "stage": "lab:desktop",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:39171']"
+   "detail": "['127.0.0.1:44137']"
   },
   {
    "stage": "lab:desktop",
@@ -270,7 +270,13 @@
   },
   {
    "stage": "interact",
-   "name": "demo: game links point to smokegame.win and GitHub",
+   "name": "demo: game link points to smokegame.win and nothing else is exposed",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "privacy: unreleased game repo is not linked anywhere",
    "pass": true,
    "detail": ""
   },
