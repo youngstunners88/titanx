@@ -11,6 +11,7 @@ const b = await chromium.launch(); const tests = []; const t = (name, pass, deta
 
 async function fresh(vp, extra = {}) { const c = await b.newContext({ ignoreHTTPSErrors: true, viewport: vp, permissions: ['clipboard-read', 'clipboard-write'], ...extra }); const p = await c.newPage(); await p.goto(base); await p.waitForTimeout(500); return { c, p }; }
 
+try {
 // desktop
 {
   const { c, p } = await fresh({ width: 1280, height: 800 });
@@ -71,5 +72,6 @@ async function fresh(vp, extra = {}) { const c = await b.newContext({ ignoreHTTP
   const own = new URL(base).host; const ext = []; p.on('request', r => { const h = new URL(r.url()).host; if (h !== own) ext.push(h); }); await p.reload(); await p.waitForTimeout(800); t('privacy: no third-party requests on load', ext.length === 0, [...new Set(ext)].join(','));
   await c.close();
 }
+} catch (e) { t('harness: ran to completion', false, String(e.message || e).split('\n')[0]); }
 await b.close(); srvh.close();
 console.log(JSON.stringify({ tests }, null, 1));

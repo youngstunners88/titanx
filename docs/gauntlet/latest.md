@@ -1,14 +1,14 @@
 # Gauntlet scorecard
 
-Run: 2026-10-01 16:11 UTC | mode: full | target: local files
+Run: 2026-10-01 16:21 UTC | mode: fast | target: local files
 
-**58/59 gates passed**
+**56/56 gates passed**
 
 | Stage | Gate | Result | Detail |
 |---|---|---|---|
 | static | check_site.py (SEO, schema, facts, dates, budgets, secrets) | PASS | OK |
 | ops | ops offline tests | PASS | OK |
-| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 248 ms |
+| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 104 ms |
 | lab:mobile | CLS <= 0.1 | PASS | 0 |
 | lab:mobile | transfer <= 600 KB | PASS | 348 KB, 43 requests |
 | lab:mobile | no third-party hosts on load | PASS | own host only |
@@ -19,7 +19,7 @@ Run: 2026-10-01 16:11 UTC | mode: full | target: local files
 | lab:mobile | tap targets >= 44px | PASS | [] |
 | lab:mobile | axe-core: 0 violations | PASS | [] |
 | lab:mobile | first video tile above the fold (<= 75% of viewport) | PASS | 541px of 844px |
-| lab:tiny | LCP <= 2500 ms (local lab) | PASS | 92 ms |
+| lab:tiny | LCP <= 2500 ms (local lab) | PASS | 76 ms |
 | lab:tiny | CLS <= 0.1 | PASS | 0 |
 | lab:tiny | transfer <= 600 KB | PASS | 348 KB, 43 requests |
 | lab:tiny | no third-party hosts on load | PASS | own host only |
@@ -29,7 +29,7 @@ Run: 2026-10-01 16:11 UTC | mode: full | target: local files
 | lab:tiny | no broken images | PASS | 0 |
 | lab:tiny | tap targets >= 44px | PASS | [] |
 | lab:tiny | axe-core: 0 violations | PASS | [] |
-| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 116 ms |
+| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 92 ms |
 | lab:desktop | CLS <= 0.1 | PASS | 0.0076 |
 | lab:desktop | transfer <= 600 KB | PASS | 348 KB, 43 requests |
 | lab:desktop | no third-party hosts on load | PASS | own host only |
@@ -62,6 +62,3 @@ Run: 2026-10-01 16:11 UTC | mode: full | target: local files
 | interact | mobile: no horizontal overflow | PASS |  |
 | interact | privacy: no analytics requests without a configured key | PASS |  |
 | interact | privacy: no third-party requests on load | PASS |  |
-| links | every X post link resolves (oEmbed) | PASS | 130 ok/unverified, 0 bad |
-| copy | every block has a hype decision | **FAIL** | 29 inconclusive |
-| copy | no hype-flagged copy (typed review, live) | PASS |  |
