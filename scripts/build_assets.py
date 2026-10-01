@@ -28,10 +28,14 @@ def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
 
-def to_webp(data, size=96, q=82):
+# Art whose subject is not centred in the source: explicit square crop boxes (left, top, right, bottom).
+CROPS = {"gold-mine": (17, 0, 393, 376)}   # circular badge only; excludes the cut-off "GOLD MINE" lettering
+
+
+def to_webp(data, size=96, q=82, box=None):
     im = Image.open(io.BytesIO(data)); im = im.convert("RGBA") if im.mode in ("P", "LA", "RGBA") else im.convert("RGB")
     w, h = im.size; s = min(w, h)
-    im = im.crop(((w - s) // 2, (h - s) // 2, (w - s) // 2 + s, (h - s) // 2 + s)).resize((size, size), Image.LANCZOS)
+    im = (im.crop(box) if box else im.crop(((w - s) // 2, (h - s) // 2, (w - s) // 2 + s, (h - s) // 2 + s))).resize((size, size), Image.LANCZOS)
     buf = io.BytesIO(); im.save(buf, "WEBP", quality=q, method=6); return buf.getvalue()
 
 
@@ -48,9 +52,14 @@ for m in list(re.finditer(r'<div class="project-card.*?<div class="project-count
     fn = f"brand/projects/{slug(name)}.webp"
     if seen_slugs.setdefault(fn, name) != name:
         raise SystemExit(f"slug collision: {name!r} and {seen_slugs[fn]!r} both map to {fn}")
-    (ROOT / fn).write_bytes(to_webp(fetch(url)))
+    (ROOT / fn).write_bytes(to_webp(fetch(url), box=CROPS.get(slug(name))))
     sources[fn] = url if url.startswith("http") else "repo:" + url
     src = src.replace(blk, blk.replace(url, fn)); changed += 1
+# re-crop any overridden subjects from their recorded source
+for sl, box in CROPS.items():
+    fn = f"brand/projects/{sl}.webp"
+    if fn in sources:
+        (ROOT / fn).write_bytes(to_webp(fetch(sources[fn].removeprefix('repo:')), box=box))
 sources_path.write_text(json.dumps(dict(sorted(sources.items())), indent=1))
 
 # --- normalise avatar attrs (explicit size, lazy, async) so layout never shifts

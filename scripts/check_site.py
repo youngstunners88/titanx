@@ -105,7 +105,7 @@ if subprocess.run([sys.executable, str(ROOT / "scripts" / "build_llms.py"), "--c
 for f in ("404.html", "manifest.webmanifest", "brand/favicon-32.png", "brand/apple-touch-icon.png", "brand/fonts/montserrat-latin.woff2"):
     if not (ROOT / f).exists(): fail(f"missing {f}")
 if "fonts.googleapis.com" in src or "fonts.gstatic.com" in src: fail("Google Fonts still referenced (self-host instead)")
-allowed = ("x.com", "www.instagram.com", "www.smokegame.win", "github.com", "twitter.com", "youngstunners88.github.io", "schema.org", "www.w3.org", "platform.twitter.com", "us-assets.i.posthog.com", "us.i.posthog.com")
+allowed = ("x.com", "www.instagram.com", "www.smokegame.win", "twitter.com", "youngstunners88.github.io", "schema.org", "www.w3.org", "platform.twitter.com", "us-assets.i.posthog.com", "us.i.posthog.com")
 for u in set(re.findall(r'(?:src|href)="(https?://[^"]+)"', src)):
     h = re.sub(r"https?://([^/]+)/?.*", r"\1", u)
     if h not in allowed: fail(f"unexpected third-party host in markup: {h}")
@@ -177,6 +177,7 @@ if og.exists():
     w_, h_ = struct.unpack(">II", og.read_bytes()[16:24])
     if (w_, h_) != (1200, 630): fail(f"og-image is {w_}x{h_}, want 1200x630")
 
+if re.search(r"GM-GAME", src, re.I) or "github.com" in src: fail("unreleased game repository must not be linked (owner request)")
 # --- round 2 review fixes: numbers agree everywhere, per-item dates, verification date
 if "50+" in src: fail("unverifiable '50+' claim in page/metadata (owner claim lives in llms.txt only)")
 import datetime as _d

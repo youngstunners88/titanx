@@ -40,7 +40,8 @@ async function fresh(vp, extra = {}) { const c = await b.newContext({ ignoreHTTP
   let ds = 'timeout';
   for (let i = 0; i < 24; i++) { await p.waitForTimeout(500); ds = await p.evaluate(() => { const pl = document.querySelector('#demo-player'); if (pl.querySelector('iframe, .twitter-tweet, twitter-widget')) return 'embed'; if (pl.querySelector('.msg a')) return 'fallback'; return 'loading'; }); if (ds !== 'loading') break; }
   t('demo: embed or graceful fallback (never stuck)', ds === 'embed' || ds === 'fallback', ds);
-  t('demo: game links point to smokegame.win and GitHub', await p.evaluate(() => [...document.querySelectorAll('#latest a')].map(a => a.href).join(' ').match(/smokegame\.win\/.*github\.com\/youngstunners88\/GM-GAME/) !== null));
+  t('demo: game link points to smokegame.win and nothing else is exposed', await p.evaluate(() => { const h = [...document.querySelectorAll('#latest .hero-btns a')].map(a => a.href); return h.length === 1 && /smokegame\.win/.test(h[0]); }));
+  t('privacy: unreleased game repo is not linked anywhere', await p.evaluate(() => !/GM-GAME/i.test(document.documentElement.outerHTML)));
   // brief form
   await p.evaluate(() => document.querySelector('#contact').scrollIntoView());
   await p.evaluate(() => { window.__opens = []; const o = window.open; window.open = (...a) => { window.__opens.push({ a, syncBeforeAwait: !window.__awaited }); return o.apply(window, a); }; const w = navigator.clipboard.writeText.bind(navigator.clipboard); navigator.clipboard.writeText = (x) => { window.__awaited = true; return w(x); }; });
