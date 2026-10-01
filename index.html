@@ -113,6 +113,7 @@ h1 em{font-style:normal;color:var(--red)}
   .toolbar{margin-bottom:16px}
   .search{min-width:0;width:100%}
 }
+@media(max-width:360px){.hero-btns .btn{font-size:.8rem;padding:12px 8px}.nav-links .nav-cta{padding:9px 12px}}
 /* SECTIONS */
 section{padding:72px 0}
 section.first{padding-top:12px}
@@ -156,7 +157,7 @@ h2{font-family:var(--head);font-weight:900;font-size:clamp(1.7rem,3.6vw,2.6rem);
 .tab.active{background:var(--red);border-color:var(--red);color:#fff}
 .search{min-height:44px;background:var(--bg3);border:1px solid var(--line);color:#fff;font:400 .9rem var(--body);padding:10px 16px;border-radius:999px;min-width:240px}
 .search::placeholder{color:var(--muted)}
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;align-items:start}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(310px,100%),1fr));gap:20px;align-items:start}
 .project-card{background:var(--bg3);border:1px solid var(--line);border-radius:var(--radius);padding:22px;transition:.3s;position:relative;overflow:hidden}
 .project-card::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--red),transparent)}
 .project-card:hover{transform:translateY(-3px);border-color:rgba(225,6,0,.5);box-shadow:0 16px 44px rgba(0,0,0,.45)}
@@ -192,8 +193,8 @@ h2{font-family:var(--head);font-weight:900;font-size:clamp(1.7rem,3.6vw,2.6rem);
 .player .msg{color:var(--muted);font-size:.9rem;text-align:center}
 .player .msg a{color:#fff}
 /* STICKY CTA (mobile) */
-.sticky{position:fixed;left:0;right:0;bottom:0;z-index:90;display:none;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,rgba(10,10,12,.96) 40%);transform:translateY(110%);transition:transform .3s}
-.sticky.show{transform:none}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:90;display:none;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,rgba(10,10,12,.96) 40%);transform:translateY(110%);visibility:hidden;transition:transform .3s,visibility 0s .3s}
+.sticky.show{transform:none;visibility:visible;transition-delay:0s}
 .sticky .btn{width:100%}
 @media(max-width:720px){.sticky{display:block}footer{padding-bottom:84px}}
 .disclaimer{max-width:620px;margin:10px auto 0;font-size:.78rem;color:var(--muted)}
@@ -1134,15 +1135,16 @@ document.addEventListener('click',e=>{const a=e.target.closest('a,button');if(!a
   else if(a.matches('.btn[href="#contact"],.nav-cta'))track('cta_click',{label:a.textContent.trim()})});
 
 // featured player: click-to-load X embed (no third-party JS until a visitor presses play)
-const player=$('#player');let xw=null;
+const player=$('#player');let xw=null,playSeq=0;
 function loadX(){return xw||(xw=new Promise((res,rej)=>{if(window.twttr&&twttr.widgets)return res(twttr);const s=document.createElement('script');s.src='https://platform.twitter.com/widgets.js';s.async=true;s.onload=()=>res(window.twttr);s.onerror=rej;document.head.appendChild(s)}))}
 $$('.feat').forEach(b=>b.addEventListener('click',async()=>{
+  const seq=++playSeq,live=()=>seq===playSeq;   // ignore results from superseded clicks
   $$('.feat').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');
   const id=b.dataset.tweet,name=b.dataset.name,url='https://x.com/i/status/'+id;
-  player.hidden=false;player.innerHTML='<p class="msg">Loading '+name+'…</p>';track('featured_play',{project:name});
-  const fail=()=>{track('featured_fallback',{project:name});player.innerHTML='<p class="msg">'+name+': <a class="btn btn-ghost" href="'+url+'" target="_blank" rel="noopener">Watch on X →</a></p>'};
+  player.hidden=false;player.textContent='';const loading=document.createElement('p');loading.className='msg';loading.textContent='Loading '+name+'…';player.appendChild(loading);track('featured_play',{project:name});
+  const fail=()=>{if(!live())return;track('featured_fallback',{project:name});player.textContent='';const p=document.createElement('p');p.className='msg';p.append(name+': ');const a=document.createElement('a');a.className='btn btn-ghost';a.href=url;a.target='_blank';a.rel='noopener';a.textContent='Watch on X →';p.appendChild(a);player.appendChild(p)};
   const t=setTimeout(fail,9000);
-  try{const tw=await loadX();player.innerHTML='';const el=await tw.widgets.createTweet(id,player,{theme:'dark',dnt:true,conversation:'none',align:'center'});clearTimeout(t);if(!el)fail()}catch(e){clearTimeout(t);fail()}
+  try{const tw=await loadX();if(!live()){clearTimeout(t);return}player.textContent='';const el=await tw.widgets.createTweet(id,player,{theme:'dark',dnt:true,conversation:'none',align:'center'});clearTimeout(t);if(!live()){el&&el.remove();return}if(!el)fail()}catch(e){clearTimeout(t);fail()}
 }));
 
 // sticky CTA on mobile: show after the hero, hide while the contact form is visible

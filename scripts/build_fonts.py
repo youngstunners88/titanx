@@ -8,14 +8,15 @@ UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chr
 url = "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Montserrat:wght@700..900&display=swap"
 css = subprocess.run(["curl", "-s", "-m", "30", "-A", UA, url], capture_output=True, text=True).stdout
 out = []
-for fam, rng, fname in re.findall(r"/\* latin \*/\s*@font-face \{\s*font-family: '([^']+)';.*?font-weight: ([0-9 ]+);.*?src: url\(([^)]+)\)", css, re.S):
-    pass
 for m in re.finditer(r"/\* latin \*/\s*@font-face \{(.*?)\}", css, re.S):
     b = m.group(1)
     fam = re.search(r"font-family: '([^']+)'", b).group(1)
     wt = re.search(r"font-weight: ([0-9 ]+);", b).group(1).strip()
     u = re.search(r"url\(([^)]+)\)", b).group(1)
     fn = f"brand/fonts/{fam.lower()}-latin.woff2"
-    (ROOT / fn).write_bytes(subprocess.run(["curl", "-s", "-m", "30", u], capture_output=True).stdout)
+    data = subprocess.run(["curl", "-sf", "-m", "30", u], capture_output=True).stdout
+    if data[:4] != b"wOF2" or len(data) < 5000:
+        raise SystemExit(f"font download failed for {fam}: not a woff2 file")
+    (ROOT / fn).write_bytes(data)
     out.append(f"@font-face{{font-family:'{fam}';font-style:normal;font-weight:{wt};font-display:swap;src:url({fn}) format('woff2')}}")
 print("\n".join(out))

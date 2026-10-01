@@ -3,7 +3,7 @@
   PYTHONPATH=/tmp/pylibs python3 scripts/build_assets.py
 Rewrites external <img src> in index.html to brand/projects/<slug>.webp (96x96, cover crop),
 records provenance in brand/projects/SOURCES.json, and builds logo/favicon variants."""
-import io, json, os, re, subprocess, sys, hashlib
+import html, io, json, re, subprocess
 from pathlib import Path
 from PIL import Image
 
@@ -37,14 +37,17 @@ def to_webp(data, size=96, q=82):
 
 # --- project avatars: one per card, named after the project
 changed = 0
+seen_slugs = {}
 for m in list(re.finditer(r'<div class="project-card.*?<div class="project-count">', src, re.S)):
     blk = m.group(0)
-    name = re.search(r'class="project-name">(.*?)<', blk).group(1)
+    name = html.unescape(re.search(r'class="project-name">(.*?)<', blk).group(1)).strip()
     im = re.search(r'<img [^>]*src="([^"]+)"', blk)
     if not im or im.group(1).startswith("brand/projects/"):
         continue
     url = im.group(1)
     fn = f"brand/projects/{slug(name)}.webp"
+    if seen_slugs.setdefault(fn, name) != name:
+        raise SystemExit(f"slug collision: {name!r} and {seen_slugs[fn]!r} both map to {fn}")
     (ROOT / fn).write_bytes(to_webp(fetch(url)))
     sources[fn] = url if url.startswith("http") else "repo:" + url
     src = src.replace(blk, blk.replace(url, fn)); changed += 1

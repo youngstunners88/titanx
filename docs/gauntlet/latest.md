@@ -1,30 +1,42 @@
 # Gauntlet scorecard
 
-Run: 2026-10-01 01:53 UTC | mode: full | target: local files
+Run: 2026-10-01 02:02 UTC | mode: full | target: local files
 
-**45/45 gates passed**
+**58/58 gates passed**
 
 | Stage | Gate | Result | Detail |
 |---|---|---|---|
 | static | check_site.py (SEO, schema, facts, dates, budgets, secrets) | PASS | OK |
 | ops | ops offline tests | PASS | OK |
-| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 208 ms |
+| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 132 ms |
 | lab:mobile | CLS <= 0.1 | PASS | 0 |
 | lab:mobile | transfer <= 600 KB | PASS | 314 KB, 42 requests |
-| lab:mobile | no third-party hosts on load | PASS | ['127.0.0.1:36399'] |
+| lab:mobile | no third-party hosts on load | PASS | ['127.0.0.1:43891'] |
 | lab:mobile | no console errors / failed requests | PASS | [] |
 | lab:mobile | no horizontal overflow | PASS | 390 |
+| lab:mobile | no clipped buttons/chips | PASS | 0 |
 | lab:mobile | no broken images | PASS | 0 |
 | lab:mobile | tap targets >= 44px | PASS | [] |
 | lab:mobile | axe-core: 0 violations | PASS | [] |
 | lab:mobile | first video tile above the fold (<= 75% of viewport) | PASS | 436px of 844px |
 | lab:mobile | first project link in first screen (<= viewport) | PASS | 723px |
-| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 140 ms |
+| lab:tiny | LCP <= 2500 ms (local lab) | PASS | 108 ms |
+| lab:tiny | CLS <= 0.1 | PASS | 0 |
+| lab:tiny | transfer <= 600 KB | PASS | 314 KB, 42 requests |
+| lab:tiny | no third-party hosts on load | PASS | ['127.0.0.1:43891'] |
+| lab:tiny | no console errors / failed requests | PASS | [] |
+| lab:tiny | no horizontal overflow | PASS | 320 |
+| lab:tiny | no clipped buttons/chips | PASS | 0 |
+| lab:tiny | no broken images | PASS | 0 |
+| lab:tiny | tap targets >= 44px | PASS | [] |
+| lab:tiny | axe-core: 0 violations | PASS | [] |
+| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 120 ms |
 | lab:desktop | CLS <= 0.1 | PASS | 0 |
 | lab:desktop | transfer <= 600 KB | PASS | 314 KB, 42 requests |
-| lab:desktop | no third-party hosts on load | PASS | ['127.0.0.1:36399'] |
+| lab:desktop | no third-party hosts on load | PASS | ['127.0.0.1:43891'] |
 | lab:desktop | no console errors / failed requests | PASS | [] |
 | lab:desktop | no horizontal overflow | PASS | 1280 |
+| lab:desktop | no clipped buttons/chips | PASS | 0 |
 | lab:desktop | no broken images | PASS | 0 |
 | lab:desktop | tap targets >= 44px | PASS | [] |
 | lab:desktop | axe-core: 0 violations | PASS | [] |
@@ -50,4 +62,5 @@ Run: 2026-10-01 01:53 UTC | mode: full | target: local files
 | interact | privacy: no analytics requests without a configured key | PASS |  |
 | interact | privacy: no third-party requests on load | PASS |  |
 | links | every X post link resolves (oEmbed) | PASS | 130 ok/unverified, 0 bad |
+| copy | every block has a hype decision | PASS | 0 inconclusive |
 | copy | no hype-flagged copy (typed review, live) | PASS |  |

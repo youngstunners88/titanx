@@ -12,9 +12,10 @@ src = (ROOT / "index.html").read_text()
 body = re.sub(r'<div class="projects-grid".*?</div>\s*<p class="empty"', '<p class="empty"', src, flags=re.S)
 body = re.sub(r"<script.*?</script>|<style.*?</style>|<head>.*?</head>|<nav.*?</nav>", "", body, flags=re.S)
 blocks = []
-for sec in re.finditer(r'<(?:header|section|footer)[^>]*?(?:id="([a-z]+)")?[^>]*>(.*?)</(?:header|section|footer)>', body, re.S):
-    name = sec.group(1) or "footer/hero"
-    for t in re.findall(r"<(?:h1|h2|h3|p|summary)[^>]*>(.*?)</(?:h1|h2|h3|p|summary)>", sec.group(2), re.S):
+for sec in re.finditer(r"<(header|section|footer)\b([^>]*)>(.*?)</\1>", body, re.S):
+    idm = re.search(r'\bid="([^"]+)"', sec.group(2))
+    name = idm.group(1) if idm else sec.group(1)
+    for t in re.findall(r"<(?:h1|h2|h3|p|summary)[^>]*>(.*?)</(?:h1|h2|h3|p|summary)>", sec.group(3), re.S):
         txt = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t))).strip()
         if len(txt.split()) >= 4: blocks.append({"section": name, "text": txt})
 Q = {
@@ -31,7 +32,7 @@ for b in blocks:
     d = r["decisions"]
     out.append({**b, "hype": d["hype"].get("value"), "concrete": d["concrete"].get("value"), "standalone": d["standalone"].get("value"),
                 "numeric_claim": d["numeric_claim"].get("value"), "simulated": r["simulated"],
-                "flags": [k for k, bad in (("hype", (d["hype"].get("value") or 0) >= 1.5), ("not_concrete", d["concrete"].get("value") is False and d["concrete"].get("status") == "selected"),
+                "flags": [k for k, bad in (("hype", isinstance(d["hype"].get("value"), (int, float)) and d["hype"]["value"] >= 1.5), ("not_concrete", d["concrete"].get("value") is False and d["concrete"].get("status") == "selected"),
                                           ("not_standalone", d["standalone"].get("value") is False and d["standalone"].get("status") == "selected")) if bad]})
 (ROOT / "docs" / "gauntlet").mkdir(parents=True, exist_ok=True)
 (ROOT / "docs" / "gauntlet" / "copy-review.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))

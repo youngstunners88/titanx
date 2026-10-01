@@ -1,8 +1,8 @@
 {
- "run": "2026-10-01 01:53 UTC",
+ "run": "2026-10-01 02:02 UTC",
  "full": true,
- "passed": 45,
- "total": 45,
+ "passed": 58,
+ "total": 58,
  "gates": [
   {
    "stage": "static",
@@ -20,7 +20,7 @@
    "stage": "lab:mobile",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "208 ms"
+   "detail": "132 ms"
   },
   {
    "stage": "lab:mobile",
@@ -38,7 +38,7 @@
    "stage": "lab:mobile",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:36399']"
+   "detail": "['127.0.0.1:43891']"
   },
   {
    "stage": "lab:mobile",
@@ -51,6 +51,12 @@
    "name": "no horizontal overflow",
    "pass": true,
    "detail": "390"
+  },
+  {
+   "stage": "lab:mobile",
+   "name": "no clipped buttons/chips",
+   "pass": true,
+   "detail": "0"
   },
   {
    "stage": "lab:mobile",
@@ -83,10 +89,70 @@
    "detail": "723px"
   },
   {
+   "stage": "lab:tiny",
+   "name": "LCP <= 2500 ms (local lab)",
+   "pass": true,
+   "detail": "108 ms"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "CLS <= 0.1",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "transfer <= 600 KB",
+   "pass": true,
+   "detail": "314 KB, 42 requests"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no third-party hosts on load",
+   "pass": true,
+   "detail": "['127.0.0.1:43891']"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no console errors / failed requests",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no horizontal overflow",
+   "pass": true,
+   "detail": "320"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no clipped buttons/chips",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "no broken images",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "tap targets >= 44px",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "stage": "lab:tiny",
+   "name": "axe-core: 0 violations",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
    "stage": "lab:desktop",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "140 ms"
+   "detail": "120 ms"
   },
   {
    "stage": "lab:desktop",
@@ -104,7 +170,7 @@
    "stage": "lab:desktop",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:36399']"
+   "detail": "['127.0.0.1:43891']"
   },
   {
    "stage": "lab:desktop",
@@ -117,6 +183,12 @@
    "name": "no horizontal overflow",
    "pass": true,
    "detail": "1280"
+  },
+  {
+   "stage": "lab:desktop",
+   "name": "no clipped buttons/chips",
+   "pass": true,
+   "detail": "0"
   },
   {
    "stage": "lab:desktop",
@@ -267,6 +339,12 @@
    "name": "every X post link resolves (oEmbed)",
    "pass": true,
    "detail": "130 ok/unverified, 0 bad"
+  },
+  {
+   "stage": "copy",
+   "name": "every block has a hype decision",
+   "pass": true,
+   "detail": "0 inconclusive"
   },
   {
    "stage": "copy",

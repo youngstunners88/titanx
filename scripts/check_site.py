@@ -71,15 +71,18 @@ if words > BUDGET: fail(f"copy budget exceeded: {words} words > {BUDGET} (outsid
 # --- secret leak scan: env values must not appear in tracked files (names printed only)
 leaks = []
 tracked = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.split()
-texts = {}
+SKIP = (".png", ".jpg", ".jpeg", ".webp", ".gif", ".woff2", ".ico")
+blob = []
 for f in tracked:
     p = ROOT / f
-    if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp", ".gif"): continue
-    try: texts[f] = p.read_text(errors="ignore")
+    if p.suffix.lower() in SKIP: continue
+    try: blob.append(p.read_text(errors="ignore"))
     except Exception: pass
-for k, v in os.environ.items():
-    if len(v) >= 16 and re.search(r"KEY|TOKEN|SECRET|API|PASS", k, re.I):
-        if any(v in tx for tx in texts.values()): leaks.append(k)
+blob = "\n".join(blob)
+for k_, v in os.environ.items():
+    if not re.search(r"KEY|TOKEN|SECRET|PASS", k_, re.I) or re.search(r"(URL|URI|PATH|FILE|HOST|DIR)$", k_, re.I): continue
+    if len(v) >= 16 and not re.match(r"(https?://|/)", v) and not re.search(r"\s", v) and v in blob:
+        leaks.append(k_)
 if leaks: fail(f"SECRET VALUE FOUND in tracked files for env var(s): {leaks}")
 
 

@@ -46,11 +46,13 @@ if lab:
         gate(s, "no third-party hosts on load", set(h.split(":")[0] for h in v["hostsKB"]) <= {"127.0.0.1"} or bool(os.environ.get("GAUNTLET_URL")), list(v["hostsKB"])[:4])
         gate(s, "no console errors / failed requests", not v["consoleErrors"] and not v["failedRequests"], (v["consoleErrors"] + v["failedRequests"])[:2])
         gate(s, "no horizontal overflow", not v["overflowX"], v["scrollWidth"])
+        gate(s, "no clipped buttons/chips", v["clippedControls"] == 0, v["clippedControls"])
         gate(s, "no broken images", v["brokenImages"] == 0, v["brokenImages"])
         gate(s, "tap targets >= 44px", v["smallTargets"] == 0, v["smallTargetSamples"][:2])
         gate(s, "axe-core: 0 violations", not (v["axe"] or []) if v["axe"] is not None else False, [(a["id"], a["impact"]) for a in (v["axe"] or [])])
-        gate(s, "first video tile above the fold (<= 75% of viewport)", v["firstVideoTileTop"] is not None and v["firstVideoTileTop"] <= 0.75 * v["viewport"], f"{v['firstVideoTileTop']}px of {v['viewport']}px")
-        gate(s, "first project link in first screen (<= viewport)", v["firstProjectLinkTop"] is not None and v["firstProjectLinkTop"] <= v["viewport"], f"{v['firstProjectLinkTop']}px")
+        if vp != "tiny":   # 320px phones are an overflow/clipping check only
+            gate(s, "first video tile above the fold (<= 75% of viewport)", v["firstVideoTileTop"] is not None and v["firstVideoTileTop"] <= 0.75 * v["viewport"], f"{v['firstVideoTileTop']}px of {v['viewport']}px")
+            gate(s, "first project link in first screen (<= viewport)", v["firstProjectLinkTop"] is not None and v["firstProjectLinkTop"] <= v["viewport"], f"{v['firstProjectLinkTop']}px")
 # 4. interaction
 try:
     r = run(["node", "scripts/gauntlet/interact.mjs"], timeout=300)
@@ -58,16 +60,37 @@ try:
         gate("interact", t["name"], t["pass"], t["detail"] if not t["pass"] else "")
 except Exception as e:
     gate("interact", "interaction harness ran", False, str(e)[:120])
-# 5/6. full
+# 5/6. full (stale outputs are deleted first; a failed or missing run fails the gate)
+def fresh_json(script, out_name, args=(), timeout=900):
+    f = OUT / out_name
+    f.unlink(missing_ok=True)
+    try:
+        r = run([sys.executable, script, *args], timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return None, "timed out"
+    if r.returncode != 0 or not f.exists():
+        return None, (r.stderr.strip().splitlines() or ["failed"])[-1][:120]
+    try:
+        return json.loads(f.read_text()), ""
+    except Exception as e:
+        return None, f"unreadable output: {e}"[:120]
+
+
 if FULL:
-    r = run([sys.executable, "scripts/gauntlet/linkcheck.py"], timeout=900)
-    links = json.loads((OUT / "links.json").read_text())
-    bad = [l for l in links if l["status"] not in ("ok", "unverified")]
-    gate("links", "every X post link resolves (oEmbed)", not bad, f"{len(links) - len(bad)} ok/unverified, {len(bad)} bad")
-    r = run([sys.executable, "scripts/gauntlet/copy_review.py", "--live"], timeout=900)
-    cr = json.loads((OUT / "copy-review.json").read_text())
-    hype = [c for c in cr if "hype" in c["flags"] and not c["text"].endswith("?")]
-    gate("copy", "no hype-flagged copy (typed review, live)", not hype, "; ".join(h["text"][:50] for h in hype[:2]))
+    links, err = fresh_json("scripts/gauntlet/linkcheck.py", "links.json")
+    if links is None:
+        gate("links", "link check ran", False, err)
+    else:
+        bad = [l for l in links if l["status"] not in ("ok", "unverified")]
+        gate("links", "every X post link resolves (oEmbed)", not bad, f"{len(links) - len(bad)} ok/unverified, {len(bad)} bad")
+    cr, err = fresh_json("scripts/gauntlet/copy_review.py", "copy-review.json", ["--live"])
+    if cr is None:
+        gate("copy", "copy review ran (live)", False, err)
+    else:
+        inconclusive = [c for c in cr if c.get("hype") is None]
+        hype = [c for c in cr if "hype" in c["flags"]]
+        gate("copy", "every block has a hype decision", not inconclusive, f"{len(inconclusive)} inconclusive")
+        gate("copy", "no hype-flagged copy (typed review, live)", not hype, "; ".join(h["text"][:50] for h in hype[:2]))
 
 passed = sum(1 for g in gates if g[2]); total = len(gates)
 stamp = time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())

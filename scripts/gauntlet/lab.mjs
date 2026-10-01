@@ -15,19 +15,13 @@ catch { const g = require('node:child_process').execSync('npm root -g').toString
 const axePath = process.env.AXE_PATH || '/tmp/axe/node_modules/axe-core/axe.min.js';
 const axeSrc = fs.existsSync(axePath) ? fs.readFileSync(axePath, 'utf8') : null;
 
-const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2', '.txt': 'text/plain', '.xml': 'application/xml', '.json': 'application/json', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json' };
-const server = http.createServer((req, res) => {
-  let p = decodeURIComponent(req.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
-  const f = path.join(root, p);
-  if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end('nf'); }
-  res.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream' }); fs.createReadStream(f).pipe(res);
-});
-await new Promise(r => server.listen(0, '127.0.0.1', r));
-const base = process.env.GAUNTLET_URL || `http://127.0.0.1:${server.address().port}/`;
+import { serve } from './server.mjs';
+const srvh = await serve(root);
+const base = process.env.GAUNTLET_URL || srvh.base;
 
 const browser = await chromium.launch();
 const out = {};
-for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { name: 'desktop', width: 1280, height: 800, mobile: false }]) {
+for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { name: 'tiny', width: 320, height: 640, mobile: true }, { name: 'desktop', width: 1280, height: 800, mobile: false }]) {
   const ctx = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: vp.mobile ? 2 : 1, isMobile: vp.mobile, hasTouch: vp.mobile });
   const page = await ctx.newPage();
   const errors = [], failed = [], hosts = {}; let bytes = 0, reqs = 0;
@@ -58,7 +52,7 @@ for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { n
     const vis = e => { const r = e.getBoundingClientRect(), s = getComputedStyle(e); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
     const small = [...document.querySelectorAll('button, input, select, summary, nav a, .btn, .tab, .more, .project-link')].filter(vis).map(e => { const r = e.getBoundingClientRect(); return { t: (e.innerText || e.placeholder || e.className).trim().slice(0, 24), w: Math.round(r.width), h: Math.round(r.height) }; }).filter(x => x.h < 44 || x.w < 44);
     const imgs = [...document.images].map(i => ({ src: i.currentSrc.slice(-60), ok: i.complete && i.naturalWidth > 0, w: i.naturalWidth, rendered: Math.round(i.getBoundingClientRect().width) }));
-    return { ...window.__m, overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1, scrollWidth: document.documentElement.scrollWidth, docHeight: document.documentElement.scrollHeight,
+    return { ...window.__m, clippedControls: [...document.querySelectorAll('.btn, .tab, .nav-cta, .feat')].filter(e => e.scrollWidth > e.clientWidth + 1).length, overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1, scrollWidth: document.documentElement.scrollWidth, docHeight: document.documentElement.scrollHeight,
       smallTargets: small.length, smallTargetSamples: small.slice(0, 6), brokenImages: imgs.filter(i => !i.ok).length, images: imgs.length,
       oversizedImages: imgs.filter(i => i.ok && i.w > i.rendered * 3 && i.rendered > 0).length, h1: document.querySelectorAll('h1').length };
   });
@@ -72,5 +66,5 @@ for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { n
   delete out[vp.name].lcp; delete out[vp.name].tbt; delete out[vp.name].longTasks;
   await ctx.close();
 }
-await browser.close(); server.close();
+await browser.close(); srvh.close();
 console.log(JSON.stringify(out, null, 1));
