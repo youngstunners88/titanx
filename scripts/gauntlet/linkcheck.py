@@ -32,7 +32,7 @@ for o in out:
 # keep the page's verification claim in sync with what was just verified
 import datetime
 ok = sum(1 for o in out if o["status"] == "ok")
-today = datetime.date.today()
+today = datetime.datetime.now(datetime.timezone.utc).date()
 idx = ROOT / "index.html"; page = idx.read_text()
 new = re.sub(r"\d+ X links verified live <time datetime=\"[^\"]+\">[^<]*</time>", f'{ok} X links verified live <time datetime="{today.isoformat()}">{today.day} {today.strftime("%b %Y")}</time>', page)
 if new != page: idx.write_text(new); print("facts line refreshed:", ok, "ok,", today)

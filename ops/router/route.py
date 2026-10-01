@@ -9,7 +9,7 @@ RULES = json.loads((Path(__file__).parent / "rules.json").read_text())
 def _hits(text, words):
     """(match count, matched characters). Longer, more specific phrases win ties."""
     t = text.lower()
-    m = [w for w in words if re.search(r"(?<![a-z])" + re.escape(w) + r"(?![a-z])", t)]
+    m = [w for w in words if re.search(r"(?<![a-z])" + re.escape(w) + r"(?:s|es)?(?![a-z])", t)]
     return len(m), sum(len(w) for w in m)
 
 

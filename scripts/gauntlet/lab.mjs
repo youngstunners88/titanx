@@ -1,4 +1,4 @@
-// Lab test: node scripts/gauntlet/lab.mjs [--shots DIR] [--offline-external]
+// Lab test: node scripts/gauntlet/lab.mjs [--shots DIR] [--block-external]
 // Needs: playwright (global), axe-core (AXE_PATH or /tmp/axe). Prints one JSON object.
 import http from 'node:http';
 import fs from 'node:fs';
@@ -62,7 +62,7 @@ for (const vp of [{ name: 'mobile', width: 390, height: 844, mobile: true }, { n
     axe = await page.evaluate(async () => { const r = await axe.run(document, { resultTypes: ['violations'] }); return r.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.length, help: v.help })); });
   }
   if (shots) { fs.mkdirSync(shots, { recursive: true }); await page.screenshot({ path: path.join(shots, `${vp.name}-fold.png`) }); await page.screenshot({ path: path.join(shots, `${vp.name}-full.png`), fullPage: true }); }
-  out[vp.name] = { ...above, ...m, lcpMs: Math.round(m.lcp), tbtMs: Math.round(m.tbt), cls: +m.cls.toFixed(4), transferKB: Math.round(bytes / 1024), requests: reqs, hostsKB: Object.fromEntries(Object.entries(hosts).map(([k, v]) => [k, Math.round(v / 1024)])), consoleErrors: errors, failedRequests: failed.slice(0, 8), axe };
+  out[vp.name] = { ...above, ...m, lcpMs: Math.round(m.lcp), tbtMs: Math.round(m.tbt), cls: +m.cls.toFixed(4), transferKB: Math.round(bytes / 1024), requests: reqs, ownHost: new URL(base).host, hostsKB: Object.fromEntries(Object.entries(hosts).map(([k, v]) => [k, Math.round(v / 1024)])), consoleErrors: errors, failedRequests: failed.slice(0, 8), axe };
   delete out[vp.name].lcp; delete out[vp.name].tbt; delete out[vp.name].longTasks;
   await ctx.close();
 }

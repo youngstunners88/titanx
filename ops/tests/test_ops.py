@@ -86,5 +86,82 @@ class TestRunner(Sandbox):
         self.assertTrue(res["ctx"]["audit"]["ok"], res["ctx"]["audit"])
 
 
+class TestRegressions(Sandbox):
+    Q = {"k": {"type": "choice", "instructions": "x", "criteria": {"a": "A", "b": "B"}},
+         "n": {"type": "noul", "instructions": "y"}, "s": {"type": "score", "instructions": "z", "criteria": ["lo", "hi"]}}
+    def test_out_of_range_and_malformed_answers_need_review(self):
+        bad = {"k": {"probabilities": {"a": 5, "b": 0}}, "n": {"noul": -3}, "s": {"score": 9}}
+        r = llm.interpret(self.Q, bad)
+        self.assertTrue(all(v["status"] == "needs_review" for v in r.values()), r)
+        for junk in ({"k": {"probabilities": {"a": "0.9", "b": 0.1}}, "n": {"noul": float("inf")}, "s": {"score": None}},
+                     {"k": None, "n": [], "s": 3}, {"k": {"probabilities": ["a"]}}, None):
+            r = llm.interpret(self.Q, junk)                          # must not raise
+            self.assertTrue(all(v["status"] == "needs_review" for v in r.values()), r)
+    def test_high_stakes_uses_stricter_threshold(self):
+        ans = {"n": {"noul": 0.88}}
+        q = {"n": {"type": "noul", "instructions": "y"}}
+        self.assertEqual(llm.interpret(q, ans)["n"]["status"], "selected")
+        self.assertEqual(llm.interpret(q, ans, stakes="high")["n"]["status"], "needs_review")
+    def test_provider_failure_returns_needs_review_and_is_billed(self):
+        old = llm._chat_json, llm._jev_openrouter
+        def boom(*a, **k): raise llm.LLMError("HTTP 429")
+        llm._chat_json = boom; llm._jev_openrouter = boom
+        try:
+            r = llm.decide({"m": "t"}, {"n": {"type": "noul", "instructions": "y"}}, live=True)
+        finally:
+            llm._chat_json, llm._jev_openrouter = old
+        self.assertEqual(r["decisions"]["n"]["status"], "needs_review"); self.assertIn("error", r)
+        self.assertGreaterEqual(state.budget_read()["calls"], 1)      # failed calls still count
+    def test_failover_to_next_provider(self):
+        old = llm._chat_json, llm._jev_openrouter, llm.key_present
+        def boom(*a, **k): raise llm.LLMError("down")
+        llm._jev_openrouter = boom
+        llm._chat_json = lambda prov, tier, prompt: json.dumps({"answers": {"n": {"noul": 0.99}}})
+        llm.key_present = lambda p: True
+        try:
+            r = llm.decide({"m": "t"}, {"n": {"type": "noul", "instructions": "y"}}, live=True)
+        finally:
+            llm._chat_json, llm._jev_openrouter, llm.key_present = old
+        self.assertEqual(r["provider"], "gemini"); self.assertEqual(r["decisions"]["n"]["status"], "selected")
+    def test_odd_response_shape_is_contained(self):
+        old = llm._chat_json, llm._jev_openrouter, llm.key_present
+        llm._jev_openrouter = lambda *a, **k: {}["x"]                  # KeyError
+        llm._chat_json = lambda *a, **k: "not json"
+        llm.key_present = lambda p: True
+        try:
+            r = llm.decide({"m": "t"}, {"n": {"type": "noul", "instructions": "y"}}, live=True)
+        finally:
+            llm._chat_json, llm._jev_openrouter, llm.key_present = old
+        self.assertEqual(r["decisions"]["n"]["status"], "needs_review")
+    def test_per_run_call_limit(self):
+        old = llm._RUN_CALLS; llm._RUN_CALLS = llm.POLICY["budgets"]["max_live_calls_per_run"]
+        try:
+            with self.assertRaises(llm.LLMError): llm._check_budget(True)
+        finally: llm._RUN_CALLS = old
+    def test_plurals_route(self):
+        for text, rid in (("find backlinks for us", "backlinks"), ("we got 3 new DMs", "lead_triage"), ("update the headlines", "page_edit")):
+            self.assertEqual(R.route(text)["route"], rid, text)
+    def test_truncated_event_line_does_not_break_snapshot(self):
+        state.append_event("run_start", workflow="x")
+        with open(state.STATE / "events.jsonl", "a") as f: f.write('{"t": "2026-10-0')
+        self.assertEqual(state.snapshot()["runs"], 1)
+    def test_workflow_id_cannot_traverse(self):
+        with self.assertRaises(SystemExit): run.run_workflow("../../etc/passwd")
+    def test_triage_with_busy_inbox_does_not_strand_jobs(self):
+        old_enq = state.enqueue({"message": "old lead", "sender": "x"}, kind="lead")[0]      # sits in inbox
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf): run.main(["triage", "Connect your wallet to claim airdrop"])
+        out = json.loads(buf.getvalue())
+        self.assertEqual(state.listing()["inbox"], [old_enq]); self.assertEqual(state.listing()["working"], [])
+        self.assertEqual(state.listing()["review"], [out["id"]])
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf): run.main(["triage", "Connect your wallet to claim airdrop"])   # repeat: no new work
+        self.assertFalse(json.loads(buf.getvalue())["new"])
+    def test_same_text_different_sender_are_separate_jobs(self):
+        a = state.job_id({"message": "hi", "sender": "@a"}); b = state.job_id({"message": "hi", "sender": "@b"})
+        self.assertNotEqual(a, b)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

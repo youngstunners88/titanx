@@ -31,10 +31,17 @@ def append_event(event, **data):
 
 
 def events():
+    """Tolerates a truncated or corrupt line (crash mid-append) instead of failing forever."""
     p = STATE / "events.jsonl"
     if not p.exists():
         return []
-    return [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
+    out = []
+    for l in p.read_text().splitlines():
+        try:
+            if l.strip(): out.append(json.loads(l))
+        except ValueError:
+            continue
+    return out
 
 
 def snapshot():
@@ -91,9 +98,11 @@ def enqueue(payload, kind="job"):
     return jid, True
 
 
-def claim():
-    """Atomically move one job inbox -> working. Returns (id, job) or None."""
-    for p in sorted((QUEUE / "inbox").glob("*.json")):
+def claim(jid=None):
+    """Atomically move a job inbox -> working. With jid, only that job (never someone else's).
+    Returns (id, job) or None."""
+    paths = [QUEUE / "inbox" / f"{jid}.json"] if jid else sorted((QUEUE / "inbox").glob("*.json"))
+    for p in paths:
         dst = QUEUE / "working" / p.name
         try:
             os.rename(p, dst)
