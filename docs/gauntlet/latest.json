@@ -1,8 +1,8 @@
 {
- "run": "2026-10-01 11:09 UTC",
+ "run": "2026-10-01 12:20 UTC",
  "full": false,
- "passed": 53,
- "total": 53,
+ "passed": 55,
+ "total": 55,
  "gates": [
   {
    "stage": "static",
@@ -20,7 +20,7 @@
    "stage": "lab:mobile",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "104 ms"
+   "detail": "128 ms"
   },
   {
    "stage": "lab:mobile",
@@ -32,13 +32,13 @@
    "stage": "lab:mobile",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "320 KB, 42 requests"
+   "detail": "338 KB, 43 requests"
   },
   {
    "stage": "lab:mobile",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:36861']"
+   "detail": "['127.0.0.1:39171']"
   },
   {
    "stage": "lab:mobile",
@@ -86,7 +86,7 @@
    "stage": "lab:tiny",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "104 ms"
+   "detail": "80 ms"
   },
   {
    "stage": "lab:tiny",
@@ -98,13 +98,13 @@
    "stage": "lab:tiny",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "320 KB, 42 requests"
+   "detail": "338 KB, 43 requests"
   },
   {
    "stage": "lab:tiny",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:36861']"
+   "detail": "['127.0.0.1:39171']"
   },
   {
    "stage": "lab:tiny",
@@ -146,7 +146,7 @@
    "stage": "lab:desktop",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "96 ms"
+   "detail": "108 ms"
   },
   {
    "stage": "lab:desktop",
@@ -158,13 +158,13 @@
    "stage": "lab:desktop",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "320 KB, 42 requests"
+   "detail": "338 KB, 43 requests"
   },
   {
    "stage": "lab:desktop",
    "name": "no third-party hosts on load",
    "pass": true,
-   "detail": "['127.0.0.1:36861']"
+   "detail": "['127.0.0.1:39171']"
   },
   {
    "stage": "lab:desktop",
@@ -259,6 +259,18 @@
   {
    "stage": "interact",
    "name": "player: embed or graceful fallback (never stuck)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "demo: embed or graceful fallback (never stuck)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "demo: game links point to smokegame.win and GitHub",
    "pass": true,
    "detail": ""
   },

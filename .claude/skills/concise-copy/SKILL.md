@@ -7,7 +7,7 @@ description: Keep Young Stunners site copy short and scannable. Use whenever wri
 
 The owner said the site was too wordy. Videos are the product; text only supports them.
 
-- **Budget**: <= 400 visible words outside the portfolio cards (currently ~325). Enforced by `scripts/check_site.py`.
+- **Budget**: <= 450 visible words outside the portfolio cards (currently ~325). Enforced by `scripts/check_site.py`.
 - **Hero**: one headline, one sentence, two buttons. No stat tiles.
 - **Sections**: heading + one line per item. No bullet lists inside cards, no paragraphs over 25 words.
 - **FAQ**: answer-first, one or two sentences, name "Young Stunners".

@@ -1,17 +1,17 @@
 # Gauntlet scorecard
 
-Run: 2026-10-01 11:09 UTC | mode: fast | target: local files
+Run: 2026-10-01 12:20 UTC | mode: fast | target: local files
 
-**53/53 gates passed**
+**55/55 gates passed**
 
 | Stage | Gate | Result | Detail |
 |---|---|---|---|
 | static | check_site.py (SEO, schema, facts, dates, budgets, secrets) | PASS | OK |
 | ops | ops offline tests | PASS | OK |
-| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 104 ms |
+| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 128 ms |
 | lab:mobile | CLS <= 0.1 | PASS | 0 |
-| lab:mobile | transfer <= 600 KB | PASS | 320 KB, 42 requests |
-| lab:mobile | no third-party hosts on load | PASS | ['127.0.0.1:36861'] |
+| lab:mobile | transfer <= 600 KB | PASS | 338 KB, 43 requests |
+| lab:mobile | no third-party hosts on load | PASS | ['127.0.0.1:39171'] |
 | lab:mobile | no console errors / failed requests | PASS | [] |
 | lab:mobile | no horizontal overflow | PASS | 390 |
 | lab:mobile | no clipped buttons/chips | PASS | 0 |
@@ -19,20 +19,20 @@ Run: 2026-10-01 11:09 UTC | mode: fast | target: local files
 | lab:mobile | tap targets >= 44px | PASS | [] |
 | lab:mobile | axe-core: 0 violations | PASS | [] |
 | lab:mobile | first video tile above the fold (<= 75% of viewport) | PASS | 541px of 844px |
-| lab:tiny | LCP <= 2500 ms (local lab) | PASS | 104 ms |
+| lab:tiny | LCP <= 2500 ms (local lab) | PASS | 80 ms |
 | lab:tiny | CLS <= 0.1 | PASS | 0 |
-| lab:tiny | transfer <= 600 KB | PASS | 320 KB, 42 requests |
-| lab:tiny | no third-party hosts on load | PASS | ['127.0.0.1:36861'] |
+| lab:tiny | transfer <= 600 KB | PASS | 338 KB, 43 requests |
+| lab:tiny | no third-party hosts on load | PASS | ['127.0.0.1:39171'] |
 | lab:tiny | no console errors / failed requests | PASS | [] |
 | lab:tiny | no horizontal overflow | PASS | 320 |
 | lab:tiny | no clipped buttons/chips | PASS | 0 |
 | lab:tiny | no broken images | PASS | 0 |
 | lab:tiny | tap targets >= 44px | PASS | [] |
 | lab:tiny | axe-core: 0 violations | PASS | [] |
-| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 96 ms |
+| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 108 ms |
 | lab:desktop | CLS <= 0.1 | PASS | 0.0076 |
-| lab:desktop | transfer <= 600 KB | PASS | 320 KB, 42 requests |
-| lab:desktop | no third-party hosts on load | PASS | ['127.0.0.1:36861'] |
+| lab:desktop | transfer <= 600 KB | PASS | 338 KB, 43 requests |
+| lab:desktop | no third-party hosts on load | PASS | ['127.0.0.1:39171'] |
 | lab:desktop | no console errors / failed requests | PASS | [] |
 | lab:desktop | no horizontal overflow | PASS | 1280 |
 | lab:desktop | no clipped buttons/chips | PASS | 0 |
@@ -49,6 +49,8 @@ Run: 2026-10-01 11:09 UTC | mode: fast | target: local files
 | interact | card: "show all" expands links | PASS |  |
 | interact | keyboard: first focus is skip link | PASS |  |
 | interact | player: embed or graceful fallback (never stuck) | PASS |  |
+| interact | demo: embed or graceful fallback (never stuck) | PASS |  |
+| interact | demo: game links point to smokegame.win and GitHub | PASS |  |
 | interact | brief: copies a filled brief to clipboard | PASS |  |
 | interact | brief: opens x.com/youngstunnersss synchronously in the tap (Safari-safe) | PASS |  |
 | interact | brief: shows success toast | PASS |  |
