@@ -29,7 +29,7 @@ const stage=document.getElementById('stage');
 const s1=$('<div class="scene" style="background:#111"></div>');
 const cols=[0,1,2,3].map(i=>{const c=$(`<div style="position:absolute;left:${i*135}px;top:0;width:135px;display:flex;flex-direction:column;align-items:center;gap:30px;opacity:.28;filter:blur(1.2px)"></div>`,s1);
   for(let k=0;k<26;k++)$(`<img class="av" src="${AV[(k*7+i*5)%AV.length]}" style="width:78px;height:78px;border-color:#555">`,c);return c});
-const h1=[['YOUR PROJECT',.3,'#fff',64],['IS BRILLIANT.',.95,'#fff',64],['NOBODY',1.75,'#e10600',112],['SAW IT.',2.2,'#e10600',112]].map(([w,s,c,f])=>({s,el:$(`<div class="abs txt" style="color:${c};font-size:${f}px">${w}</div>`,s1)}));
+const h1=[['YOUR PROJECT',.3,'#fff',54],['IS BRILLIANT.',.95,'#fff',54],['NOBODY',1.75,'#e10600',84],['SAW IT.',2.2,'#e10600',84]].map(([w,s,c,f])=>({s,el:$(`<div class="abs txt" style="color:${c};font-size:${f}px">${w}</div>`,s1)}));
 const scrollLbl=$('<div class="abs txt" style="color:#999;font-size:20px;letter-spacing:.3em">SCROLL.  SCROLL.  SCROLL.</div>',s1);
 const flash=$('<div class="scene" style="background:#fff;opacity:0;pointer-events:none"></div>');
 
@@ -38,9 +38,9 @@ const s2=$('<div class="scene halftone"></div>');
 const burst=$('<div class="abs" style="width:520px;height:520px;background:#111;border-radius:28px"></div>',s2);
 const burst2=$('<div class="abs" style="width:470px;height:470px;background:#e10600;border-radius:28px;border:3px solid #111"></div>',s2);
 const logoCard=$(`<div class="abs card" style="width:440px;padding:20px 24px"><img src="../brand/young-stunners-logo.png" style="width:100%;display:block"></div>`,s2);
-const lab=$('<div class="abs pill" style="background:#e10600;color:#fff;font-size:30px;padding:12px 30px">WEB3 CONTENT CREATOR</div>',s2);
-const l1=$('<div class="abs txt" style="font-size:64px;color:#111">SHORT VIDEOS.</div>',s2);
-const l2=$('<div class="abs txt" style="font-size:64px;color:#c20500">REAL CAMPAIGNS.</div>',s2);
+const lab=$('<div class="abs pill" style="background:#e10600;color:#fff;font-size:25px;padding:12px 26px">WEB3 CONTENT CREATOR</div>',s2);
+const l1=$('<div class="abs txt" style="font-size:50px;color:#111">SHORT VIDEOS.</div>',s2);
+const l2=$('<div class="abs txt" style="font-size:46px;color:#c20500">REAL CAMPAIGNS.</div>',s2);
 const sparks=[...Array(26)].map(()=>{const a=rnd()*6.283,d=170+rnd()*260;return{a,d,el:$(`<div class="abs" style="width:${8+rnd()*12}px;height:${8+rnd()*12}px;background:${rnd()>.5?'#e10600':'#111'}"></div>`,s2),r:rnd()*360}});
 
 /* ---------- S3: brief + create ---------- */
@@ -67,11 +67,11 @@ const plat=['X','INSTAGRAM'].map((w,i)=>$(`<div class="abs card txt" style="padd
 const tiles=AV.slice(0,38).map((a,i)=>{const col=i%6,row=Math.floor(i/6);return{i,col,row,el:$(`<img class="av abs" src="${a}" style="border-color:#f6f2e8">`,s4)}});
 const posts=[...Array(40)].map((_,i)=>({a:rnd()*6.283,d:120+rnd()*340,el:$(`<div class="abs" style="width:${34+rnd()*26}px;height:${46+rnd()*30}px;background:#f6f2e8;border:3px solid #fff;border-radius:8px"></div>`,s4),r:(rnd()-.5)*80,s:rnd()}));
 const cnt=$('<div class="abs card" style="width:420px;padding:20px 10px;text-align:center"></div>',s4);
-const span=$('<div class="abs pill" style="background:#f6f2e8;color:#111;font-size:25px;padding:10px 22px">POSTS DATED  OCT 2024  TO  JUL 2026</div>',s4);
+const span=$('<div class="abs pill" style="background:#f6f2e8;color:#111;font-size:20px;padding:10px 18px">POSTS DATED  OCT 2024  TO  JUL 2026</div>',s4);
 
 /* ---------- S5: what you get ---------- */
 const s5=$('<div class="scene halftone" style="background-color:#111;background-image:radial-gradient(rgba(255,255,255,.08) 1.2px,transparent 1.6px)"></div>');
-const g=[['SHORT PROMO','#fff',62,19.65],['VIDEOS +','#fff',62,20.15],['X & INSTAGRAM','#e10600',54,20.9],['CAMPAIGNS','#e10600',62,21.4],['FOR WEB3 PROJECTS','#fff',40,22.2]].map(([w,c,f,s])=>({s,el:$(`<div class="abs txt" style="color:${c};font-size:${f}px">${w}</div>`,s5)}));
+const g=[['SHORT PROMO','#fff',50,19.7],['VIDEOS +','#fff',50,20.2],['X & INSTAGRAM','#e10600',44,20.9],['CAMPAIGNS','#e10600',50,21.4],['FOR WEB3 TEAMS','#fff',34,22.2]].map(([w,c,f,s])=>({s,el:$(`<div class="abs txt" style="color:${c};font-size:${f}px">${w}</div>`,s5)}));
 const chains=['ETHEREUM','BSC','BASE','TITANX'].map((w,i)=>$(`<div class="abs pill" style="background:${['#f6f2e8','#e10600','#fff','#f6f2e8'][i]};color:${i==1?'#fff':'#111'};font-size:26px;padding:10px 22px">${w}</div>`,s5));
 const lb=$('<img class="abs" src="../brand/lil-blunt-logo.webp" style="width:150px;height:150px;border-radius:50%">',s5);
 const lbt=$('<div class="abs txt" style="color:#fff;font-size:30px;line-height:1.15">MY LATEST PROJECT<br><span style="color:#6fd62b;font-size:40px">LIL BLUNT</span><br><span style="font-size:22px;letter-spacing:.06em">FREE GAME  IN YOUR BROWSER</span></div>',s5);
@@ -81,31 +81,33 @@ const s6=$('<div class="scene" style="background:#e10600"></div>');
 const stripes=$('<div class="scene" style="background:repeating-linear-gradient(135deg,rgba(17,17,17,.12) 0 22px,transparent 22px 44px)"></div>',s6);
 const ctaCard=$('<div class="abs card" style="width:460px;padding:34px 20px;text-align:center;background:#f6f2e8;box-shadow:10px 10px 0 #111;border-radius:24px"></div>',s6);
 const ctaLogo=$(`<img class="abs" src="../brand/young-stunners-logo.png" style="width:320px;background:#f6f2e8;padding:14px;border:3px solid #111;border-radius:18px;box-shadow:7px 7px 0 #111">`,s6);
-const ctaA=$('<div class="txt" style="font-size:60px;color:#111;margin-bottom:14px">BOOK A<br>CAMPAIGN</div>',ctaCard);
+const ctaA=$('<div class="txt" style="font-size:50px;color:#111;margin-bottom:14px">BOOK A<br>CAMPAIGN</div>',ctaCard);
 const ctaB=$('<div class="txt" style="font-size:28px;color:#c20500;margin-bottom:8px;min-height:30px"></div>',ctaCard);
 const ctaC=$('<div class="txt" style="font-size:17px;color:#111;letter-spacing:0;min-height:20px"></div>',ctaCard);
 const typed=(s,t0,t1,t)=>s.slice(0,Math.floor(s.length*clamp((t-t0)/(t1-t0))));
 
+const bar=$('<div style="position:absolute;left:0;bottom:0;height:7px;width:0;background:#e10600;z-index:9"></div>');
 function setT(t){
+  bar.style.width=(t/30*540)+'px';bar.style.background=t>=25.5?'#fff':'#e10600';
   const vis=(el,a,b)=>{el.style.display=(t>=a&&t<b)?'block':'none'};
   vis(s1,0,3.05);vis(s2,3.0,6.55);vis(s3,6.5,12.55);vis(s4,12.5,19.55);vis(s5,19.5,25.55);vis(s6,25.5,31);
   /* S1 */
   if(t<3.05){
     cols.forEach((c,i)=>{const h=26*108;c.style.transform=`translateY(${-((t*(900+i*260))%(h/2))}px)`});
     const [sx,sy]=shake(t,t>1.7?7*P(t,1.7,.1):0);
-    h1.forEach(({s,el},i)=>{const p=P(t,s,.22,E.back);const o=clamp((t-s)/.05);const big=i>=2;let y=[-190,-120,-10,95][i];let sc=lerp(2.2,1,p);let o2=o;if(t>2.7){const k=P(t,2.7,.3,E.inq);sc*=1-k*.4;o2*=1-k}T(el,sx,y+sy,sc,[0,0,-4,3][i]*p,o2)});
+    h1.forEach(({s,el},i)=>{const p=P(t,s,.22,E.back);const o=clamp((t-s)/.05);const big=i>=2;let y=[-190,-120,-10,95][i];let sc=lerp(1.5,1,p);let o2=o;if(t>2.7){const k=P(t,2.7,.3,E.inq);sc*=1-k*.4;o2*=1-k}T(el,sx,y+sy,sc,[0,0,-4,3][i]*p,o2)});
     T(scrollLbl,0,300,1,0,P(t,.1,.4)*(t<1.6?1:clamp(1-(t-1.6)/.2)));
   }
   flash.style.display=(t>=2.95&&t<3.5)?'block':'none';flash.style.opacity=clamp(1-(t-3.0)/.45)*(t>=3?1:clamp((t-2.95)/.05));
   /* S2 */
   if(t>=3&&t<6.55){const u=t-3;
-    T(burst,0,-70,lerp(.2,1,P(t,3,.45,E.back)),lerp(-30,8,P(t,3,.6)),1);
-    T(burst2,10,-62,lerp(.1,1,P(t,3.05,.45,E.back)),lerp(40,-5,P(t,3.05,.6)),1);
-    const lp=P(t,3.05,.4,E.back);T(logoCard,0,-70,lerp(2.6,1,lp),lerp(-12,-3,lp),clamp(u/.06));
-    sparks.forEach(s=>{const k=P(t,3.05,.9);T(s.el,Math.cos(s.a)*s.d*k,-70+Math.sin(s.a)*s.d*k,1-k*.3,s.r+k*220,1-P(t,3.5,.6,E.lin))});
-    T(lab,0,110,lerp(.3,1,P(t,3.7,.3,E.back)),-2,P(t,3.7,.1,E.lin));
-    T(l1,0,200,lerp(1.6,1,P(t,4.6,.25,E.back)),0,P(t,4.6,.05,E.lin));
-    T(l2,0,275,lerp(1.6,1,P(t,5.3,.25,E.back)),0,P(t,5.3,.05,E.lin));
+    T(burst,0,-55,lerp(.2,1,P(t,3,.45,E.back)),lerp(-30,8,P(t,3,.6)),1);
+    T(burst2,10,-47,lerp(.1,1,P(t,3.05,.45,E.back)),lerp(40,-5,P(t,3.05,.6)),1);
+    const lp=P(t,3.05,.4,E.back);T(logoCard,0,-55,lerp(2.6,1,lp),lerp(-12,-3,lp),clamp(u/.06));
+    sparks.forEach(s=>{const k=P(t,3.05,.9);T(s.el,Math.cos(s.a)*s.d*k,-55+Math.sin(s.a)*s.d*k,1-k*.3,s.r+k*220,1-P(t,3.5,.6,E.lin))});
+    T(lab,0,107,lerp(.3,1,P(t,3.7,.3,E.back)),-2,P(t,3.7,.1,E.lin));
+    T(l1,0,270,lerp(1.4,1,P(t,4.8,.25,E.back)),0,P(t,4.8,.05,E.lin));
+    T(l2,0,340,lerp(1.4,1,P(t,5.7,.25,E.back)),0,P(t,5.7,.05,E.lin));
     const out=P(t,6.3,.2,E.inq);[burst,burst2,logoCard,lab,l1,l2].forEach(e=>e.style.opacity=parseFloat(e.style.opacity||1)*(1-out));
   }
   /* S3 */
@@ -130,7 +132,7 @@ function setT(t){
   if(t>=12.5&&t<19.55){
     T(b3,0,-410,lerp(.3,1,P(t,12.5,.3,E.back)),-2,P(t,12.5,.08,E.lin));
     const pp=P(t,12.7,.4,E.back);
-    T(plat[0],lerp(-420,-130,pp),-250,1,-6,1);T(plat[1],lerp(420,120,pp),-250+0,1,5,1);
+    T(plat[0],lerp(-420,-100,pp),-250,1,-6,1);T(plat[1],lerp(420,105,pp),-250,1,5,1);
     const burstP=P(t,13.4,1.0);
     posts.forEach(p=>{const x=Math.cos(p.a)*p.d*burstP,y=Math.sin(p.a)*p.d*burstP;T(p.el,x,y-60,lerp(.4,1,burstP),p.r*burstP,burstP>0?(1-P(t,14.1,.6,E.lin)):0)});
     plat.forEach((e,i)=>{e.style.opacity=1-P(t,14.1,.4,E.lin)});
@@ -143,7 +145,7 @@ function setT(t){
   }
   /* S5 */
   if(t>=19.5&&t<25.55){
-    g.forEach(({s,el},i)=>{const k=P(t,s,.22,E.back);T(el,0,[-300,-235,-150,-85,-10][i],lerp(2,1,k),[0,0,-2,-2,0][i],clamp((t-s)/.05))});
+    g.forEach(({s,el},i)=>{const k=P(t,s,.22,E.back);T(el,0,[-300,-245,-185,-130,-70][i],lerp(2,1,k),[0,0,-2,-2,0][i],clamp((t-s)/.05))});
     chains.forEach((c,i)=>{const s=22.7+i*.2;const k=P(t,s,.3,E.back);const xs=[-125,115,-110,125],ys=[45,60,110,130];T(c,xs[i],ys[i],lerp(.2,1,k),[-4,3,2,-3][i]*k,clamp((t-s)/.05))});
     const lk=P(t,24.2,.5,E.back);T(lb,0,lerp(520,250,lk),1,lerp(-180,0,lk),clamp((t-24.2)/.1));
     T(lbt,0,375,lerp(.6,1,P(t,24.45,.3,E.back)),0,P(t,24.45,.1,E.lin));
@@ -152,7 +154,7 @@ function setT(t){
   /* S6 */
   if(t>=25.5){
     const k=P(t,25.55,.4,E.back);
-    T(ctaCard,0,120,lerp(2.2,1,k),-2,clamp((t-25.5)/.06));
+    T(ctaCard,0,120,lerp(1.5,1,k),-2,clamp((t-25.5)/.06));
     T(ctaLogo,0,-230,lerp(.3,1,P(t,25.95,.35,E.back)),-3,P(t,25.95,.08,E.lin));
     ctaB.textContent=typed('@youngstunnersss',26.7,27.6,t);
     ctaC.textContent=typed('youngstunners88.github.io/titanx',27.5,28.6,t);

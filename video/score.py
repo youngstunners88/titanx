@@ -39,9 +39,18 @@ for rt,l in((1.0,2.0),(4.5,2.0),(10.5,2.0),(17.5,2.0),(23.5,2.0)): add(rt,riser(
 for it in(3.0,6.5,12.5,19.5,25.5): add(it,impact(),g=.9)
 for it,f in((12.0,880),(16.4,660),(16.7,990),(24.2,1320)): add(it,blip(f),g=1)
 for k,f in enumerate((523,659,784,1047)): add(26.7+k*.25,blip(f),g=1)
+# voice-over: duck the music under it (sidechain-style) and mix on top
+import os
+if os.path.exists('voice.wav'):
+    with wave.open('voice.wav') as w: vo=np.frombuffer(w.readframes(w.getnframes()),dtype='<i2')/32768.
+    vo=np.pad(vo,(0,max(0,N-len(vo))))[:N]
+    e=np.abs(vo); k=int(.06*SR); e=np.convolve(e,np.ones(k)/k,'same'); e=np.convolve(np.minimum(e*12,1),np.ones(int(.12*SR))/int(.12*SR),'same')
+    out*=(1-.62*e)[:,None]
+    out=out/np.abs(out).max()*.55
+    out[:,0]+=vo*1.0; out[:,1]+=vo*1.0
 # final tail fade
 fade=np.ones(N); fade[-int(1.2*SR):]=np.linspace(1,0,int(1.2*SR)); out*=fade[:,None]
-out/=np.abs(out).max()*1.05; out=np.tanh(out*1.4)/np.tanh(1.4)
+out=np.tanh(out*1.25)/np.tanh(1.25)
 pcm=(out*32767*.9).astype('<i2')
 with wave.open('score.wav','wb') as w: w.setnchannels(2);w.setsampwidth(2);w.setframerate(SR);w.writeframes(pcm.tobytes())
 print('ok',N/SR)
