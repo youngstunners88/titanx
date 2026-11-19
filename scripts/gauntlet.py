@@ -62,13 +62,13 @@ except Exception as e:
 # 5/6. full (stale outputs are deleted first; a failed or missing run fails the gate)
 def fresh_json(script, out_name, args=(), timeout=900):
     f = OUT / out_name
-    f.unlink(missing_ok=True)
+    before = f.stat().st_mtime_ns if f.exists() else None   # don't delete committed results: a failed run must leave them intact
     try:
         r = run([sys.executable, script, *args], timeout=timeout)
     except subprocess.TimeoutExpired:
         return None, "timed out"
-    if r.returncode != 0 or not f.exists():
-        return None, (r.stderr.strip().splitlines() or ["failed"])[-1][:120]
+    if r.returncode != 0 or not f.exists() or f.stat().st_mtime_ns == before:
+        return None, ((r.stderr.strip() or r.stdout.strip()).splitlines() or ["failed"])[-1][:120]
     try:
         return json.loads(f.read_text()), ""
     except Exception as e:
