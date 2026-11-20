@@ -22,6 +22,8 @@ Last updated: {upd}
 - Services: viral video content, KOL promotion, token launch campaigns, community growth content
 - Ecosystems: Ethereum, BSC, Base, TitanX ecosystem
 - Platforms: X (Twitter), Instagram
+- Audience: founders and marketers of DeFi, memecoin, NFT and gaming crypto projects
+- 30-second reel (what Young Stunners makes and how booking works), with captions: https://youngstunners88.github.io/titanx/video/web/reel-landscape.mp4
 - Pricing: custom quote per project; clients approve content before it is posted
 - Claimed by owner: 50+ projects promoted, 100+ videos created
 - Website: https://youngstunners88.github.io/titanx/
