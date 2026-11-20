@@ -8,12 +8,13 @@ description: Page structure and component rules for the Young Stunners site (ind
 Single-file static site: `index.html` (inline CSS/JS), assets in `brand/`. Visual system: see `anti-slop-design`. Durable facts: `PRODUCT.md`.
 
 ## Order (videos first)
-nav -> hero (definition lede, 2 CTAs, logo sticker) -> black band "Watch the work" (facts line, playable featured tiles + player) -> filters + 38 project cards -> services (numbered list) -> how it works -> questions -> contact (red band, brief form) -> footer. Primary CTA wording: "Book a campaign", repeated in nav, hero, sticky bar (phones) and contact.
+nav -> hero (definition lede, "Book a campaign" red + "Watch 30s reel", reel tile on desktop) -> black band "Watch the work" (facts line, playable featured tiles + player) -> filters + 38 project cards -> services (numbered list) -> how it works -> questions -> contact (red band, brief form) -> latest project (Lil Blunt, kept out of the proof path) -> footer. Primary CTA wording: "Book a campaign", repeated in nav, hero (red, first), sticky bar (phones) and contact.
 
 ## Components
 - **Project card**: `div.project-card[data-type="twitter|instagram"]` > `.project-header` (avatar img 48x48, `h3.project-name`, `.project-category`, `.project-badge`) + `.project-links` (one `a.project-link` per post, text "@handle · Video" or "Reel · View post") + `.project-count`. JS handles filter, search, collapse above 3 links. Keep the count correct (`build_llms.py` and `check_site.py` verify).
 - **Add a card**: paste the card, run `scripts/build_assets.py` (localizes the avatar), `scripts/gauntlet/linkcheck.py`, `scripts/build_llms.py`, then update the facts line and JSON-LD via the gauntlet failures.
 - **Featured player**: see `featured-player`.
+- **Hero reel**: `figure#reel` + any `[data-reel]` link. JS creates the `<video>` on press (landscape cut >860px, portrait below, captions from `video/web/reel.en.vtt`); nothing downloads before that (gated). Links point at the mp4 so it works without JS. Re-encode via `promo-video`.
 - **New section**: copy `.split` (heading left, content right) with `aria-labelledby` and an `id` on the h2.
 
 ## Rules
