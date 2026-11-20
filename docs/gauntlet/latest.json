@@ -1,8 +1,8 @@
 {
- "run": "2026-10-01 16:21 UTC",
- "full": false,
- "passed": 56,
- "total": 56,
+ "run": "2026-11-20 00:09 UTC",
+ "full": true,
+ "passed": 62,
+ "total": 64,
  "gates": [
   {
    "stage": "static",
@@ -20,7 +20,7 @@
    "stage": "lab:mobile",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "104 ms"
+   "detail": "76 ms"
   },
   {
    "stage": "lab:mobile",
@@ -32,7 +32,7 @@
    "stage": "lab:mobile",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "348 KB, 43 requests"
+   "detail": "297 KB, 43 requests"
   },
   {
    "stage": "lab:mobile",
@@ -80,13 +80,13 @@
    "stage": "lab:mobile",
    "name": "first video tile above the fold (<= 75% of viewport)",
    "pass": true,
-   "detail": "541px of 844px"
+   "detail": "515px of 844px"
   },
   {
    "stage": "lab:tiny",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "76 ms"
+   "detail": "80 ms"
   },
   {
    "stage": "lab:tiny",
@@ -98,7 +98,7 @@
    "stage": "lab:tiny",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "348 KB, 43 requests"
+   "detail": "297 KB, 43 requests"
   },
   {
    "stage": "lab:tiny",
@@ -146,19 +146,19 @@
    "stage": "lab:desktop",
    "name": "LCP <= 2500 ms (local lab)",
    "pass": true,
-   "detail": "92 ms"
+   "detail": "80 ms"
   },
   {
    "stage": "lab:desktop",
    "name": "CLS <= 0.1",
    "pass": true,
-   "detail": "0.0076"
+   "detail": "0"
   },
   {
    "stage": "lab:desktop",
    "name": "transfer <= 600 KB",
    "pass": true,
-   "detail": "348 KB, 43 requests"
+   "detail": "297 KB, 43 requests"
   },
   {
    "stage": "lab:desktop",
@@ -206,7 +206,7 @@
    "stage": "lab:desktop",
    "name": "first video tile above the fold (<= 75% of viewport)",
    "pass": true,
-   "detail": "594px of 800px"
+   "detail": "573px of 800px"
   },
   {
    "stage": "interact",
@@ -330,6 +330,36 @@
   },
   {
    "stage": "interact",
+   "name": "reel (desktop): no video bytes before play",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "hero: primary button books a campaign",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "reel (desktop): plays the right cut on press, visible, with captions",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "reel (mobile): no video bytes before play",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
+   "name": "reel (mobile): plays the right cut on press, visible, with captions",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "interact",
    "name": "privacy: no analytics requests without a configured key",
    "pass": true,
    "detail": ""
@@ -337,6 +367,24 @@
   {
    "stage": "interact",
    "name": "privacy: no third-party requests on load",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "stage": "links",
+   "name": "link check ran",
+   "pass": false,
+   "detail": "link check inconclusive: 123/130 X checks hit network errors (e.g. error:000); previous links.json and facts line kept"
+  },
+  {
+   "stage": "copy",
+   "name": "every block has a hype decision",
+   "pass": false,
+   "detail": "31 inconclusive"
+  },
+  {
+   "stage": "copy",
+   "name": "no hype-flagged copy (typed review, live)",
    "pass": true,
    "detail": ""
   }
