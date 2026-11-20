@@ -11,7 +11,7 @@ The site must look like Young Stunners (logo: black pictograms, white letters, r
 - **Palette**: paper `#f6f2e8`, ink `#111`, red `#e10600` (small red text uses `#c20500` for contrast), one accent only.
 - **Type**: Montserrat only (variable, self-hosted). Headings 900, h2 uppercase. One family, no pairing.
 - **Shape**: 2.5px ink borders, hard offset shadows (`5px 5px 0 ink`), buttons press down on click. No blur, glow or glass.
-- **Layout**: left-aligned and asymmetric (heading left, content right); a black band for the videos; a red band for contact. The real logo is the hero art on a white sticker card (hidden on phones).
+- **Layout**: left-aligned and asymmetric (heading left, content right); a black band for the videos; a red band for contact. The hero art is the 30s reel tile (poster + "0:30" pill, hard shadow); the logo lives in the nav and footer.
 - **Texture**: a faint halftone dot pattern on the hero only.
 - **Content**: real avatars, real counts, real post dates. No stock imagery, icon tiles or emoji.
 

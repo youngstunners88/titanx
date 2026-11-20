@@ -1,16 +1,16 @@
 # Gauntlet scorecard
 
-Run: 2026-10-01 16:21 UTC | mode: fast | target: local files
+Run: 2026-11-20 00:09 UTC | mode: full | target: local files
 
-**56/56 gates passed**
+**62/64 gates passed**
 
 | Stage | Gate | Result | Detail |
 |---|---|---|---|
 | static | check_site.py (SEO, schema, facts, dates, budgets, secrets) | PASS | OK |
 | ops | ops offline tests | PASS | OK |
-| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 104 ms |
+| lab:mobile | LCP <= 2500 ms (local lab) | PASS | 76 ms |
 | lab:mobile | CLS <= 0.1 | PASS | 0 |
-| lab:mobile | transfer <= 600 KB | PASS | 348 KB, 43 requests |
+| lab:mobile | transfer <= 600 KB | PASS | 297 KB, 43 requests |
 | lab:mobile | no third-party hosts on load | PASS | own host only |
 | lab:mobile | no console errors / failed requests | PASS | [] |
 | lab:mobile | no horizontal overflow | PASS | 390 |
@@ -18,10 +18,10 @@ Run: 2026-10-01 16:21 UTC | mode: fast | target: local files
 | lab:mobile | no broken images | PASS | 0 |
 | lab:mobile | tap targets >= 44px | PASS | [] |
 | lab:mobile | axe-core: 0 violations | PASS | [] |
-| lab:mobile | first video tile above the fold (<= 75% of viewport) | PASS | 541px of 844px |
-| lab:tiny | LCP <= 2500 ms (local lab) | PASS | 76 ms |
+| lab:mobile | first video tile above the fold (<= 75% of viewport) | PASS | 515px of 844px |
+| lab:tiny | LCP <= 2500 ms (local lab) | PASS | 80 ms |
 | lab:tiny | CLS <= 0.1 | PASS | 0 |
-| lab:tiny | transfer <= 600 KB | PASS | 348 KB, 43 requests |
+| lab:tiny | transfer <= 600 KB | PASS | 297 KB, 43 requests |
 | lab:tiny | no third-party hosts on load | PASS | own host only |
 | lab:tiny | no console errors / failed requests | PASS | [] |
 | lab:tiny | no horizontal overflow | PASS | 320 |
@@ -29,9 +29,9 @@ Run: 2026-10-01 16:21 UTC | mode: fast | target: local files
 | lab:tiny | no broken images | PASS | 0 |
 | lab:tiny | tap targets >= 44px | PASS | [] |
 | lab:tiny | axe-core: 0 violations | PASS | [] |
-| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 92 ms |
-| lab:desktop | CLS <= 0.1 | PASS | 0.0076 |
-| lab:desktop | transfer <= 600 KB | PASS | 348 KB, 43 requests |
+| lab:desktop | LCP <= 2500 ms (local lab) | PASS | 80 ms |
+| lab:desktop | CLS <= 0.1 | PASS | 0 |
+| lab:desktop | transfer <= 600 KB | PASS | 297 KB, 43 requests |
 | lab:desktop | no third-party hosts on load | PASS | own host only |
 | lab:desktop | no console errors / failed requests | PASS | [] |
 | lab:desktop | no horizontal overflow | PASS | 1280 |
@@ -39,7 +39,7 @@ Run: 2026-10-01 16:21 UTC | mode: fast | target: local files
 | lab:desktop | no broken images | PASS | 0 |
 | lab:desktop | tap targets >= 44px | PASS | [] |
 | lab:desktop | axe-core: 0 violations | PASS | [] |
-| lab:desktop | first video tile above the fold (<= 75% of viewport) | PASS | 594px of 800px |
+| lab:desktop | first video tile above the fold (<= 75% of viewport) | PASS | 573px of 800px |
 | interact | filter: instagram shows only IG cards | PASS |  |
 | interact | filter: aria-pressed updates | PASS |  |
 | interact | filter: live count text | PASS |  |
@@ -60,5 +60,13 @@ Run: 2026-10-01 16:21 UTC | mode: fast | target: local files
 | interact | sticky CTA shows after hero | PASS |  |
 | interact | sticky CTA hides at contact form | PASS |  |
 | interact | mobile: no horizontal overflow | PASS |  |
+| interact | reel (desktop): no video bytes before play | PASS |  |
+| interact | hero: primary button books a campaign | PASS |  |
+| interact | reel (desktop): plays the right cut on press, visible, with captions | PASS |  |
+| interact | reel (mobile): no video bytes before play | PASS |  |
+| interact | reel (mobile): plays the right cut on press, visible, with captions | PASS |  |
 | interact | privacy: no analytics requests without a configured key | PASS |  |
 | interact | privacy: no third-party requests on load | PASS |  |
+| links | link check ran | **FAIL** | link check inconclusive: 123/130 X checks hit network errors (e.g. error:000); previous li |
+| copy | every block has a hype decision | **FAIL** | 31 inconclusive |
+| copy | no hype-flagged copy (typed review, live) | PASS |  |

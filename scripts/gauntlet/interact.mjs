@@ -65,6 +65,17 @@ try {
   t('mobile: no horizontal overflow', !(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)));
   await c.close();
 }
+// hero reel: self-hosted, zero bytes until play, plays on press, has captions; primary CTA books
+for (const [label, vp, want] of [['desktop', { width: 1280, height: 800 }, 'reel-landscape.mp4'], ['mobile', { width: 390, height: 844 }, 'reel-portrait.mp4']]) {
+  const c = await b.newContext({ ignoreHTTPSErrors: true, viewport: vp }); const p = await c.newPage(); const vids = []; p.on('request', r => { if (/\.(mp4|webm|vtt)(\?|$)/.test(r.url())) vids.push(r.url()); });
+  await p.goto(base); await p.waitForTimeout(800);
+  t(`reel (${label}): no video bytes before play`, vids.length === 0, vids.join(','));
+  if (label === 'desktop') t('hero: primary button books a campaign', (await p.$eval('.hero .btn-red', e => e.getAttribute('href') + '|' + e.textContent.trim())) === '#contact|Book a campaign');
+  await p.click('.hero [data-reel] >> visible=true');
+  let st = null; for (let i = 0; i < 16 && !(st && st.t > 0.3); i++) { await p.waitForTimeout(250); st = await p.evaluate(() => { const v = document.querySelector('#reel video'); return v && { t: v.currentTime, src: v.currentSrc.split('/').pop(), cc: !!v.querySelector('track[kind="captions"][src]'), vis: v.getBoundingClientRect().height > 100 }; }); }
+  t(`reel (${label}): plays the right cut on press, visible, with captions`, st && st.t > 0.3 && st.src === want && st.cc && st.vis, JSON.stringify(st));
+  await c.close();
+}
 // no key => no analytics request
 {
   const c = await b.newContext({ ignoreHTTPSErrors: true }); const p = await c.newPage(); const hits = []; p.on('request', r => { if (/posthog|google-analytics|googletagmanager/.test(r.url())) hits.push(r.url()); });

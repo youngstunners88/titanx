@@ -1,7 +1,7 @@
 [
  {
   "section": "top",
-  "text": "Short crypto promo videos and X & Instagram campaigns for Web3 projects",
+  "text": "Crypto promo videos and campaigns for Web3 projects",
   "hype": null,
   "concrete": null,
   "standalone": null,
@@ -11,7 +11,7 @@
  },
  {
   "section": "top",
-  "text": "Young Stunners is a Web3 content creator. I make short promo videos and run X and Instagram campaigns for crypto projects on Ethereum, BSC, Base and the TitanX ecosystem.",
+  "text": "Young Stunners is a Web3 content creator making short promo videos and X and Instagram campaigns for DeFi, memecoin, NFT and gaming teams on Ethereum, BSC, Base and TitanX. You approve every video.",
   "hype": null,
   "concrete": null,
   "standalone": null,
@@ -31,7 +31,7 @@
  },
  {
   "section": "portfolio",
-  "text": "Lil Blunt: The Smoke Realm",
+  "text": "Client videos, tap to play",
   "hype": null,
   "concrete": null,
   "standalone": null,
@@ -41,7 +41,7 @@
  },
  {
   "section": "portfolio",
-  "text": "A free Wild West 2D platformer that runs in your browser on the Internet Computer. Dodge the Tax Collector and climb the leaderboard.",
+  "text": "No projects match that search.",
   "hype": null,
   "concrete": null,
   "standalone": null,
@@ -270,8 +270,28 @@
   "flags": []
  },
  {
+  "section": "latest",
+  "text": "Lil Blunt: The Smoke Realm",
+  "hype": null,
+  "concrete": null,
+  "standalone": null,
+  "numeric_claim": null,
+  "simulated": false,
+  "flags": []
+ },
+ {
+  "section": "latest",
+  "text": "A free Wild West 2D platformer that runs in your browser on the Internet Computer. Dodge the Tax Collector and climb the leaderboard.",
+  "hype": null,
+  "concrete": null,
+  "standalone": null,
+  "numeric_claim": null,
+  "simulated": false,
+  "flags": []
+ },
+ {
   "section": "footer",
-  "text": "Last updated 1 Oct 2026 · © 2026 Young Stunners · @youngstunnersss",
+  "text": "Last updated 20 Nov 2026 · © 2026 Young Stunners · @youngstunnersss",
   "hype": null,
   "concrete": null,
   "standalone": null,

@@ -22,6 +22,11 @@ for i, (name, u) in enumerate(rows):
         status = "unverified"
     out.append({"project": name, "url": u, "status": status, "checked": time.strftime("%Y-%m-%d", time.gmtime())})
     if status == "ratelimited": time.sleep(5)
+# A network-level failure (DNS, proxy, timeout) says nothing about the posts. Never let it overwrite the
+# last real result or put "0 X links verified live" on the public page.
+neterr = [o for o in out if o["status"].startswith("error:")]
+if neterr:
+    sys.exit(f"link check inconclusive: {len(neterr)}/{len(out)} X checks hit network errors (e.g. {neterr[0]['status']}); previous links.json and facts line kept")
 (ROOT / "docs" / "gauntlet").mkdir(parents=True, exist_ok=True)
 (ROOT / "docs" / "gauntlet" / "links.json").write_text(json.dumps(out, indent=1))
 from collections import Counter

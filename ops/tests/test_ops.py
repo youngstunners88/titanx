@@ -103,13 +103,14 @@ class TestRegressions(Sandbox):
         self.assertEqual(llm.interpret(q, ans)["n"]["status"], "selected")
         self.assertEqual(llm.interpret(q, ans, stakes="high")["n"]["status"], "needs_review")
     def test_provider_failure_returns_needs_review_and_is_billed(self):
-        old = llm._chat_json, llm._jev_openrouter
+        old = llm._chat_json, llm._jev_openrouter, llm.key_present
         def boom(*a, **k): raise llm.LLMError("HTTP 429")
         llm._chat_json = boom; llm._jev_openrouter = boom
+        llm.key_present = lambda p: True                             # hermetic: don't depend on env keys
         try:
             r = llm.decide({"m": "t"}, {"n": {"type": "noul", "instructions": "y"}}, live=True)
         finally:
-            llm._chat_json, llm._jev_openrouter = old
+            llm._chat_json, llm._jev_openrouter, llm.key_present = old
         self.assertEqual(r["decisions"]["n"]["status"], "needs_review"); self.assertIn("error", r)
         self.assertGreaterEqual(state.budget_read()["calls"], 1)      # failed calls still count
     def test_failover_to_next_provider(self):
