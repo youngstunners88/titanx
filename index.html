@@ -69,14 +69,20 @@ nav{position:sticky;top:0;z-index:100;background:var(--paper);border-bottom:var(
 
 /* HERO */
 .hero{position:relative;padding:24px 0 30px;border-bottom:var(--bw) solid var(--ink);background-image:radial-gradient(rgba(17,17,17,.13) 1px,transparent 1.2px);background-size:14px 14px}
-.hero .wrap{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center}
+.hero .wrap{display:grid;grid-template-columns:1.35fr .65fr;gap:36px;align-items:center}
 h1{font-weight:900;font-size:clamp(1.8rem,3.5vw,2.85rem);line-height:1.07;letter-spacing:-.025em;margin-bottom:16px;text-wrap:balance}
 h1 em{font-style:normal;color:var(--red-d);background:linear-gradient(transparent 62%,#ffd9d6 62%)}
 .lede{font-size:clamp(.98rem,1.4vw,1.1rem);max-width:36em;margin-bottom:20px;color:var(--muted);font-weight:600}
 .hero-btns{display:flex;gap:16px;flex-wrap:wrap}
-.hero-art{justify-self:center;background:var(--white);border:var(--bw) solid var(--ink);border-radius:18px;box-shadow:var(--shadow-lg);padding:18px 22px;transform:rotate(-2.5deg);max-width:340px}
-.hero-art img{display:block;width:100%;height:auto}
-@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-art{display:none}}
+.hero-btns .btn:not(.btn-red) .tri{color:var(--red-d)}
+/* hero reel: self-hosted, nothing downloads until play */
+.reel{justify-self:end;width:100%;max-width:420px;margin:0}
+.reel-poster,.reel video{display:block;position:relative;width:100%;height:auto;aspect-ratio:16/9;background:var(--ink);border:var(--bw) solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+.reel-poster img{display:block;width:100%;height:100%;object-fit:cover}
+.reel-play{position:absolute;left:14px;bottom:14px;display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 12px;border-radius:999px;background:var(--red);color:#fff;border:var(--bw) solid var(--ink);box-shadow:3px 3px 0 var(--ink);font:800 .85rem var(--font);transition:transform .12s}
+.reel-poster:hover .reel-play{transform:translate(-1px,-1px)}
+.reel figcaption{margin-top:14px;font-weight:700;font-size:.85rem;color:var(--muted)}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:20px}.reel{display:none;justify-self:stretch;max-width:none}.reel.on{display:block}.reel.on video{aspect-ratio:9/16;width:auto;max-width:100%;max-height:78svh;margin:0 auto}.reel figcaption{text-align:center}}
 
 /* SECTIONS */
 section{padding:72px 0}
@@ -244,14 +250,17 @@ footer a{color:var(--ink);font-weight:800;text-decoration:underline;text-underli
 <header class="hero" id="top">
   <div class="wrap">
     <div>
-      <h1>Short crypto promo videos and X &amp; Instagram campaigns for <em>Web3 projects</em></h1>
-      <p class="lede">Young Stunners is a Web3 content creator. I make short promo videos and run X and Instagram campaigns for crypto projects on Ethereum, BSC, Base and the TitanX ecosystem.</p>
+      <h1>Crypto promo videos and campaigns for <em>Web3 projects</em></h1>
+      <p class="lede">Young Stunners is a Web3 content creator making short promo videos and X and Instagram campaigns for DeFi, memecoin, NFT and gaming teams on Ethereum, BSC, Base and TitanX. You approve every video.</p>
       <div class="hero-btns">
-        <a class="btn btn-red" href="#portfolio"><span class="tri" aria-hidden="true"></span>Watch the videos</a>
-        <a class="btn" href="#contact">Book a campaign</a>
+        <a class="btn btn-red" href="#contact" data-track="cta_hero">Book a campaign</a>
+        <a class="btn" href="video/web/reel-portrait.mp4" data-reel><span class="tri" aria-hidden="true"></span>Watch 30s reel</a>
       </div>
     </div>
-    <div class="hero-art"><img src="brand/logo-hero.webp" alt="" width="680" height="293" loading="lazy" decoding="async"></div>
+    <figure class="reel" id="reel">
+      <a class="reel-poster" href="video/web/reel-landscape.mp4" data-reel aria-label="Play the 0:30 reel: Young Stunners in 30 seconds"><img src="brand/reel-poster.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span class="reel-play" aria-hidden="true"><span class="tri"></span>0:30</span></a>
+      <figcaption>What I make and how booking works.</figcaption>
+    </figure>
   </div>
 </header>
 <main id="main">
@@ -263,7 +272,7 @@ footer a{color:var(--ink);font-weight:800;text-decoration:underline;text-underli
         <h2 id="work-h">Watch the work</h2>
         <p class="facts"><span>38 projects · 130 posts · 123 X links verified live <time datetime="2026-10-01">1 Oct 2026</time></span> <span class="dates">X posts dated Oct 2024 to Jul 2026</span></p>
       </div>
-      <p class="feat-label" id="feat-label">Play here</p>
+      <p class="feat-label" id="feat-label">Client videos, tap to play</p>
     <div class="feat-row" role="group" aria-labelledby="feat-label">
         <button type="button" class="feat" data-tweet="1920427477052072188" data-name="$TITANX" aria-pressed="false"><img src="brand/projects/titanx.webp" alt="" width="36" height="36" decoding="async"><span>$TITANX</span><span class="play tri" aria-hidden="true"></span></button>
         <button type="button" class="feat" data-tweet="2029254272563491219" data-name="$MORPH" aria-pressed="false"><img src="brand/projects/morph.webp" alt="" width="36" height="36" decoding="async"><span>$MORPH</span><span class="play tri" aria-hidden="true"></span></button>
@@ -1160,6 +1169,18 @@ async function playTweet(id,name,target,evt){
 const player=$('#player');
 $$('.feat').forEach(b=>b.addEventListener('click',()=>{$$('.feat').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');playTweet(b.dataset.tweet,b.dataset.name,player,'featured_play')}));
 $$('[data-demo]').forEach(b=>b.addEventListener('click',()=>playTweet(b.dataset.demo,b.dataset.name,$('#demo-player'),'game_demo_play')));
+// hero reel: the <video> is only created on press, so the page downloads nothing for it until then
+const reel=$('#reel');
+function playReel(e){if(!reel)return;e.preventDefault();
+  const wide=matchMedia('(min-width:861px)').matches;let v=reel.querySelector('video');
+  if(!v){v=document.createElement('video');v.controls=true;v.playsInline=true;v.preload='auto';
+    v.width=wide?640:360;v.height=wide?360:640;v.poster=wide?'brand/reel-poster.webp':'brand/reel-poster-tall.webp';
+    v.src=wide?'video/web/reel-landscape.mp4':'video/web/reel-portrait.mp4';v.setAttribute('aria-label','Young Stunners 30-second reel');
+    const tr=document.createElement('track');tr.kind='captions';tr.srclang='en';tr.label='English';tr.src='video/web/reel.en.vtt';v.appendChild(tr);
+    reel.querySelector('.reel-poster').replaceWith(v);v.addEventListener('ended',()=>track('reel_complete'));}
+  reel.classList.add('on');if(!wide)reel.scrollIntoView({block:'start'});
+  const pr=v.play();if(pr)pr.catch(()=>{});v.focus({preventScroll:true});track('reel_play',{wide});}
+$$('[data-reel]').forEach(a=>a.addEventListener('click',playReel));
 
 // sticky CTA on mobile: show after the hero, hide while the contact form is visible
 const st=$('#sticky');if(st&&'IntersectionObserver' in window){let heroGone=false,contactSeen=false;const upd=()=>st.classList.toggle('show',heroGone&&!contactSeen);
